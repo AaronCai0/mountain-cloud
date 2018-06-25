@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Configuration status="off" monitorInterval="1800">  
+<!--     <Appenders>  
+        <Console name="Console" target="SYSTEM_OUT">  
+            <PatternLayout pattern="%d{HH:mm:ss.SSS} [%t] %-5level %logger{36} - %msg%n" />  
+        </Console>  
+    </Appenders>   -->
+	<properties>  
+         <property name="LOG_HOME"></property>  
+         <property name="ERROR_LOG_FILE_NAME">execute-error</property>  
+     </properties>  
+     <Appenders>  
+         <Console name="Console" target="SYSTEM_OUT">  
+             <PatternLayout pattern="%d %-5p%m%n" />  
+         </Console>
+<!--          <RollingRandomAccessFile name="ErrorLog"  
+                                  fileName="${LOG_HOME}/${ERROR_LOG_FILE_NAME}.log"  
+                                  filePattern="${LOG_HOME}/${ERROR_LOG_FILE_NAME}.log.%d{yyyy-MM-dd}.gz">
+             <PatternLayout  
+                     pattern="%d %-5p (%F:%L) - %m%n"/>  
+             <Policies>  
+                 <TimeBasedTriggeringPolicy/>  
+                 <SizeBasedTriggeringPolicy size="100 MB"/>  
+             </Policies>  
+             <DefaultRolloverStrategy max="20"/>  
+         </RollingRandomAccessFile> -->  
+   
+     </Appenders>  
+     <Loggers>  
+         <logger name="org.springframework.core" level="info" />  
+         <logger name="org.springframework.beans" level="info"/>  
+         <logger name="org.springframework.context" level="info" />  
+   
+         <root level="info" includeLocation="true">  
+             <appender-ref ref="Console"/>  
+         </root>  
+     </Loggers>  
+</Configuration>
