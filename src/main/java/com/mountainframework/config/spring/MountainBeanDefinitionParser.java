@@ -10,10 +10,10 @@ import org.springframework.beans.factory.xml.ParserContext;
 import org.w3c.dom.Element;
 
 import com.google.common.base.Preconditions;
+import com.mountainframework.config.ConsumerConfig;
+import com.mountainframework.config.ProviderConfig;
 import com.mountainframework.config.RegistryConfig;
 import com.mountainframework.config.ServiceConfig;
-import com.mountainframework.config.ServiceConsumerConfig;
-import com.mountainframework.config.ServiceProviderConfig;
 import com.mountainframework.config.ServiceReferenceConfig;
 
 public class MountainBeanDefinitionParser implements BeanDefinitionParser {
@@ -55,12 +55,10 @@ public class MountainBeanDefinitionParser implements BeanDefinitionParser {
 			if (StringUtils.isBlank(id)) {
 				parserContext.getRegistry().registerBeanDefinition(UUID.randomUUID().toString(), beanDefinition);
 			}
-		} else if (beanClass.equals(ServiceProviderConfig.class)) {
-			// beanDefinition.getPropertyValues().addPropertyValue("timeout",
-			// element.getAttribute("timeout"));
+		} else if (beanClass.equals(ProviderConfig.class)) {
 			parserContext.getRegistry().registerBeanDefinition("provider", beanDefinition);
 
-		} else if (beanClass.equals(ServiceConsumerConfig.class)) {
+		} else if (beanClass.equals(ConsumerConfig.class)) {
 			// beanDefinition.getPropertyValues().addPropertyValue("timeout",
 			// element.getAttribute("timeout"));
 			parserContext.getRegistry().registerBeanDefinition("consumer", beanDefinition);

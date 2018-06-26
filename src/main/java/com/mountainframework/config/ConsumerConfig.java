@@ -1,5 +1,5 @@
 package com.mountainframework.config;
 
-public class ServiceConsumerConfig {
+public class ConsumerConfig {
 
 }

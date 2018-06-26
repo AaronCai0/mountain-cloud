@@ -5,7 +5,7 @@ import java.util.Map;
 
 import org.springframework.beans.factory.InitializingBean;
 
-public class ServiceProviderConfig implements InitializingBean, Serializable {
+public class ProviderConfig implements InitializingBean, Serializable {
 
 	private static final long serialVersionUID = -2223932846615785011L;
 

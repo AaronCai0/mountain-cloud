@@ -92,7 +92,7 @@ public class RegistryConfig implements InitializingBean, ApplicationContextAware
 
 	@Override
 	public void afterPropertiesSet() throws Exception {
-		ServiceProviderConfig providerConfig = applicationContext.getBean("provider", ServiceProviderConfig.class);
+		ProviderConfig providerConfig = applicationContext.getBean("provider", ProviderConfig.class);
 		if (providerConfig == null) {
 
 		}
