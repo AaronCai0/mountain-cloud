@@ -56,15 +56,22 @@ public class MountainBeanDefinitionParser implements BeanDefinitionParser {
 				parserContext.getRegistry().registerBeanDefinition(UUID.randomUUID().toString(), beanDefinition);
 			}
 		} else if (beanClass.equals(ProviderConfig.class)) {
+			beanDefinition.getPropertyValues().addPropertyValue("timeout", element.getAttribute("timeout"));
 			parserContext.getRegistry().registerBeanDefinition("provider", beanDefinition);
 
 		} else if (beanClass.equals(ConsumerConfig.class)) {
-			// beanDefinition.getPropertyValues().addPropertyValue("timeout",
-			// element.getAttribute("timeout"));
+			beanDefinition.getPropertyValues().addPropertyValue("timeout", element.getAttribute("timeout"));
 			parserContext.getRegistry().registerBeanDefinition("consumer", beanDefinition);
+
 		} else if (beanClass.equals(ServiceConfig.class)) {
+			beanDefinition.getPropertyValues().addPropertyValue("interfaceName", element.getAttribute("interface"));
+			beanDefinition.getPropertyValues().addPropertyValue("timeout", element.getAttribute("timeout"));
+			beanDefinition.getPropertyValues().addPropertyValue("ref", element.getAttribute("ref"));
+			beanDefinition.getPropertyValues().addPropertyValue("check", element.getAttribute("check"));
 
 		} else if (beanClass.equals(ServiceReferenceConfig.class)) {
+			beanDefinition.getPropertyValues().addPropertyValue("interfaceName", element.getAttribute("interface"));
+			beanDefinition.getPropertyValues().addPropertyValue("timeout", element.getAttribute("timeout"));
 		}
 		if (StringUtils.isNotBlank(id)) {
 			Preconditions.checkState(!parserContext.getRegistry().containsBeanDefinition(id),

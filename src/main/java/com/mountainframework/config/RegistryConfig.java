@@ -7,6 +7,9 @@ import org.springframework.beans.factory.InitializingBean;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.ApplicationContextAware;
 
+import com.mountainframework.config.container.MountainConfigContainer;
+import com.mountainframework.config.spring.extension.SpringExtensionFactory;
+
 public class RegistryConfig implements InitializingBean, ApplicationContextAware, Serializable {
 
 	private static final long serialVersionUID = 1838273310767503591L;
@@ -94,13 +97,16 @@ public class RegistryConfig implements InitializingBean, ApplicationContextAware
 	public void afterPropertiesSet() throws Exception {
 		ProviderConfig providerConfig = applicationContext.getBean("provider", ProviderConfig.class);
 		if (providerConfig == null) {
-
+			MountainConfigContainer.getInstance().getProviderRegistryConfigs().add(this);
+		} else if (applicationContext.getBean("consumer", ConsumerConfig.class) != null) {
+			MountainConfigContainer.getInstance().getConsumerRegistryConfigs().add(this);
 		}
 	}
 
 	@Override
 	public void setApplicationContext(ApplicationContext applicationContext) throws BeansException {
 		this.applicationContext = applicationContext;
+		SpringExtensionFactory.addApplicationContext(applicationContext);
 	}
 
 }

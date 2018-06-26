@@ -5,6 +5,8 @@ import java.util.Map;
 
 import org.springframework.beans.factory.InitializingBean;
 
+import com.mountainframework.config.container.MountainConfigContainer;
+
 public class ProviderConfig implements InitializingBean, Serializable {
 
 	private static final long serialVersionUID = -2223932846615785011L;
@@ -23,7 +25,7 @@ public class ProviderConfig implements InitializingBean, Serializable {
 
 	@Override
 	public void afterPropertiesSet() throws Exception {
-
+		MountainConfigContainer.getInstance().setProvider(this);
 	}
 
 }
