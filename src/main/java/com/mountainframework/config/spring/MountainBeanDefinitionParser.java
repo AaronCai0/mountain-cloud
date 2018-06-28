@@ -64,14 +64,18 @@ public class MountainBeanDefinitionParser implements BeanDefinitionParser {
 			parserContext.getRegistry().registerBeanDefinition("consumer", beanDefinition);
 
 		} else if (beanClass.equals(ServiceConfig.class)) {
-			beanDefinition.getPropertyValues().addPropertyValue("interfaceName", element.getAttribute("interface"));
+			String interfaceName = element.getAttribute("interface");
+			beanDefinition.getPropertyValues().addPropertyValue("interfaceName", interfaceName);
 			beanDefinition.getPropertyValues().addPropertyValue("timeout", element.getAttribute("timeout"));
 			beanDefinition.getPropertyValues().addPropertyValue("ref", element.getAttribute("ref"));
 			beanDefinition.getPropertyValues().addPropertyValue("check", element.getAttribute("check"));
-
+			parserContext.getRegistry().registerBeanDefinition(interfaceName, beanDefinition);
 		} else if (beanClass.equals(ServiceReferenceConfig.class)) {
-			beanDefinition.getPropertyValues().addPropertyValue("interfaceName", element.getAttribute("interface"));
+			String interfaceName = element.getAttribute("interface");
+			beanDefinition.getPropertyValues().addPropertyValue("interfaceName", interfaceName);
 			beanDefinition.getPropertyValues().addPropertyValue("timeout", element.getAttribute("timeout"));
+			// parserContext.getRegistry().registerBeanDefinition(interfaceName,
+			// beanDefinition);
 		}
 		if (StringUtils.isNotBlank(id)) {
 			Preconditions.checkState(!parserContext.getRegistry().containsBeanDefinition(id),

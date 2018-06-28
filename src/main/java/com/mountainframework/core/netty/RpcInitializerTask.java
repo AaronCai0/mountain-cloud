@@ -4,7 +4,7 @@ import java.lang.reflect.InvocationTargetException;
 
 import org.apache.commons.lang3.reflect.MethodUtils;
 
-import com.mountainframework.config.container.ServiceConfigContainer;
+import com.mountainframework.config.context.MountainServiceConfigContext;
 import com.mountainframework.rpc.support.RpcRequest;
 import com.mountainframework.rpc.support.RpcReseponse;
 
@@ -26,7 +26,7 @@ public class RpcInitializerTask implements Runnable {
 	@Override
 	public void run() {
 		String className = request.getClassName();
-		Object requestBean = ServiceConfigContainer.getInstance().get(className);
+		Object requestBean = MountainServiceConfigContext.getServiceBeanMap().get(className);
 		try {
 			Object result = MethodUtils.invokeMethod(requestBean, request.getMethodName(), request.getParamterVals(),
 					request.getParameterTypes());

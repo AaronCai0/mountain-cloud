@@ -22,7 +22,7 @@ public class RpcClientLoader {
 	private Lock lock = new ReentrantLock();
 	private Condition condition = lock.newCondition();
 
-	public static RpcClientLoader getInstance() {
+	public static RpcClientLoader getLoader() {
 		return RpcClientLoaderHolder.getLoader();
 	}
 

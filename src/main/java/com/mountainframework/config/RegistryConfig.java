@@ -7,7 +7,7 @@ import org.springframework.beans.factory.InitializingBean;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.ApplicationContextAware;
 
-import com.mountainframework.config.container.MountainConfigContainer;
+import com.mountainframework.config.context.MountainConfigContainer;
 import com.mountainframework.config.spring.extension.SpringExtensionFactory;
 
 public class RegistryConfig implements InitializingBean, ApplicationContextAware, Serializable {
@@ -95,11 +95,10 @@ public class RegistryConfig implements InitializingBean, ApplicationContextAware
 
 	@Override
 	public void afterPropertiesSet() throws Exception {
-		ProviderConfig providerConfig = applicationContext.getBean("provider", ProviderConfig.class);
-		if (providerConfig == null) {
-			MountainConfigContainer.getInstance().getProviderRegistryConfigs().add(this);
-		} else if (applicationContext.getBean("consumer", ConsumerConfig.class) != null) {
-			MountainConfigContainer.getInstance().getConsumerRegistryConfigs().add(this);
+		if (applicationContext.containsBean("provider")) {
+			MountainConfigContainer.getContainer().getProviderRegistryConfigs().add(this);
+		} else if (applicationContext.containsBean("consumer")) {
+			MountainConfigContainer.getContainer().getConsumerRegistryConfigs().add(this);
 		}
 	}
 

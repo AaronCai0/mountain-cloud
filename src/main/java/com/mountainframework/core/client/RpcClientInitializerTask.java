@@ -32,7 +32,7 @@ public class RpcClientInitializerTask implements Runnable {
 			public void operationComplete(ChannelFuture future) throws Exception {
 				if (future.isSuccess()) {
 					RpcClientHandler rpcClientHanlder = future.channel().pipeline().get(RpcClientHandler.class);
-					RpcClientLoader.getInstance().setRpcClientHandler(rpcClientHanlder);
+					RpcClientLoader.getLoader().setRpcClientHandler(rpcClientHanlder);
 				}
 			}
 		});

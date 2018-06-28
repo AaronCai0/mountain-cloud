@@ -14,7 +14,7 @@ public class RpcMessageHandler extends ChannelInboundHandlerAdapter {
 	@Override
 	public void channelRead(ChannelHandlerContext ctx, Object msg) throws Exception {
 		if (!(msg instanceof RpcRequest)) {
-			System.out.println("PeakRpc server channelRead is not RpcRequest");
+			System.out.println("Mountain server channelRead is not RpcRequest");
 			return;
 		}
 		RpcRequest request = (RpcRequest) msg;

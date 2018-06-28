@@ -3,19 +3,22 @@ package com.mountainframework.core.netty;
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
 import java.nio.channels.spi.SelectorProvider;
+import java.util.List;
+import java.util.Objects;
 import java.util.concurrent.ThreadPoolExecutor;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.InitializingBean;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.io.ClassPathResource;
 import org.springframework.core.io.Resource;
 
 import com.google.common.base.Preconditions;
-import com.mountainframework.common.RpcConstants;
+import com.google.common.base.Splitter;
 import com.mountainframework.common.RpcThreadFactory;
 import com.mountainframework.common.RpcThreadPool;
+import com.mountainframework.config.InitializingConfig;
+import com.mountainframework.config.RegistryConfig;
+import com.mountainframework.config.context.MountainApplicationConfigContext;
 
 import io.netty.bootstrap.ServerBootstrap;
 import io.netty.channel.ChannelFuture;
@@ -24,36 +27,33 @@ import io.netty.channel.EventLoopGroup;
 import io.netty.channel.nio.NioEventLoopGroup;
 import io.netty.channel.socket.nio.NioServerSocketChannel;
 
-public class RpcServerExecutor implements InitializingBean {
+public class RpcServerExecutor implements InitializingConfig {
 
 	private static final Logger log = LoggerFactory.getLogger(RpcServerExecutor.class);
 
-	@Value(value = RpcConstants.RPC_SERVER_IP)
-	private String ip;
-
-	@Value(value = RpcConstants.RPC_SERVER_PORT)
-	private Integer port;
-
-	@Value(value = RpcConstants.RPC_SERVER_VERSION)
-	private Float version;
-
 	@Override
-	public void afterPropertiesSet() throws Exception {
-		Preconditions.checkNotNull(ip);
-		Preconditions.checkNotNull(port);
-		Preconditions.checkNotNull(version);
+	public void init(MountainApplicationConfigContext context) {
+		try {
+			RegistryConfig providerRegistry = context.getProviderRegistry();
+			List<String> addressList = Splitter.on(":")
+					.splitToList(Preconditions.checkNotNull(providerRegistry.getAddress(), "Provider address is null"));
+			String ip = addressList.get(0);
+			int port = Integer.valueOf(Objects.toString(addressList.get(1), "80"));
 
-		EventLoopGroup bossGroup = new NioEventLoopGroup();
-		EventLoopGroup workGroup = new NioEventLoopGroup(Runtime.getRuntime().availableProcessors() * 2,
-				new RpcThreadFactory(), SelectorProvider.provider());
+			EventLoopGroup bossGroup = new NioEventLoopGroup();
+			EventLoopGroup workGroup = new NioEventLoopGroup(Runtime.getRuntime().availableProcessors() * 2,
+					new RpcThreadFactory(), SelectorProvider.provider());
 
-		ServerBootstrap bootstrap = new ServerBootstrap();
-		ChannelFuture channelFuture = bootstrap.group(bossGroup, workGroup).channel(NioServerSocketChannel.class)
-				.option(ChannelOption.SO_BACKLOG, 1024).option(ChannelOption.SO_KEEPALIVE, true)
-				.childHandler(new RpcChannelInitializer()).bind(ip, port).sync();
-		printLog();
-		log.info("Mountain RPC server success started! ip:{} , port:{} , version:{} ", ip, port, version);
-		channelFuture.channel().closeFuture().sync();
+			ServerBootstrap bootstrap = new ServerBootstrap();
+			ChannelFuture channelFuture = bootstrap.group(bossGroup, workGroup).channel(NioServerSocketChannel.class)
+					.option(ChannelOption.SO_BACKLOG, 1024).option(ChannelOption.SO_KEEPALIVE, true)
+					.childHandler(new RpcChannelInitializer()).bind(ip, port).sync();
+			printLog();
+			log.info("Mountain RPC server success started! ip:{} , port:{} , version:1.0 ", ip, port);
+			channelFuture.channel().closeFuture().sync();
+		} catch (InterruptedException e) {
+			e.printStackTrace();
+		}
 	}
 
 	public static final void printLog() {

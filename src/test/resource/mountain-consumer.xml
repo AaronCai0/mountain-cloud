@@ -7,16 +7,9 @@
 			http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd
 		    http://www.mountainframework.com/mountain 
 		    http://www.mountainframework.com/mountain/mountain.xsd">
-		    
-  <mountain:registry address="127.0.0.1:9999" />
-  <mountain:provider timeout="20000"/>
-  
-  
-  
-  <mountain:service interface="com.mountainframework.client.CalcService" ref="calcService"/>
-  <bean id="calcService" class="com.mountainframework.client.CalcServiceImpl" />
-  
-  <mountain:service interface="com.mountainframework.client.CalcService2" ref="calcService2"/>
-  <bean id="calcService2" class="com.mountainframework.client.CalcServiceImpl2" />
-  
+	
+	<mountain:registry address="127.0.0.1:8080" />
+  	<mountain:provider timeout="20000"/>
+ 	<mountain:reference id="calcService" interface="com.mountainframework.service.CalcService"/>
+   
 </beans>

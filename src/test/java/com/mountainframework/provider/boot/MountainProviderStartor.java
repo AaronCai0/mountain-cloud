@@ -1,8 +1,8 @@
-package com.mountainframework.rpc.boot;
+package com.mountainframework.provider.boot;
 
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 
-public class MountainRpcStartor {
+public class MountainProviderStartor {
 
 	@SuppressWarnings("resource")
 	public static void main(String[] args) {

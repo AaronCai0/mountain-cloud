@@ -1,7 +1,9 @@
-package com.mountainframework.config.container;
+package com.mountainframework.config.context;
 
+import java.util.Map;
 import java.util.Set;
 
+import com.google.common.collect.Maps;
 import com.google.common.collect.Sets;
 import com.mountainframework.config.ConsumerConfig;
 import com.mountainframework.config.ProviderConfig;
@@ -19,19 +21,22 @@ public class MountainConfigContainer {
 
 	private final Set<RegistryConfig> consumerRegistryConfigs;
 
-	private final Set<ServiceConfig> serviceConfigs;
+	private final Map<String, ServiceConfig> serviceConfigMap;
 
 	private final Set<ServiceReferenceConfig> serviceReferenceConfigs;
 
-	public static MountainConfigContainer getInstance() {
+	private final Map<String, Object> serviceBeanMap;
+
+	public static MountainConfigContainer getContainer() {
 		return MountainConfigContainerHolder.getInstance();
 	}
 
 	private MountainConfigContainer() {
 		providerRegistryConfigs = Sets.newConcurrentHashSet();
-		serviceConfigs = Sets.newConcurrentHashSet();
+		serviceConfigMap = Maps.newConcurrentMap();
 		consumerRegistryConfigs = Sets.newConcurrentHashSet();
 		serviceReferenceConfigs = Sets.newConcurrentHashSet();
+		serviceBeanMap = Maps.newConcurrentMap();
 	}
 
 	private static class MountainConfigContainerHolder {
@@ -40,10 +45,6 @@ public class MountainConfigContainer {
 		public static MountainConfigContainer getInstance() {
 			return INSTANCE;
 		}
-	}
-
-	public Set<ServiceConfig> getServiceConfigs() {
-		return serviceConfigs;
 	}
 
 	public ProviderConfig getProvider() {
@@ -72,6 +73,14 @@ public class MountainConfigContainer {
 
 	public Set<ServiceReferenceConfig> getServiceReferenceConfigs() {
 		return serviceReferenceConfigs;
+	}
+
+	public Map<String, Object> getServiceBeanMap() {
+		return serviceBeanMap;
+	}
+
+	public Map<String, ServiceConfig> getServiceConfigMap() {
+		return serviceConfigMap;
 	}
 
 }

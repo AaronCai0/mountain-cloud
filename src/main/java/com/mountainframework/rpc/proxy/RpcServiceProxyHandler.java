@@ -9,7 +9,7 @@ import com.mountainframework.core.client.RpcClientLoader;
 import com.mountainframework.rpc.support.RpcCallBack;
 import com.mountainframework.rpc.support.RpcRequest;
 
-public class RpcMessageProxy implements InvocationHandler {
+public class RpcServiceProxyHandler implements InvocationHandler {
 
 	@Override
 	public Object invoke(Object proxy, Method method, Object[] args) throws Throwable {
@@ -20,7 +20,7 @@ public class RpcMessageProxy implements InvocationHandler {
 		request.setParameterTypes(method.getParameterTypes());
 		request.setParamterVals(args);
 
-		RpcClientHandler clientHandler = RpcClientLoader.getInstance().getRpcClientHandler();
+		RpcClientHandler clientHandler = RpcClientLoader.getLoader().getRpcClientHandler();
 		RpcCallBack callBack = clientHandler.sendRequest(request);
 		return callBack.start();
 	}

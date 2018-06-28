@@ -1,4 +1,4 @@
-package com.mountainframework.client;
+package com.mountainframework.service;
 
 public interface CalcService {
 
