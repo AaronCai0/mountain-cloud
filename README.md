@@ -1,2 +1,2 @@
 # mountain
-RegistryConfig is a rpc framework bynetty
+RegistryConfig is a rpc framework by netty
