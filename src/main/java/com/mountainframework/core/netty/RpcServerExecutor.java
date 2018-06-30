@@ -14,11 +14,11 @@ import org.springframework.core.io.Resource;
 
 import com.google.common.base.Preconditions;
 import com.google.common.base.Splitter;
-import com.mountainframework.common.RpcThreadFactory;
-import com.mountainframework.common.RpcThreadPool;
-import com.mountainframework.config.InitializingConfig;
 import com.mountainframework.config.RegistryConfig;
-import com.mountainframework.config.context.MountainApplicationConfigContext;
+import com.mountainframework.config.init.InitializingService;
+import com.mountainframework.config.init.context.MountainApplicationConfigContext;
+import com.mountainframework.rpc.support.RpcThreadFactory;
+import com.mountainframework.rpc.support.RpcThreadPool;
 
 import io.netty.bootstrap.ServerBootstrap;
 import io.netty.channel.ChannelFuture;
@@ -27,9 +27,16 @@ import io.netty.channel.EventLoopGroup;
 import io.netty.channel.nio.NioEventLoopGroup;
 import io.netty.channel.socket.nio.NioServerSocketChannel;
 
-public class RpcServerExecutor implements InitializingConfig {
+/**
+ * Rpc服务端调度器
+ * 
+ * @author yafeng.cai {@link}https://github.com/AaronCai0
+ * @date 2018年6月30日
+ * @since 1.0
+ */
+public class RpcServerExecutor implements InitializingService {
 
-	private static final Logger log = LoggerFactory.getLogger(RpcServerExecutor.class);
+	private static final Logger logger = LoggerFactory.getLogger(RpcServerExecutor.class);
 
 	@Override
 	public void init(MountainApplicationConfigContext context) {
@@ -47,19 +54,19 @@ public class RpcServerExecutor implements InitializingConfig {
 			ServerBootstrap bootstrap = new ServerBootstrap();
 			ChannelFuture channelFuture = bootstrap.group(bossGroup, workGroup).channel(NioServerSocketChannel.class)
 					.option(ChannelOption.SO_BACKLOG, 1024).option(ChannelOption.SO_KEEPALIVE, true)
-					.childHandler(new RpcChannelInitializer()).bind(ip, port).sync();
+					.childHandler(new RpcServerChannelInitializer()).bind(ip, port).sync();
 			printLog();
-			log.info("Mountain RPC server success started! ip:{} , port:{} , version:1.0 ", ip, port);
+			logger.info("Mountain RPC server success started! ip:{} , port:{} , version:1.0 ", ip, port);
 			channelFuture.channel().closeFuture().sync();
 		} catch (InterruptedException e) {
-			e.printStackTrace();
+			logger.error("RpcServerExecutor.init() interrupted error.", e);
 		}
 	}
 
 	public static final void printLog() {
 		Resource resource = new ClassPathResource("mountain-logo.txt");
 		if (!resource.exists()) {
-			log.warn("Mountain logo not Find!");
+			logger.warn("Mountain logo not Find!");
 		}
 		try (BufferedReader reader = new BufferedReader(new InputStreamReader(resource.getInputStream(), "UTF-8"))) {
 			StringBuilder sb = new StringBuilder();
@@ -70,23 +77,19 @@ public class RpcServerExecutor implements InitializingConfig {
 				sb.append(str);
 			}
 			sb.append(System.lineSeparator());
-			log.info(sb.toString());
+			logger.info(sb.toString());
 		} catch (Exception e) {
-			log.info("Read moutain logo fail", e);
+			logger.info("Read moutain logo fail", e);
 		}
 	}
 
 	public static ThreadPoolExecutor getThreadPoolExecutor() {
-		return RpcServerExecutorHolder.getExecutor();
+		return RpcServerExecutorHolder.EXECUTOR;
 	}
 
 	private static class RpcServerExecutorHolder {
-		private static ThreadPoolExecutor executor = RpcThreadPool
-				.getThreadPool(Runtime.getRuntime().availableProcessors() * 2, -1);
-
-		public static ThreadPoolExecutor getExecutor() {
-			return executor;
-		}
+		static ThreadPoolExecutor EXECUTOR = RpcThreadPool
+				.getThreadPoolExecutor(Runtime.getRuntime().availableProcessors() * 2, -1);
 	}
 
 }

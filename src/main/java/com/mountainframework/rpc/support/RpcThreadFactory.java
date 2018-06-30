@@ -1,11 +1,18 @@
-package com.mountainframework.common;
+package com.mountainframework.rpc.support;
 
 import java.util.concurrent.ThreadFactory;
 import java.util.concurrent.atomic.AtomicInteger;
 
+/**
+ * Rpc线程工厂
+ * 
+ * @author yafeng.cai {@link}https://github.com/AaronCai0
+ * @date 2018年6月30日
+ * @since 1.0
+ */
 public class RpcThreadFactory implements ThreadFactory {
 
-	private static final String DEFAULT_FACTORY_NAME = "RpcThreadFactory";
+	private static final String DEFAULT_FACTORY_NAME = "Mountain-Rpc-ThreadFactory";
 
 	private static final AtomicInteger threadCount = new AtomicInteger();
 

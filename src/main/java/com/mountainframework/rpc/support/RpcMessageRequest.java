@@ -1,9 +1,17 @@
 package com.mountainframework.rpc.support;
 
 import java.io.Serializable;
-import java.util.Arrays;
 
-public class RpcRequest implements Serializable {
+import org.apache.commons.lang3.builder.ReflectionToStringBuilder;
+
+/**
+ * Rpc消息请求类
+ * 
+ * @author yafeng.cai {@link}https://github.com/AaronCai0
+ * @date 2018年6月30日
+ * @since 1.0
+ */
+public class RpcMessageRequest implements Serializable {
 
 	private static final long serialVersionUID = 1L;
 
@@ -59,9 +67,7 @@ public class RpcRequest implements Serializable {
 
 	@Override
 	public String toString() {
-		return "RpcRequest [messageId=" + messageId + ", methodName=" + methodName + ", className=" + className
-				+ ", parameterTypes=" + Arrays.toString(parameterTypes) + ", paramterVals="
-				+ Arrays.toString(paramterVals) + "]";
+		return new ReflectionToStringBuilder(this).toString();
 	}
 
 }

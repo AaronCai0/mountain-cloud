@@ -1,4 +1,4 @@
-package com.mountainframework.config.context;
+package com.mountainframework.config.init.context;
 
 import java.util.Map;
 import java.util.Set;
@@ -11,6 +11,13 @@ import com.mountainframework.config.RegistryConfig;
 import com.mountainframework.config.ServiceConfig;
 import com.mountainframework.config.ServiceReferenceConfig;
 
+/**
+ * Mountain配置信息容器
+ * 
+ * @author yafeng.cai {@link}https://github.com/AaronCai0
+ * @date 2018年6月30日
+ * @since 1.0
+ */
 public class MountainConfigContainer {
 
 	private ProviderConfig provider;

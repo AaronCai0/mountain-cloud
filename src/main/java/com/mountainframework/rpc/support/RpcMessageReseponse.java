@@ -1,9 +1,17 @@
 package com.mountainframework.rpc.support;
 
 import java.io.Serializable;
-import java.util.Arrays;
 
-public class RpcReseponse implements Serializable {
+import org.apache.commons.lang3.builder.ReflectionToStringBuilder;
+
+/**
+ * Rpc消息响应类
+ * 
+ * @author yafeng.cai {@link}https://github.com/AaronCai0
+ * @date 2018年6月30日
+ * @since 1.0
+ */
+public class RpcMessageReseponse implements Serializable {
 
 	private static final long serialVersionUID = 1L;
 
@@ -39,7 +47,7 @@ public class RpcReseponse implements Serializable {
 
 	@Override
 	public String toString() {
-		return "RpcReseponse [messageId=" + messageId + ", error=" + error + ", result=" + result + "]";
+		return new ReflectionToStringBuilder(this).toString();
 	}
 
 }

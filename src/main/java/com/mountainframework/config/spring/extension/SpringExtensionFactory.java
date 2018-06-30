@@ -6,6 +6,13 @@ import org.springframework.context.ApplicationContext;
 
 import com.google.common.collect.Sets;
 
+/**
+ * Spring所有ApplicationContext扩展工厂类
+ * 
+ * @author yafeng.cai {@link}https://github.com/AaronCai0
+ * @date 2018年6月30日
+ * @since 1.0
+ */
 public class SpringExtensionFactory {
 
 	private static final Set<ApplicationContext> contexts = Sets.newConcurrentHashSet();

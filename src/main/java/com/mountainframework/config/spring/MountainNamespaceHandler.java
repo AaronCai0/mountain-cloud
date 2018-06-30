@@ -8,6 +8,13 @@ import com.mountainframework.config.RegistryConfig;
 import com.mountainframework.config.ServiceConfig;
 import com.mountainframework.config.ServiceReferenceConfig;
 
+/**
+ * Spring容器xml解析支持类
+ * 
+ * @author yafeng.cai {@link}https://github.com/AaronCai0
+ * @date 2018年6月30日
+ * @since 1.0
+ */
 public class MountainNamespaceHandler extends NamespaceHandlerSupport {
 
 	@Override

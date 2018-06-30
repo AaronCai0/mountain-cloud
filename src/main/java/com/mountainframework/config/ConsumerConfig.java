@@ -3,17 +3,25 @@ package com.mountainframework.config;
 import java.io.Serializable;
 import java.util.Set;
 
+import org.apache.commons.lang3.builder.ReflectionToStringBuilder;
 import org.springframework.beans.factory.InitializingBean;
 import org.springframework.context.ApplicationListener;
 import org.springframework.context.event.ContextRefreshedEvent;
 
-import com.mountainframework.config.context.MountainApplicationConfigContext;
-import com.mountainframework.config.context.MountainConfigContainer;
+import com.mountainframework.config.init.context.MountainApplicationConfigContext;
+import com.mountainframework.config.init.context.MountainConfigContainer;
 import com.mountainframework.core.factory.MountainRpcBuilderFacotry;
 
-public class ConsumerConfig implements InitializingBean, Serializable, ApplicationListener<ContextRefreshedEvent> {
+/**
+ * 消费者配置信息
+ * 
+ * @author yafeng.cai {@link}https://github.com/AaronCai0
+ * @date 2018年6月30日
+ * @since 1.0
+ */
+public class ConsumerConfig implements InitializingBean, ApplicationListener<ContextRefreshedEvent>, Serializable {
 
-	private static final long serialVersionUID = 4096179256884078139L;
+	private static final long serialVersionUID = 1822528678724275446L;
 
 	private Integer timeout;
 
@@ -41,4 +49,8 @@ public class ConsumerConfig implements InitializingBean, Serializable, Applicati
 		}
 	}
 
+	@Override
+	public String toString() {
+		return new ReflectionToStringBuilder(this).toString();
+	}
 }

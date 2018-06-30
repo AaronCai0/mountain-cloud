@@ -2,16 +2,24 @@ package com.mountainframework.config;
 
 import java.io.Serializable;
 
+import org.apache.commons.lang3.builder.ReflectionToStringBuilder;
 import org.springframework.beans.BeansException;
 import org.springframework.beans.factory.InitializingBean;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.ApplicationContextAware;
 
-import com.mountainframework.config.context.MountainConfigContainer;
+import com.mountainframework.config.init.context.MountainConfigContainer;
 
+/**
+ * 服务配置信息
+ * 
+ * @author yafeng.cai {@link}https://github.com/AaronCai0
+ * @date 2018年6月30日
+ * @since 1.0
+ */
 public class ServiceConfig implements InitializingBean, Serializable, ApplicationContextAware {
 
-	private static final long serialVersionUID = 4096179256884078139L;
+	private static final long serialVersionUID = -4392783693048908336L;
 
 	private String interfaceName;
 
@@ -70,4 +78,8 @@ public class ServiceConfig implements InitializingBean, Serializable, Applicatio
 		this.check = check;
 	}
 
+	@Override
+	public String toString() {
+		return new ReflectionToStringBuilder(this).toString();
+	}
 }

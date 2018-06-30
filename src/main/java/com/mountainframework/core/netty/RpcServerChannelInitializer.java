@@ -1,6 +1,4 @@
-package com.mountainframework.core.client;
-
-import com.mountainframework.core.netty.RpcMessageHandler;
+package com.mountainframework.core.netty;
 
 import io.netty.channel.ChannelInitializer;
 import io.netty.channel.ChannelPipeline;
@@ -11,7 +9,14 @@ import io.netty.handler.codec.serialization.ClassResolvers;
 import io.netty.handler.codec.serialization.ObjectDecoder;
 import io.netty.handler.codec.serialization.ObjectEncoder;
 
-public class RpcClientInitializer extends ChannelInitializer<SocketChannel> {
+/**
+ * Rpc服务端通道初始化类
+ * 
+ * @author yafeng.cai {@link}https://github.com/AaronCai0
+ * @date 2018年6月30日
+ * @since 1.0
+ */
+public class RpcServerChannelInitializer extends ChannelInitializer<SocketChannel> {
 
 	@Override
 	protected void initChannel(SocketChannel ch) throws Exception {
@@ -21,7 +26,7 @@ public class RpcClientInitializer extends ChannelInitializer<SocketChannel> {
 		pipline.addLast(new ObjectEncoder());
 		pipline.addLast(new ObjectDecoder(Integer.MAX_VALUE,
 				ClassResolvers.weakCachingConcurrentResolver(this.getClass().getClassLoader())));
-		pipline.addLast(new RpcClientHandler());
+		pipline.addLast(new RpcServerChannelHandler());
 	}
 
 }

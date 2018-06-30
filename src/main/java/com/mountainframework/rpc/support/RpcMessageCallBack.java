@@ -1,17 +1,25 @@
 package com.mountainframework.rpc.support;
 
 import java.io.Serializable;
-import java.util.Arrays;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.locks.Condition;
 import java.util.concurrent.locks.Lock;
 import java.util.concurrent.locks.ReentrantLock;
 
-public class RpcCallBack implements Serializable {
+import com.mountainframework.excpeion.RpcInvokeTimeoutException;
 
-	private static final long serialVersionUID = 1L;
+/**
+ * Rpc服务消息回调类
+ * 
+ * @author yafeng.cai {@link}https://github.com/AaronCai0
+ * @date 2018年6月30日
+ * @since 1.0
+ */
+public class RpcMessageCallBack implements Serializable {
 
-	private RpcReseponse response;
+	private static final long serialVersionUID = -3938693690009620969L;
+
+	private RpcMessageReseponse response;
 
 	private Lock lock = new ReentrantLock();
 
@@ -20,20 +28,19 @@ public class RpcCallBack implements Serializable {
 	public Object start() {
 		try {
 			lock.lock();
-			condition.await();
+			condition.await(3L, TimeUnit.SECONDS);
 			if (response == null) {
 				return null;
 			}
 			return response.getResult();
 		} catch (InterruptedException e) {
-			e.printStackTrace();
-			return null;
+			throw new RpcInvokeTimeoutException(e);
 		} finally {
 			lock.unlock();
 		}
 	}
 
-	public void over(RpcReseponse response) {
+	public void over(RpcMessageReseponse response) {
 		try {
 			lock.lock();
 			this.response = response;

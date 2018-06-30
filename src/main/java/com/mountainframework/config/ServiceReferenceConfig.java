@@ -2,13 +2,24 @@ package com.mountainframework.config;
 
 import java.io.Serializable;
 
+import org.apache.commons.lang3.builder.ReflectionToStringBuilder;
+import org.springframework.beans.factory.FactoryBean;
 import org.springframework.beans.factory.InitializingBean;
 
-import com.mountainframework.config.context.MountainConfigContainer;
+import com.mountainframework.config.init.context.MountainConfigContainer;
+import com.mountainframework.excpeion.ServiceClassNotException;
+import com.mountainframework.rpc.proxy.RpcServiceProxyGenerator;
 
-public class ServiceReferenceConfig implements InitializingBean, Serializable {
+/**
+ * 服务消费配置信息
+ * 
+ * @author yafeng.cai {@link}https://github.com/AaronCai0
+ * @date 2018年6月30日
+ * @since 1.0
+ */
+public class ServiceReferenceConfig implements InitializingBean, Serializable, FactoryBean<Object> {
 
-	private static final long serialVersionUID = 4096179256884078139L;
+	private static final long serialVersionUID = -7347028772696099784L;
 
 	private String id;
 
@@ -45,4 +56,27 @@ public class ServiceReferenceConfig implements InitializingBean, Serializable {
 		MountainConfigContainer.getContainer().getServiceReferenceConfigs().add(this);
 	}
 
+	@Override
+	public Object getObject() throws Exception {
+		return RpcServiceProxyGenerator.getGenerator().generate(interfaceName);
+	}
+
+	@Override
+	public Class<?> getObjectType() {
+		try {
+			return Class.forName(interfaceName);
+		} catch (ClassNotFoundException e) {
+			throw new ServiceClassNotException(e);
+		}
+	}
+
+	@Override
+	public boolean isSingleton() {
+		return true;
+	}
+
+	@Override
+	public String toString() {
+		return new ReflectionToStringBuilder(this).toString();
+	}
 }

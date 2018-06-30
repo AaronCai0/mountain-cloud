@@ -16,6 +16,13 @@ import com.mountainframework.config.RegistryConfig;
 import com.mountainframework.config.ServiceConfig;
 import com.mountainframework.config.ServiceReferenceConfig;
 
+/**
+ * 解析Spring配置的xml节点
+ * 
+ * @author yafeng.cai {@link}https://github.com/AaronCai0
+ * @date 2018年6月30日
+ * @since 1.0
+ */
 public class MountainBeanDefinitionParser implements BeanDefinitionParser {
 
 	// private final Logger logger =
@@ -26,7 +33,7 @@ public class MountainBeanDefinitionParser implements BeanDefinitionParser {
 	private final boolean isRequired;
 
 	public MountainBeanDefinitionParser(Class<?> beanClass, boolean isRequired) {
-		Preconditions.checkNotNull(beanClass);
+		Preconditions.checkNotNull(beanClass, "Resolve xml node beanClass cannot be null");
 		this.beanClass = beanClass;
 		this.isRequired = isRequired;
 	}
@@ -36,6 +43,15 @@ public class MountainBeanDefinitionParser implements BeanDefinitionParser {
 		return parseXmlElement(element, parserContext, beanClass, isRequired);
 	}
 
+	/**
+	 * 解析xml节点
+	 * 
+	 * @param element
+	 * @param parserContext
+	 * @param beanClass
+	 * @param isRequired
+	 * @return
+	 */
 	private static BeanDefinition parseXmlElement(Element element, ParserContext parserContext, Class<?> beanClass,
 			boolean isRequired) {
 		RootBeanDefinition beanDefinition = new RootBeanDefinition();
@@ -72,10 +88,11 @@ public class MountainBeanDefinitionParser implements BeanDefinitionParser {
 			parserContext.getRegistry().registerBeanDefinition(interfaceName, beanDefinition);
 		} else if (beanClass.equals(ServiceReferenceConfig.class)) {
 			String interfaceName = element.getAttribute("interface");
+			beanDefinition.getPropertyValues().addPropertyValue("id", id);
 			beanDefinition.getPropertyValues().addPropertyValue("interfaceName", interfaceName);
 			beanDefinition.getPropertyValues().addPropertyValue("timeout", element.getAttribute("timeout"));
-			// parserContext.getRegistry().registerBeanDefinition(interfaceName,
-			// beanDefinition);
+
+			parserContext.getRegistry().registerBeanDefinition(interfaceName, beanDefinition);
 		}
 		if (StringUtils.isNotBlank(id)) {
 			Preconditions.checkState(!parserContext.getRegistry().containsBeanDefinition(id),

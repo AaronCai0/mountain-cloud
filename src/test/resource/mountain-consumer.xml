@@ -8,8 +8,8 @@
 		    http://www.mountainframework.com/mountain 
 		    http://www.mountainframework.com/mountain/mountain.xsd">
 	
-	<mountain:registry address="127.0.0.1:8080" />
-  	<mountain:provider timeout="20000"/>
+	<mountain:registry address="127.0.0.1:9090" />
+  	<mountain:consumer timeout="20000"/>
  	<mountain:reference id="calcService" interface="com.mountainframework.service.CalcService"/>
    
 </beans>

@@ -6,18 +6,25 @@ import java.util.concurrent.locks.Condition;
 import java.util.concurrent.locks.Lock;
 import java.util.concurrent.locks.ReentrantLock;
 
-import com.mountainframework.common.RpcThreadPool;
+import com.mountainframework.rpc.support.RpcThreadPool;
 
 import io.netty.channel.EventLoopGroup;
 import io.netty.channel.nio.NioEventLoopGroup;
 
+/**
+ * Rpc客户端初始化类
+ * 
+ * @author yafeng.cai {@link}https://github.com/AaronCai0
+ * @date 2018年6月30日
+ * @since 1.0
+ */
 public class RpcClientLoader {
 
 	private static final int parallel = Runtime.getRuntime().availableProcessors() * 2;
 	private final EventLoopGroup eventLoopGroup = new NioEventLoopGroup(parallel);
-	private final ThreadPoolExecutor executor = RpcThreadPool.getThreadPool(parallel, -1);
+	private final ThreadPoolExecutor executor = RpcThreadPool.getThreadPoolExecutor(parallel, -1);
 
-	private RpcClientHandler rpcClientHandler;
+	private RpcClientChannelHandler rpcClientHandler;
 
 	private Lock lock = new ReentrantLock();
 	private Condition condition = lock.newCondition();
@@ -38,7 +45,7 @@ public class RpcClientLoader {
 		eventLoopGroup.shutdownGracefully();
 	}
 
-	public RpcClientHandler getRpcClientHandler() {
+	public RpcClientChannelHandler getRpcClientHandler() {
 		try {
 			lock.lock();
 			if (rpcClientHandler == null) {
@@ -54,7 +61,7 @@ public class RpcClientLoader {
 
 	}
 
-	public void setRpcClientHandler(RpcClientHandler rpcClientHandler) {
+	public void setRpcClientHandler(RpcClientChannelHandler rpcClientHandler) {
 		try {
 			lock.lock();
 			this.rpcClientHandler = rpcClientHandler;

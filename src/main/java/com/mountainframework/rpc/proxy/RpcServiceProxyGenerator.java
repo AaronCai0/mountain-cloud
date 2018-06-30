@@ -4,18 +4,32 @@ import java.lang.reflect.Proxy;
 import java.util.concurrent.locks.Lock;
 import java.util.concurrent.locks.ReentrantLock;
 
-public class RpcServiceProxyExecutor {
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+import com.mountainframework.core.netty.RpcServerInitializerTask;
+
+/**
+ * Rpc服务代理生成器
+ * 
+ * @author yafeng.cai {@link}https://github.com/AaronCai0
+ * @date 2018年6月30日
+ * @since 1.0
+ */
+public class RpcServiceProxyGenerator {
+
+	private static final Logger logger = LoggerFactory.getLogger(RpcServerInitializerTask.class);
 
 	private Lock lock = new ReentrantLock();
 
-	private RpcServiceProxyExecutor() {
+	public static RpcServiceProxyGenerator getGenerator() {
+		return RpcMessageProxyExecutorHolder.INSTANCE;
 	}
 
-	public static RpcServiceProxyExecutor getExecutor() {
-		return RpcMessageProxyExecutorHolder.getInstance();
+	private RpcServiceProxyGenerator() {
 	}
 
-	public <T> T newProxyInstance(String className) {
+	public <T> T generate(String className) {
 		try {
 			lock.lock();
 			Class<?> clazz = Class.forName(className);
@@ -24,14 +38,14 @@ public class RpcServiceProxyExecutor {
 					new RpcServiceProxyHandler());
 			return t;
 		} catch (IllegalArgumentException | ClassNotFoundException e) {
-			e.printStackTrace();
+			logger.error("RpcServiceProxyGenerator generate error.", e);
 			return null;
 		} finally {
 			lock.unlock();
 		}
 	}
 
-	public <T> T newProxyInstance(Class<T> clazz) {
+	public <T> T generate(Class<T> clazz) {
 		try {
 			lock.lock();
 			@SuppressWarnings("unchecked")
@@ -39,7 +53,7 @@ public class RpcServiceProxyExecutor {
 					new RpcServiceProxyHandler());
 			return t;
 		} catch (IllegalArgumentException e) {
-			e.printStackTrace();
+			logger.error("RpcServiceProxyGenerator generate error.", e);
 			return null;
 		} finally {
 			lock.unlock();
@@ -47,11 +61,7 @@ public class RpcServiceProxyExecutor {
 	}
 
 	private static class RpcMessageProxyExecutorHolder {
-		private static final RpcServiceProxyExecutor INSTANCE = new RpcServiceProxyExecutor();
-
-		public static RpcServiceProxyExecutor getInstance() {
-			return INSTANCE;
-		}
+		static final RpcServiceProxyGenerator INSTANCE = new RpcServiceProxyGenerator();
 	}
 
 }

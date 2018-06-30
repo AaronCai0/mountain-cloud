@@ -4,20 +4,26 @@ import java.net.SocketAddress;
 import java.util.Map;
 
 import com.google.common.collect.Maps;
-import com.mountainframework.rpc.support.RpcCallBack;
-import com.mountainframework.rpc.support.RpcRequest;
-import com.mountainframework.rpc.support.RpcReseponse;
+import com.mountainframework.rpc.support.RpcMessageCallBack;
+import com.mountainframework.rpc.support.RpcMessageRequest;
+import com.mountainframework.rpc.support.RpcMessageReseponse;
 
 import io.netty.buffer.Unpooled;
 import io.netty.channel.Channel;
-import io.netty.channel.ChannelFuture;
 import io.netty.channel.ChannelFutureListener;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.ChannelInboundHandlerAdapter;
 
-public class RpcClientHandler extends ChannelInboundHandlerAdapter {
+/**
+ * Rpc客户端通道操作处理类
+ * 
+ * @author yafeng.cai {@link}https://github.com/AaronCai0
+ * @date 2018年6月30日
+ * @since 1.0
+ */
+public class RpcClientChannelHandler extends ChannelInboundHandlerAdapter {
 
-	private Map<String, RpcCallBack> callBackMap = Maps.newConcurrentMap();
+	private Map<String, RpcMessageCallBack> callBackMap = Maps.newConcurrentMap();
 
 	private volatile Channel channel;
 
@@ -45,9 +51,9 @@ public class RpcClientHandler extends ChannelInboundHandlerAdapter {
 
 	@Override
 	public void channelRead(ChannelHandlerContext ctx, Object msg) throws Exception {
-		RpcReseponse response = (RpcReseponse) msg;
+		RpcMessageReseponse response = (RpcMessageReseponse) msg;
 		String messageId = response.getMessageId();
-		RpcCallBack callBack = callBackMap.get(messageId);
+		RpcMessageCallBack callBack = callBackMap.get(messageId);
 		if (callBack != null) {
 			callBackMap.remove(messageId);
 			callBack.over(response);
@@ -63,8 +69,8 @@ public class RpcClientHandler extends ChannelInboundHandlerAdapter {
 		channel.writeAndFlush(Unpooled.EMPTY_BUFFER).addListener(ChannelFutureListener.CLOSE);
 	}
 
-	public RpcCallBack sendRequest(RpcRequest request) {
-		RpcCallBack callBack = new RpcCallBack();
+	public RpcMessageCallBack sendRequest(RpcMessageRequest request) {
+		RpcMessageCallBack callBack = new RpcMessageCallBack();
 		callBackMap.put(request.getMessageId(), callBack);
 		channel.writeAndFlush(request);
 		return callBack;
