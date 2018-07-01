@@ -1,4 +1,4 @@
-package com.mountainframework.rpc.support;
+package com.mountainframework.rpc.model;
 
 import java.io.Serializable;
 import java.util.concurrent.TimeUnit;

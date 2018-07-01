@@ -17,7 +17,7 @@ import com.mountainframework.config.init.context.MountainConfigContainer;
  * @date 2018年6月30日
  * @since 1.0
  */
-public class ServiceConfig implements InitializingBean, Serializable, ApplicationContextAware {
+public class ServiceConfig implements InitializingBean, ApplicationContextAware, Serializable {
 
 	private static final long serialVersionUID = -4392783693048908336L;
 

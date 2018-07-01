@@ -7,8 +7,8 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.mountainframework.config.init.context.MountainServiceConfigContext;
-import com.mountainframework.rpc.support.RpcMessageRequest;
-import com.mountainframework.rpc.support.RpcMessageReseponse;
+import com.mountainframework.rpc.model.RpcMessageRequest;
+import com.mountainframework.rpc.model.RpcMessageReseponse;
 
 import io.netty.channel.ChannelFuture;
 import io.netty.channel.ChannelFutureListener;

@@ -17,7 +17,7 @@ import com.mountainframework.rpc.proxy.RpcServiceProxyGenerator;
  * @date 2018年6月30日
  * @since 1.0
  */
-public class ServiceReferenceConfig implements InitializingBean, Serializable, FactoryBean<Object> {
+public class ServiceReferenceConfig implements InitializingBean, FactoryBean<Object>, Serializable {
 
 	private static final long serialVersionUID = -7347028772696099784L;
 

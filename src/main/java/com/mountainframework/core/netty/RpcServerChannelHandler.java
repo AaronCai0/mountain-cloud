@@ -1,6 +1,9 @@
 package com.mountainframework.core.netty;
 
-import com.mountainframework.rpc.support.RpcMessageRequest;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+import com.mountainframework.rpc.model.RpcMessageRequest;
 
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.ChannelInboundHandlerAdapter;
@@ -14,18 +17,17 @@ import io.netty.channel.ChannelInboundHandlerAdapter;
  */
 public class RpcServerChannelHandler extends ChannelInboundHandlerAdapter {
 
-	// private static final AtomicInteger integer = new AtomicInteger(1);
+	private static final Logger logger = LoggerFactory.getLogger(RpcServerChannelHandler.class);
 
 	@Override
 	public void channelRead(ChannelHandlerContext ctx, Object msg) throws Exception {
 		if (!(msg instanceof RpcMessageRequest)) {
-			System.out.println("Mountain server channelRead is not RpcRequest");
+			logger.warn("Mountain server channelRead is not RpcMessageRequest");
 			return;
 		}
 		RpcMessageRequest request = (RpcMessageRequest) msg;
 		RpcServerInitializerTask task = new RpcServerInitializerTask(request, ctx);
 		RpcServerExecutor.getThreadPoolExecutor().submit(task);
-		// System.out.println(integer.getAndIncrement());
 	}
 
 	@Override
