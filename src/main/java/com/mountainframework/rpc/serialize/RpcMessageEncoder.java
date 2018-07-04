@@ -1,5 +1,20 @@
 package com.mountainframework.rpc.serialize;
 
-public class RpcMessageEncoder {
+import io.netty.buffer.ByteBuf;
+import io.netty.channel.ChannelHandlerContext;
+import io.netty.handler.codec.MessageToByteEncoder;
+
+public class RpcMessageEncoder extends MessageToByteEncoder<Object> {
+
+	private RpcMessageCodeUtil util;
+
+	public RpcMessageEncoder(RpcMessageCodeUtil util) {
+		this.util = util;
+	}
+
+	@Override
+	protected void encode(ChannelHandlerContext ctx, Object msg, ByteBuf out) throws Exception {
+		util.encode(msg, out);
+	}
 
 }
