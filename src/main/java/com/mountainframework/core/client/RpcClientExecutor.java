@@ -6,9 +6,9 @@ import java.util.Objects;
 import com.google.common.base.Preconditions;
 import com.google.common.base.Splitter;
 import com.mountainframework.config.RegistryConfig;
+import com.mountainframework.config.RpcContextConfig;
 import com.mountainframework.config.init.InitializingService;
 import com.mountainframework.config.init.context.MountainApplicationConfigContext;
-import com.mountainframework.rpc.support.RpcConstants;
 
 /**
  * Rpc客户端调度器
@@ -32,7 +32,7 @@ public class RpcClientExecutor implements InitializingService {
 	@Override
 	public void init(MountainApplicationConfigContext context) {
 		RegistryConfig providerRegistry = context.getConsumerRegistry();
-		List<String> addressList = Splitter.on(RpcConstants.ADDRESS_SIGN)
+		List<String> addressList = Splitter.on(RpcContextConfig.ADDRESS_SIGN)
 				.splitToList(Preconditions.checkNotNull(providerRegistry.getAddress(), "Consumer address is null"));
 		String ip = addressList.get(0);
 		int port = Integer.valueOf(Objects.toString(addressList.get(1), "80"));

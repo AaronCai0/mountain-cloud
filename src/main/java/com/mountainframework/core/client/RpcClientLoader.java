@@ -1,12 +1,12 @@
 package com.mountainframework.core.client;
 
 import java.net.InetSocketAddress;
-import java.util.concurrent.ThreadPoolExecutor;
+import java.util.concurrent.ExecutorService;
 import java.util.concurrent.locks.Condition;
 import java.util.concurrent.locks.Lock;
 import java.util.concurrent.locks.ReentrantLock;
 
-import com.mountainframework.rpc.support.RpcThreadPool;
+import com.mountainframework.rpc.support.RpcThreadPoolExecutors;
 
 import io.netty.channel.EventLoopGroup;
 import io.netty.channel.nio.NioEventLoopGroup;
@@ -22,7 +22,7 @@ public class RpcClientLoader {
 
 	private static final int parallel = Runtime.getRuntime().availableProcessors() * 2;
 	private final EventLoopGroup eventLoopGroup = new NioEventLoopGroup(parallel);
-	private final ThreadPoolExecutor executor = RpcThreadPool.getThreadPoolExecutor(parallel, -1);
+	private final ExecutorService executor = RpcThreadPoolExecutors.newFixedThreadPool(parallel, -1);
 
 	private RpcClientChannelHandler rpcClientHandler;
 

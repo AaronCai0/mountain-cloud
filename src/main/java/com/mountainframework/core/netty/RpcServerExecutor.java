@@ -5,7 +5,7 @@ import java.io.InputStreamReader;
 import java.nio.channels.spi.SelectorProvider;
 import java.util.List;
 import java.util.Objects;
-import java.util.concurrent.ThreadPoolExecutor;
+import java.util.concurrent.ExecutorService;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -18,7 +18,7 @@ import com.mountainframework.config.RegistryConfig;
 import com.mountainframework.config.init.InitializingService;
 import com.mountainframework.config.init.context.MountainApplicationConfigContext;
 import com.mountainframework.rpc.support.RpcThreadFactory;
-import com.mountainframework.rpc.support.RpcThreadPool;
+import com.mountainframework.rpc.support.RpcThreadPoolExecutors;
 
 import io.netty.bootstrap.ServerBootstrap;
 import io.netty.channel.ChannelFuture;
@@ -83,13 +83,13 @@ public class RpcServerExecutor implements InitializingService {
 		}
 	}
 
-	public static ThreadPoolExecutor getThreadPoolExecutor() {
+	public static ExecutorService getThreadPoolExecutor() {
 		return RpcServerExecutorHolder.EXECUTOR;
 	}
 
 	private static class RpcServerExecutorHolder {
-		static ThreadPoolExecutor EXECUTOR = RpcThreadPool
-				.getThreadPoolExecutor(Runtime.getRuntime().availableProcessors() * 2, -1);
+		static ExecutorService EXECUTOR = RpcThreadPoolExecutors
+				.newFixedThreadPool(Runtime.getRuntime().availableProcessors() * 2, -1);
 	}
 
 }
