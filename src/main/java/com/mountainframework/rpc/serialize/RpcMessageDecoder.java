@@ -2,27 +2,22 @@ package com.mountainframework.rpc.serialize;
 
 import java.util.List;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
 import io.netty.buffer.ByteBuf;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.handler.codec.ByteToMessageDecoder;
 
 public class RpcMessageDecoder extends ByteToMessageDecoder {
 
-	private Logger logger = LoggerFactory.getLogger(RpcMessageCodeUtil.class);
+	private RpcMessageCodec util;
 
-	private RpcMessageCodeUtil util;
-
-	public RpcMessageDecoder(RpcMessageCodeUtil util) {
+	public RpcMessageDecoder(RpcMessageCodec util) {
 		this.util = util;
 	}
 
 	@Override
 	protected void decode(ChannelHandlerContext ctx, ByteBuf in, List<Object> out) throws Exception {
 		// 出现粘包导致消息头长度不对，直接返回
-		if (in.readableBytes() < RpcMessageCodeUtil.MESSAGE_LENGTH) {
+		if (in.readableBytes() < RpcMessageCodec.MESSAGE_LENGTH) {
 			return;
 		}
 

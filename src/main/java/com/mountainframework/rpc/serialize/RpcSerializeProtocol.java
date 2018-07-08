@@ -5,7 +5,7 @@ import org.apache.commons.lang3.builder.ToStringStyle;
 
 public enum RpcSerializeProtocol {
 
-	JDK("jdk"), KRYO("kryo"), HESSIAN("hessian"), PROTOSTUFF("protostuff");
+	JDKNATIVE("jdk"), KRYO("kryo"), HESSIAN("hessian"), PROTOSTUFF("protostuff");
 
 	private String serializeProtocol;
 

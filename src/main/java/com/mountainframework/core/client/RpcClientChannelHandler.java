@@ -6,7 +6,7 @@ import java.util.Map;
 import com.google.common.collect.Maps;
 import com.mountainframework.rpc.model.RpcMessageCallBack;
 import com.mountainframework.rpc.model.RpcMessageRequest;
-import com.mountainframework.rpc.model.RpcMessageReseponse;
+import com.mountainframework.rpc.model.RpcMessageResponse;
 
 import io.netty.buffer.Unpooled;
 import io.netty.channel.Channel;
@@ -51,7 +51,7 @@ public class RpcClientChannelHandler extends ChannelInboundHandlerAdapter {
 
 	@Override
 	public void channelRead(ChannelHandlerContext ctx, Object msg) throws Exception {
-		RpcMessageReseponse response = (RpcMessageReseponse) msg;
+		RpcMessageResponse response = (RpcMessageResponse) msg;
 		String messageId = response.getMessageId();
 		RpcMessageCallBack callBack = callBackMap.get(messageId);
 		if (callBack != null) {

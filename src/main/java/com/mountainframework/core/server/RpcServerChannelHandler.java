@@ -1,9 +1,10 @@
-package com.mountainframework.core.netty;
+package com.mountainframework.core.server;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.mountainframework.rpc.model.RpcMessageRequest;
+import com.mountainframework.rpc.model.RpcMessageResponse;
 
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.ChannelInboundHandlerAdapter;
@@ -26,8 +27,9 @@ public class RpcServerChannelHandler extends ChannelInboundHandlerAdapter {
 			return;
 		}
 		RpcMessageRequest request = (RpcMessageRequest) msg;
-		RpcServerInitializerTask task = new RpcServerInitializerTask(request, ctx);
-		RpcServerExecutor.getThreadPoolExecutor().submit(task);
+		RpcMessageResponse response = new RpcMessageResponse();
+		RpcServerInitializerTask task = new RpcServerInitializerTask(request, response, ctx);
+		RpcServerExecutor.submit(task, ctx, request, response);
 	}
 
 	@Override

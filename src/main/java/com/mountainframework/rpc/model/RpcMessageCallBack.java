@@ -19,7 +19,7 @@ public class RpcMessageCallBack implements Serializable {
 
 	private static final long serialVersionUID = -3938693690009620969L;
 
-	private RpcMessageReseponse response;
+	private RpcMessageResponse response;
 
 	private Lock lock = new ReentrantLock();
 
@@ -40,7 +40,7 @@ public class RpcMessageCallBack implements Serializable {
 		}
 	}
 
-	public void over(RpcMessageReseponse response) {
+	public void over(RpcMessageResponse response) {
 		try {
 			lock.lock();
 			this.response = response;

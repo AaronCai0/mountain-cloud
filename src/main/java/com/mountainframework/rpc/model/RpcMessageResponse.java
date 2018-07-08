@@ -11,7 +11,7 @@ import org.apache.commons.lang3.builder.ReflectionToStringBuilder;
  * @date 2018年6月30日
  * @since 1.0
  */
-public class RpcMessageReseponse implements Serializable {
+public class RpcMessageResponse implements Serializable {
 
 	private static final long serialVersionUID = 1L;
 

@@ -1,6 +1,9 @@
 package com.mountainframework.core.client;
 
 import java.net.InetSocketAddress;
+import java.util.concurrent.Callable;
+
+import com.mountainframework.rpc.serialize.RpcSerializeProtocol;
 
 import io.netty.bootstrap.Bootstrap;
 import io.netty.channel.ChannelFuture;
@@ -16,10 +19,11 @@ import io.netty.channel.socket.nio.NioSocketChannel;
  * @date 2018年6月30日
  * @since 1.0
  */
-public class RpcClientInitializerTask implements Runnable {
+public class RpcClientInitializerTask implements Callable<Boolean> {
 
 	private InetSocketAddress inetSocketAddress;
 	private EventLoopGroup eventLoopGroup;
+	private final RpcSerializeProtocol PROTOCOL = RpcSerializeProtocol.KRYO;
 
 	public RpcClientInitializerTask(InetSocketAddress inetSocketAddress, EventLoopGroup eventLoopGroup) {
 		this.inetSocketAddress = inetSocketAddress;
@@ -27,11 +31,10 @@ public class RpcClientInitializerTask implements Runnable {
 	}
 
 	@Override
-	public void run() {
-
+	public Boolean call() throws Exception {
 		Bootstrap bootstrap = new Bootstrap();
 		ChannelFuture channelFuture = bootstrap.group(eventLoopGroup).channel(NioSocketChannel.class)
-				.option(ChannelOption.SO_KEEPALIVE, true).handler(new RpcClientChannelInitializer())
+				.option(ChannelOption.SO_KEEPALIVE, true).handler(RpcClientChannelInitializer.create(PROTOCOL))
 				.connect(inetSocketAddress);
 
 		channelFuture.addListener(new ChannelFutureListener() {
@@ -44,7 +47,7 @@ public class RpcClientInitializerTask implements Runnable {
 				}
 			}
 		});
-
+		return Boolean.TRUE;
 	}
 
 }

@@ -6,9 +6,9 @@ import io.netty.handler.codec.MessageToByteEncoder;
 
 public class RpcMessageEncoder extends MessageToByteEncoder<Object> {
 
-	private RpcMessageCodeUtil util;
+	private RpcMessageCodec util;
 
-	public RpcMessageEncoder(RpcMessageCodeUtil util) {
+	public RpcMessageEncoder(RpcMessageCodec util) {
 		this.util = util;
 	}
 
