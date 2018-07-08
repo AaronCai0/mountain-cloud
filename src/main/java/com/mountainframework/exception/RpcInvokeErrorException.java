@@ -1,4 +1,4 @@
-package com.mountainframework.excpeion;
+package com.mountainframework.exception;
 
 /**
  * Rpc服务调用超时类

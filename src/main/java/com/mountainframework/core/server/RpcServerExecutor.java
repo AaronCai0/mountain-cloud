@@ -19,6 +19,7 @@ import com.google.common.util.concurrent.Futures;
 import com.google.common.util.concurrent.ListenableFuture;
 import com.google.common.util.concurrent.ListeningExecutorService;
 import com.google.common.util.concurrent.MoreExecutors;
+import com.mountainframework.common.Constants;
 import com.mountainframework.config.RegistryConfig;
 import com.mountainframework.config.init.InitializingService;
 import com.mountainframework.config.init.context.MountainApplicationConfigContext;
@@ -48,22 +49,25 @@ public class RpcServerExecutor implements InitializingService {
 
 	private static final Logger logger = LoggerFactory.getLogger(RpcServerExecutor.class);
 
-	private static final RpcSerializeProtocol PROTOCOL = RpcSerializeProtocol.KRYO;
+	private static final RpcSerializeProtocol PROTOCOL = RpcSerializeProtocol.PROTOSTUFF;
 
-	private static ListeningExecutorService threadPoolExecutor;
+	private static final int parallel = Runtime.getRuntime().availableProcessors() * 2;
+
+	private static final ListeningExecutorService threadPoolExecutor = MoreExecutors
+			.listeningDecorator(RpcThreadPoolExecutors.newFixedThreadPool(parallel, -1));;
 
 	@Override
 	public void init(MountainApplicationConfigContext context) {
 		try {
 			RegistryConfig providerRegistry = context.getProviderRegistry();
-			List<String> addressList = Splitter.on(":")
+			List<String> addressList = Splitter.on(Constants.ADDRESS_DELIMITER)
 					.splitToList(Preconditions.checkNotNull(providerRegistry.getAddress(), "Provider address is null"));
 			String ip = addressList.get(0);
 			int port = Integer.valueOf(Objects.toString(addressList.get(1), "80"));
 
 			EventLoopGroup bossGroup = new NioEventLoopGroup();
-			EventLoopGroup workGroup = new NioEventLoopGroup(Runtime.getRuntime().availableProcessors() * 2,
-					new RpcThreadFactory(), SelectorProvider.provider());
+			EventLoopGroup workGroup = new NioEventLoopGroup(parallel, new RpcThreadFactory(),
+					SelectorProvider.provider());
 
 			ServerBootstrap bootstrap = new ServerBootstrap();
 			ChannelFuture channelFuture = bootstrap.group(bossGroup, workGroup).channel(NioServerSocketChannel.class)
@@ -99,14 +103,6 @@ public class RpcServerExecutor implements InitializingService {
 
 	public static void submit(Callable<Boolean> task, ChannelHandlerContext ctx, RpcMessageRequest request,
 			RpcMessageResponse response) {
-		if (threadPoolExecutor == null) {
-			synchronized (RpcServerExecutor.class) {
-				if (threadPoolExecutor == null) {
-					threadPoolExecutor = MoreExecutors.listeningDecorator(RpcThreadPoolExecutors
-							.newFixedThreadPool(Runtime.getRuntime().availableProcessors() * 2, -1));
-				}
-			}
-		}
 		ListenableFuture<Boolean> listenableFuture = threadPoolExecutor.submit(task);
 		// Netty服务端把计算结果异步返回
 		Futures.addCallback(listenableFuture, new FutureCallback<Boolean>() {

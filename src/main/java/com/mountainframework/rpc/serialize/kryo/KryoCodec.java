@@ -11,8 +11,6 @@ import io.netty.buffer.ByteBuf;
 
 public class KryoCodec implements RpcMessageCodec {
 
-	private final KryoSerialize kryoSeriailize;
-
 	private Closer closer;
 
 	public static KryoCodec create() {
@@ -20,7 +18,6 @@ public class KryoCodec implements RpcMessageCodec {
 	}
 
 	private KryoCodec() {
-		kryoSeriailize = KryoSerialize.create();
 		closer = Closer.create();
 	}
 
@@ -29,10 +26,10 @@ public class KryoCodec implements RpcMessageCodec {
 		try {
 			ByteArrayOutputStream output = new ByteArrayOutputStream();
 			closer.register(output);
-			kryoSeriailize.serialize(output, message);
+			KryoSerialize.create().serialize(output, message);
 			byte[] writeData = output.toByteArray();
-			buf.writeBytes(writeData);
 			buf.writeInt(writeData.length);
+			buf.writeBytes(writeData);
 		} finally {
 			closer.close();
 		}
@@ -44,7 +41,7 @@ public class KryoCodec implements RpcMessageCodec {
 		try {
 			ByteArrayInputStream input = new ByteArrayInputStream(body);
 			closer.register(input);
-			Object obj = kryoSeriailize.deserialize(input);
+			Object obj = KryoSerialize.create().deserialize(input);
 			return obj;
 		} finally {
 			closer.close();

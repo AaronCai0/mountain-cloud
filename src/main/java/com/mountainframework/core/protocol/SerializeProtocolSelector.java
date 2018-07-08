@@ -17,6 +17,8 @@ public class SerializeProtocolSelector implements ProtocolSelectorFrame {
 
 	private static ClassToInstanceMap<ChannelPipeLineHandler> handlers = MutableClassToInstanceMap.create();
 
+	private boolean rpcDirect;
+
 	static {
 		handlers.putInstance(JdkNativeProtocolHandler.class, new JdkNativeProtocolHandler());
 		handlers.putInstance(KryoProtocolHandler.class, new KryoProtocolHandler());
@@ -26,6 +28,11 @@ public class SerializeProtocolSelector implements ProtocolSelectorFrame {
 
 	public static SerializeProtocolSelector selector() {
 		return new SerializeProtocolSelector();
+	}
+
+	public SerializeProtocolSelector initRpcDirect(boolean rpcDirect) {
+		this.rpcDirect = rpcDirect;
+		return this;
 	}
 
 	private SerializeProtocolSelector() {
@@ -45,7 +52,7 @@ public class SerializeProtocolSelector implements ProtocolSelectorFrame {
 			handler = handlers.getInstance(HessianProtocolHandler.class);
 			break;
 		case PROTOSTUFF:
-			handler = handlers.getInstance(ProtostuffProtocolHandler.class);
+			handler = handlers.getInstance(ProtostuffProtocolHandler.class).buildRpcDirect(rpcDirect);
 			break;
 		default:
 			break;

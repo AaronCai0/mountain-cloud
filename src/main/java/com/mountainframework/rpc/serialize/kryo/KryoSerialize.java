@@ -30,9 +30,9 @@ public class KryoSerialize implements RpcSerialize {
 	@Override
 	public void serialize(OutputStream output, Object obj) throws IOException {
 		try {
-			closer.register(output);
 			Kryo kryo = pool.borrow();
 			Output out = new Output(output);
+			closer.register(out);
 			kryo.writeClassAndObject(out, obj);
 			pool.release(kryo);
 		} finally {
@@ -43,37 +43,15 @@ public class KryoSerialize implements RpcSerialize {
 	@Override
 	public Object deserialize(InputStream input) throws IOException {
 		try {
-			closer.register(input);
 			Kryo kryo = pool.borrow();
 			Input in = new Input(input);
+			closer.register(in);
 			Object obj = kryo.readClassAndObject(in);
-			input.close();
 			pool.release(kryo);
 			return obj;
 		} finally {
 			closer.close();
 		}
-
-	}
-
-	@Override
-	@SuppressWarnings("unchecked")
-	public <T> T deserialize(InputStream input, Class<T> clazz) throws IOException {
-		try {
-			closer.register(input);
-			Kryo kryo = pool.borrow();
-			Input in = new Input(input);
-			Object obj = kryo.readClassAndObject(in);
-			if (obj == null) {
-				return null;
-			}
-			input.close();
-			pool.release(kryo);
-			return (T) obj;
-		} finally {
-			closer.close();
-		}
-
 	}
 
 }

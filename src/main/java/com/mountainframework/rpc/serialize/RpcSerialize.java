@@ -9,7 +9,4 @@ public interface RpcSerialize {
 	void serialize(OutputStream output, Object obj) throws IOException;
 
 	Object deserialize(InputStream input) throws IOException;
-
-	<T> T deserialize(InputStream input, Class<T> clazz) throws IOException;
-
 }

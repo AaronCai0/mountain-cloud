@@ -1,4 +1,4 @@
-package com.mountainframework.excpeion;
+package com.mountainframework.exception;
 
 /**
  * Rpc服务类未找到异常类

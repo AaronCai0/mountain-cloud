@@ -18,6 +18,7 @@ public class KryoSerializePool implements RpcSerializePool {
 			@Override
 			public Kryo create() {
 				Kryo kryo = new Kryo();
+				// 把已知的结构注册到Kryo注册器里面，提高序列化/反序列化效率
 				kryo.register(RpcMessageRequest.class);
 				kryo.register(RpcMessageResponse.class);
 				kryo.setReferences(false);

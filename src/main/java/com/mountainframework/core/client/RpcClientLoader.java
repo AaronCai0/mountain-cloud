@@ -29,19 +29,25 @@ import io.netty.channel.nio.NioEventLoopGroup;
 public class RpcClientLoader {
 
 	private static final Logger logger = LoggerFactory.getLogger(RpcClientLoader.class);
+
 	private static final int parallel = Runtime.getRuntime().availableProcessors() * 2;
+
 	private static final ListeningExecutorService threadPoolExecutor = MoreExecutors
-			.listeningDecorator(RpcThreadPoolExecutors.newFixedThreadPool(16, -1));
+			.listeningDecorator(RpcThreadPoolExecutors.newFixedThreadPool(parallel, -1));
+
 	private final EventLoopGroup eventLoopGroup = new NioEventLoopGroup(parallel);
+
 	private final ExecutorService executor = RpcThreadPoolExecutors.newFixedThreadPool(parallel, -1);
 
 	private RpcClientChannelHandler rpcClientHandler;
 
 	private Lock lock = new ReentrantLock();
+
 	private Condition connectStatus = lock.newCondition();
+
 	private Condition handlerStatus = lock.newCondition();
 
-	public static RpcClientLoader getLoader() {
+	public static RpcClientLoader getInstance() {
 		return RpcClientLoaderHolder.INSTANCE;
 	}
 

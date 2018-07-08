@@ -8,11 +8,9 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.mountainframework.config.init.context.MountainServiceConfigContext;
-import com.mountainframework.excpeion.RpcInvokeErrorException;
+import com.mountainframework.exception.RpcInvokeErrorException;
 import com.mountainframework.rpc.model.RpcMessageRequest;
 import com.mountainframework.rpc.model.RpcMessageResponse;
-
-import io.netty.channel.ChannelHandlerContext;
 
 /**
  * Rpc服务端初始化任务类，多线程任务
@@ -29,22 +27,19 @@ public class RpcServerInitializerTask implements Callable<Boolean> {
 
 	private final RpcMessageResponse response;
 
-	private final ChannelHandlerContext ctx;
-
-	public RpcServerInitializerTask(RpcMessageRequest request, RpcMessageResponse response, ChannelHandlerContext ctx) {
+	public RpcServerInitializerTask(RpcMessageRequest request, RpcMessageResponse response) {
 		this.request = request;
 		this.response = response;
-		this.ctx = ctx;
 	}
 
 	@Override
 	public Boolean call() throws Exception {
 		try {
+			response.setMessageId(request.getMessageId());
 			String className = request.getClassName();
 			Object requestBean = MountainServiceConfigContext.getServiceBeanMap().get(className);
 			Object result = MethodUtils.invokeMethod(requestBean, request.getMethodName(), request.getParamterVals(),
 					request.getParameterTypes());
-			response.setMessageId(request.getMessageId());
 			response.setResult(result);
 
 			return Boolean.TRUE;

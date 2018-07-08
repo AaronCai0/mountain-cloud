@@ -1,9 +1,9 @@
 package com.mountainframework.rpc.proxy;
 
-import java.lang.reflect.InvocationHandler;
 import java.lang.reflect.Method;
 import java.util.UUID;
 
+import com.google.common.reflect.AbstractInvocationHandler;
 import com.mountainframework.core.client.RpcClientChannelHandler;
 import com.mountainframework.core.client.RpcClientLoader;
 import com.mountainframework.rpc.model.RpcMessageCallBack;
@@ -16,10 +16,10 @@ import com.mountainframework.rpc.model.RpcMessageRequest;
  * @date 2018年6月30日
  * @since 1.0
  */
-public class RpcServiceProxyHandler implements InvocationHandler {
+public class RpcServiceProxyHandler extends AbstractInvocationHandler {
 
 	@Override
-	public Object invoke(Object proxy, Method method, Object[] args) throws Throwable {
+	public Object handleInvocation(Object proxy, Method method, Object[] args) throws Throwable {
 		RpcMessageRequest request = new RpcMessageRequest();
 		request.setMessageId(UUID.randomUUID().toString());
 		request.setClassName(method.getDeclaringClass().getName());
@@ -27,7 +27,7 @@ public class RpcServiceProxyHandler implements InvocationHandler {
 		request.setParameterTypes(method.getParameterTypes());
 		request.setParamterVals(args);
 
-		RpcClientChannelHandler clientHandler = RpcClientLoader.getLoader().getRpcClientHandler();
+		RpcClientChannelHandler clientHandler = RpcClientLoader.getInstance().getRpcClientHandler();
 		RpcMessageCallBack callBack = clientHandler.sendRequest(request);
 		return callBack.start();
 	}

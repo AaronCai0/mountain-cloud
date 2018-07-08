@@ -28,7 +28,7 @@ public class RpcServerChannelHandler extends ChannelInboundHandlerAdapter {
 		}
 		RpcMessageRequest request = (RpcMessageRequest) msg;
 		RpcMessageResponse response = new RpcMessageResponse();
-		RpcServerInitializerTask task = new RpcServerInitializerTask(request, response, ctx);
+		RpcServerInitializerTask task = new RpcServerInitializerTask(request, response);
 		RpcServerExecutor.submit(task, ctx, request, response);
 	}
 

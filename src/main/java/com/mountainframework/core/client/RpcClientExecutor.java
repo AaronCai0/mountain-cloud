@@ -19,7 +19,7 @@ import com.mountainframework.config.init.context.MountainApplicationConfigContex
  */
 public class RpcClientExecutor implements InitializingService {
 
-	private final RpcClientLoader loader = RpcClientLoader.getLoader();
+	private final RpcClientLoader loader = RpcClientLoader.getInstance();
 
 	public RpcClientExecutor() {
 
@@ -32,7 +32,7 @@ public class RpcClientExecutor implements InitializingService {
 	@Override
 	public void init(MountainApplicationConfigContext context) {
 		RegistryConfig providerRegistry = context.getConsumerRegistry();
-		List<String> addressList = Splitter.on(Constants.ADDRESS_SIGN)
+		List<String> addressList = Splitter.on(Constants.ADDRESS_DELIMITER)
 				.splitToList(Preconditions.checkNotNull(providerRegistry.getAddress(), "Consumer address is null"));
 		String ip = addressList.get(0);
 		int port = Integer.valueOf(Objects.toString(addressList.get(1), "80"));

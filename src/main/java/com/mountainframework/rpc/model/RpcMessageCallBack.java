@@ -6,7 +6,7 @@ import java.util.concurrent.locks.Condition;
 import java.util.concurrent.locks.Lock;
 import java.util.concurrent.locks.ReentrantLock;
 
-import com.mountainframework.excpeion.RpcInvokeTimeoutException;
+import com.mountainframework.exception.RpcInvokeTimeoutException;
 
 /**
  * Rpc服务消息回调类
@@ -28,9 +28,9 @@ public class RpcMessageCallBack implements Serializable {
 	public Object start() {
 		try {
 			lock.lock();
-			condition.await(3L, TimeUnit.SECONDS);
+			condition.await(1000L, TimeUnit.SECONDS);
 			if (response == null) {
-				return null;
+				return new RpcMessageResponse();
 			}
 			return response.getResult();
 		} catch (InterruptedException e) {
@@ -43,8 +43,8 @@ public class RpcMessageCallBack implements Serializable {
 	public void over(RpcMessageResponse response) {
 		try {
 			lock.lock();
-			this.response = response;
 			condition.signal();
+			this.response = response;
 		} finally {
 			lock.unlock();
 		}

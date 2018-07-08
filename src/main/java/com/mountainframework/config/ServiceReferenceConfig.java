@@ -7,7 +7,7 @@ import org.springframework.beans.factory.FactoryBean;
 import org.springframework.beans.factory.InitializingBean;
 
 import com.mountainframework.config.init.context.MountainConfigContainer;
-import com.mountainframework.excpeion.ServiceClassNotException;
+import com.mountainframework.exception.ServiceClassNotException;
 import com.mountainframework.rpc.proxy.RpcServiceProxyGenerator;
 
 /**

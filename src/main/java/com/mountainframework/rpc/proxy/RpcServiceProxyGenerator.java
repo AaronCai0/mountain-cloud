@@ -1,12 +1,12 @@
 package com.mountainframework.rpc.proxy;
 
-import java.lang.reflect.Proxy;
 import java.util.concurrent.locks.Lock;
 import java.util.concurrent.locks.ReentrantLock;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import com.google.common.reflect.Reflection;
 import com.mountainframework.core.server.RpcServerInitializerTask;
 
 /**
@@ -29,14 +29,12 @@ public class RpcServiceProxyGenerator {
 	private RpcServiceProxyGenerator() {
 	}
 
+	@SuppressWarnings("unchecked")
 	public <T> T generate(String className) {
 		try {
 			lock.lock();
 			Class<?> clazz = Class.forName(className);
-			@SuppressWarnings("unchecked")
-			T t = (T) Proxy.newProxyInstance(clazz.getClassLoader(), new Class[] { clazz },
-					new RpcServiceProxyHandler());
-			return t;
+			return (T) Reflection.newProxy(clazz, new RpcServiceProxyHandler());
 		} catch (IllegalArgumentException | ClassNotFoundException e) {
 			logger.error("RpcServiceProxyGenerator generate error.", e);
 			return null;
@@ -48,10 +46,7 @@ public class RpcServiceProxyGenerator {
 	public <T> T generate(Class<T> clazz) {
 		try {
 			lock.lock();
-			@SuppressWarnings("unchecked")
-			T t = (T) Proxy.newProxyInstance(clazz.getClassLoader(), new Class[] { clazz },
-					new RpcServiceProxyHandler());
-			return t;
+			return Reflection.newProxy(clazz, new RpcServiceProxyHandler());
 		} catch (IllegalArgumentException e) {
 			logger.error("RpcServiceProxyGenerator generate error.", e);
 			return null;

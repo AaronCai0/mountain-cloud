@@ -23,7 +23,7 @@ public class RpcClientInitializerTask implements Callable<Boolean> {
 
 	private InetSocketAddress inetSocketAddress;
 	private EventLoopGroup eventLoopGroup;
-	private final RpcSerializeProtocol PROTOCOL = RpcSerializeProtocol.KRYO;
+	private final RpcSerializeProtocol PROTOCOL = RpcSerializeProtocol.PROTOSTUFF;
 
 	public RpcClientInitializerTask(InetSocketAddress inetSocketAddress, EventLoopGroup eventLoopGroup) {
 		this.inetSocketAddress = inetSocketAddress;
@@ -43,7 +43,7 @@ public class RpcClientInitializerTask implements Callable<Boolean> {
 				if (future.isSuccess()) {
 					RpcClientChannelHandler rpcClientHanlder = future.channel().pipeline()
 							.get(RpcClientChannelHandler.class);
-					RpcClientLoader.getLoader().setRpcClientHandler(rpcClientHanlder);
+					RpcClientLoader.getInstance().setRpcClientHandler(rpcClientHanlder);
 				}
 			}
 		});

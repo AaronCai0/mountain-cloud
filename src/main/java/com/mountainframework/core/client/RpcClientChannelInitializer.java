@@ -1,15 +1,11 @@
 package com.mountainframework.core.client;
 
+import com.mountainframework.core.protocol.SerializeProtocolSelector;
 import com.mountainframework.rpc.serialize.RpcSerializeProtocol;
 
 import io.netty.channel.ChannelInitializer;
 import io.netty.channel.ChannelPipeline;
 import io.netty.channel.socket.SocketChannel;
-import io.netty.handler.codec.LengthFieldBasedFrameDecoder;
-import io.netty.handler.codec.LengthFieldPrepender;
-import io.netty.handler.codec.serialization.ClassResolvers;
-import io.netty.handler.codec.serialization.ObjectDecoder;
-import io.netty.handler.codec.serialization.ObjectEncoder;
 
 /**
  * Rpc客户端通道初始化类
@@ -36,12 +32,7 @@ public class RpcClientChannelInitializer extends ChannelInitializer<SocketChanne
 	@Override
 	protected void initChannel(SocketChannel ch) throws Exception {
 		ChannelPipeline pipeline = ch.pipeline();
-		// SerializeProtocolSelector.selector().select(protocol, pipeline);
-		pipeline.addLast(new LengthFieldBasedFrameDecoder(Integer.MAX_VALUE, 0, 4, 0, 4));
-		pipeline.addLast(new LengthFieldPrepender(4));
-		pipeline.addLast(new ObjectEncoder());
-		pipeline.addLast(new ObjectDecoder(Integer.MAX_VALUE,
-				ClassResolvers.weakCachingConcurrentResolver(this.getClass().getClassLoader())));
+		SerializeProtocolSelector.selector().initRpcDirect(false).select(protocol, pipeline);
 		pipeline.addLast(new RpcClientChannelHandler());
 	}
 

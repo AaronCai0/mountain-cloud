@@ -8,10 +8,10 @@ import io.netty.handler.codec.ByteToMessageDecoder;
 
 public class RpcMessageDecoder extends ByteToMessageDecoder {
 
-	private RpcMessageCodec util;
+	private RpcMessageCodec codec;
 
-	public RpcMessageDecoder(RpcMessageCodec util) {
-		this.util = util;
+	public RpcMessageDecoder(RpcMessageCodec codec) {
+		this.codec = codec;
 	}
 
 	@Override
@@ -36,7 +36,7 @@ public class RpcMessageDecoder extends ByteToMessageDecoder {
 		} else {
 			byte[] messageBody = new byte[messageLength];
 			in.readBytes(messageBody);
-			Object obj = util.decode(messageBody);
+			Object obj = codec.decode(messageBody);
 			out.add(obj);
 		}
 

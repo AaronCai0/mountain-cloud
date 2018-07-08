@@ -6,15 +6,15 @@ import io.netty.handler.codec.MessageToByteEncoder;
 
 public class RpcMessageEncoder extends MessageToByteEncoder<Object> {
 
-	private RpcMessageCodec util;
+	private RpcMessageCodec codec;
 
-	public RpcMessageEncoder(RpcMessageCodec util) {
-		this.util = util;
+	public RpcMessageEncoder(RpcMessageCodec codec) {
+		this.codec = codec;
 	}
 
 	@Override
 	protected void encode(ChannelHandlerContext ctx, Object msg, ByteBuf out) throws Exception {
-		util.encode(msg, out);
+		codec.encode(msg, out);
 	}
 
 }

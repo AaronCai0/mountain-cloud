@@ -22,7 +22,7 @@ public class MountainConsumerServiceTest {
 	@Test
 	public void testService() throws Exception {
 
-		int parallel = 8000;
+		int parallel = 10000;
 
 		StopWatch sw = new StopWatch();
 		sw.start();
