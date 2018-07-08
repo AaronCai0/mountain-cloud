@@ -32,7 +32,7 @@ public class RpcServerChannelInitializer extends ChannelInitializer<SocketChanne
 	@Override
 	protected void initChannel(SocketChannel ch) throws Exception {
 		ChannelPipeline pipeline = ch.pipeline();
-		SerializeProtocolSelector.selector().initRpcDirect(true).select(protocol, pipeline);
+		SerializeProtocolSelector.selector().initRpcDirect(false).select(protocol, pipeline);
 		// pipeline.addLast(new RpcServerChannelHandler());
 		// pipeline.addLast(new LengthFieldBasedFrameDecoder(Integer.MAX_VALUE, 0, 4, 0,
 		// 4));
