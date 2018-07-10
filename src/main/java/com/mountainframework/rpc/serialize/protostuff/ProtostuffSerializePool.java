@@ -5,11 +5,11 @@ import org.apache.commons.pool2.impl.GenericObjectPoolConfig;
 
 public class ProtostuffSerializePool {
 
-	private GenericObjectPool<ProtostuffSerialize> ProtostuffPool;
-	volatile private static ProtostuffSerializePool poolFactory = null;
+	private GenericObjectPool<ProtostuffSerialize> protostuffPool;
+	private static volatile ProtostuffSerializePool poolFactory;
 
 	private ProtostuffSerializePool() {
-		ProtostuffPool = new GenericObjectPool<ProtostuffSerialize>(new ProtostuffSerializeFactory());
+		protostuffPool = new GenericObjectPool<ProtostuffSerialize>(new ProtostuffSerializeFactory());
 	}
 
 	public static ProtostuffSerializePool getProtostuffPoolInstance() {
@@ -25,7 +25,7 @@ public class ProtostuffSerializePool {
 
 	public ProtostuffSerializePool(final int maxTotal, final int minIdle, final long maxWaitMillis,
 			final long minEvictableIdleTimeMillis) {
-		ProtostuffPool = new GenericObjectPool<ProtostuffSerialize>(new ProtostuffSerializeFactory());
+		protostuffPool = new GenericObjectPool<ProtostuffSerialize>(new ProtostuffSerializeFactory());
 
 		GenericObjectPoolConfig config = new GenericObjectPoolConfig();
 
@@ -34,7 +34,7 @@ public class ProtostuffSerializePool {
 		config.setMaxWaitMillis(maxWaitMillis);
 		config.setMinEvictableIdleTimeMillis(minEvictableIdleTimeMillis);
 
-		ProtostuffPool.setConfig(config);
+		protostuffPool.setConfig(config);
 	}
 
 	public ProtostuffSerialize borrow() {
@@ -51,7 +51,7 @@ public class ProtostuffSerializePool {
 	}
 
 	public GenericObjectPool<ProtostuffSerialize> getProtostuffPool() {
-		return ProtostuffPool;
+		return protostuffPool;
 	}
 
 }

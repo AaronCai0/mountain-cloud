@@ -10,21 +10,19 @@ import com.esotericsoftware.kryo.io.Output;
 import com.esotericsoftware.kryo.pool.KryoPool;
 import com.google.common.io.Closer;
 import com.mountainframework.rpc.serialize.RpcSerialize;
-import com.mountainframework.rpc.serialize.RpcSerializePools;
 
 public class KryoSerialize implements RpcSerialize {
 
-	private final KryoPool pool;
+	private final KryoPool pool = KryoSerializePool.getInstance().getPool();
 
-	private final Closer closer;
-
-	private KryoSerialize() {
-		pool = RpcSerializePools.getKryo().getPool();
-		closer = Closer.create();
-	}
+	private final Closer closer = Closer.create();
 
 	public static KryoSerialize create() {
 		return new KryoSerialize();
+	}
+
+	public static KryoSerialize getInstance() {
+		return KryoSerializeHolder.INSTANCE;
 	}
 
 	@Override
@@ -52,6 +50,10 @@ public class KryoSerialize implements RpcSerialize {
 		} finally {
 			closer.close();
 		}
+	}
+
+	private static class KryoSerializeHolder {
+		private static final KryoSerialize INSTANCE = new KryoSerialize();
 	}
 
 }

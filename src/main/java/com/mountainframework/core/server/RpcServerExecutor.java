@@ -49,7 +49,7 @@ public class RpcServerExecutor implements InitializingService {
 
 	private static final Logger logger = LoggerFactory.getLogger(RpcServerExecutor.class);
 
-	private static final RpcSerializeProtocol PROTOCOL = RpcSerializeProtocol.PROTOSTUFF;
+	private static final RpcSerializeProtocol PROTOCOL = RpcSerializeProtocol.HESSIAN;
 
 	private static final int parallel = Runtime.getRuntime().availableProcessors() * 2;
 

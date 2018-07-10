@@ -23,7 +23,7 @@ public class RpcClientInitializerTask implements Callable<Boolean> {
 
 	private InetSocketAddress inetSocketAddress;
 	private EventLoopGroup eventLoopGroup;
-	private final RpcSerializeProtocol PROTOCOL = RpcSerializeProtocol.PROTOSTUFF;
+	private final RpcSerializeProtocol PROTOCOL = RpcSerializeProtocol.HESSIAN;
 
 	public RpcClientInitializerTask(InetSocketAddress inetSocketAddress, EventLoopGroup eventLoopGroup) {
 		this.inetSocketAddress = inetSocketAddress;

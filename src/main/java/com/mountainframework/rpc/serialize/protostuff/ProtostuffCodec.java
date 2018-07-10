@@ -11,8 +11,8 @@ import io.netty.buffer.ByteBuf;
 
 public class ProtostuffCodec implements RpcMessageCodec {
 
-	private static Closer closer = Closer.create();
-	private ProtostuffSerializePool pool = ProtostuffSerializePool.getProtostuffPoolInstance();
+	private final Closer closer = Closer.create();
+	private final ProtostuffSerializePool pool = ProtostuffSerializePool.getProtostuffPoolInstance();
 	private boolean rpcDirect;
 
 	public boolean isRpcDirect() {
