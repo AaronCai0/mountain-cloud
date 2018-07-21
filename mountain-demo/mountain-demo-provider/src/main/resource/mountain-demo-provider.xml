@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:context="http://www.springframework.org/schema/context"
+       xmlns:mountain="http://www.mountainframework.com/mountain"
+       xsi:schemaLocation="
+			http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.0.xsd
+			http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd
+		    http://www.mountainframework.com/mountain 
+		    http://www.mountainframework.com/mountain/mountain.xsd">
+
+  <!-- 提供方应用信息 -->
+  <mountain:application name="provider-test"  />
+  
+  <!-- 提供者信息 -->
+  <mountain:provider timeout="20000" />
+  
+  <!-- 使用zookeeper注册中心暴露服务地址 -->
+  <mountain:registry address="127.0.0.1:2181" />
+  
+  <!-- 用mountain协议在6666端口暴露服务 -->
+  <mountain:protocol name="mountain" port="6666" />
+  
+  <mountain:service interface="com.mountain.demo.service.CalcService" ref="calcService"/>
+  <bean id="calcService" class="com.mountain.demo.provider.service.CalcServiceImpl" />
+  
+  <mountain:service interface="com.mountain.demo.service.CalcService2" ref="calcService2"/>
+  <bean id="calcService2" class="com.mountain.demo.provider.service.CalcServiceImpl2" />
+  
+</beans>

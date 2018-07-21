@@ -1,0 +1,35 @@
+<?xml version="1.0"?>
+<project xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd" xmlns="http://maven.apache.org/POM/4.0.0"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <modelVersion>4.0.0</modelVersion>
+  <parent>
+    <groupId>com.mountainframework</groupId>
+    <artifactId>mountain-demo</artifactId>
+    <version>1.0.0</version>
+  </parent>
+  <artifactId>mountain-demo-provider</artifactId>
+  <packaging>jar</packaging>
+  <name>{project.artifactId}</name>
+  
+  <properties>
+    <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+  </properties>
+  
+  <dependencies>
+     <dependency>
+  		<groupId>com.mountainframework</groupId>
+  		<artifactId>mountain-demo-api</artifactId>
+  		<version>${project.parent.version}</version>
+  	 </dependency>
+     <dependency>
+  		<groupId>com.mountainframework</groupId>
+  		<artifactId>mountain-config-api</artifactId>
+  		<version>${project.parent.version}</version>
+  	 </dependency>
+     <dependency>
+  		<groupId>com.mountainframework</groupId>
+  		<artifactId>mountain-config-spring</artifactId>
+  		<version>${project.parent.version}</version>
+  	 </dependency>
+  </dependencies>
+</project>
