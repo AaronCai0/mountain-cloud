@@ -18,4 +18,10 @@ public interface Constants {
 
 	String DEFAULT_SERIALIZE = "protostuff";
 
+	String LINE_SEPARATOR = "/";
+
+	String RPC_THREAD_FACTORY_NAME = "Mountain-RPC-ThreadFactory";
+
+	String FRAMEWORK_CURRENT_VERSION = "1.0";
+
 }

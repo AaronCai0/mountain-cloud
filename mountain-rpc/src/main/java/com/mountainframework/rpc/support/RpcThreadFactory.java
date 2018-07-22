@@ -3,6 +3,8 @@ package com.mountainframework.rpc.support;
 import java.util.concurrent.ThreadFactory;
 import java.util.concurrent.atomic.AtomicInteger;
 
+import com.mountainframework.common.Constants;
+
 /**
  * Rpc线程工厂
  * 
@@ -11,8 +13,6 @@ import java.util.concurrent.atomic.AtomicInteger;
  * @since 1.0
  */
 public class RpcThreadFactory implements ThreadFactory {
-
-	private static final String DEFAULT_FACTORY_NAME = "Mountain-Rpc-ThreadFactory";
 
 	private static final AtomicInteger threadCount = new AtomicInteger();
 
@@ -23,7 +23,7 @@ public class RpcThreadFactory implements ThreadFactory {
 	private final ThreadGroup threadGroup;
 
 	public RpcThreadFactory() {
-		this(DEFAULT_FACTORY_NAME, false);
+		this(Constants.RPC_THREAD_FACTORY_NAME, false);
 	}
 
 	public RpcThreadFactory(String prefixName) {
@@ -33,8 +33,7 @@ public class RpcThreadFactory implements ThreadFactory {
 	public RpcThreadFactory(String prefixName, boolean isDaemon) {
 		this.factoryName = String.format("%s-Thread-", prefixName, threadCount.getAndIncrement());
 		this.isDaemon = isDaemon;
-		SecurityManager sm = System.getSecurityManager();
-		threadGroup = sm == null ? Thread.currentThread().getThreadGroup() : sm.getThreadGroup();
+		threadGroup = Thread.currentThread().getThreadGroup();
 	}
 
 	@Override

@@ -17,7 +17,7 @@ import io.netty.channel.socket.nio.NioSocketChannel;
  * 
  * @author yafeng.cai {@link}https://github.com/AaronCai0
  * @date 2018年6月30日
- * @since 1.0
+ * @since 1.3
  */
 public class NettyClientInitializerTask implements Callable<Boolean> {
 

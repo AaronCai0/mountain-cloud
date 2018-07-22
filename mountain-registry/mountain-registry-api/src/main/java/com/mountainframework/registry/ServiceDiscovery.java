@@ -6,6 +6,4 @@ public interface ServiceDiscovery {
 
 	String substribe(RegistryUrl url);
 
-	void unsubstribe(RegistryUrl url);
-
 }

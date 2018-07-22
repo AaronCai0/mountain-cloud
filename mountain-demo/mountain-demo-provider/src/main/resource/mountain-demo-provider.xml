@@ -11,11 +11,11 @@
   <!-- 提供方应用信息 -->
   <mountain:application name="provider-test"  />
   
-  <!-- 提供者信息 -->
+  <!-- 提供方信息 -->
   <mountain:provider timeout="20000" />
   
   <!-- 使用zookeeper注册中心暴露服务地址 -->
-  <mountain:registry address="127.0.0.1:2181" />
+  <mountain:registry address="zookeeper://127.0.0.1:2181" />
   
   <!-- 用mountain协议在6666端口暴露服务 -->
   <mountain:protocol name="mountain" port="6666" />

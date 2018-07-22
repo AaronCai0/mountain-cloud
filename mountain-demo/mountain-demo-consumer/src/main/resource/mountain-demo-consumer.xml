@@ -7,14 +7,18 @@
 			http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd
 		    http://www.mountainframework.com/mountain 
 		    http://www.mountainframework.com/mountain/mountain.xsd">
+		    
   	<!-- 消費方应用信息 -->
   	<mountain:application name="consumer-test"  />
   	
-	<mountain:registry address="127.0.0.1:2181" />
-	
-	<mountain:protocol name="mountain" port="6666" />
-	
+  	<!-- 消费方信息 -->
   	<mountain:consumer timeout="20000"/>
+  	
+  	<!-- 使用zookeeper注册中心发现服务地址 -->
+	<mountain:registry address="zookeeper://127.0.0.1:2181" />
+	
+	<!-- 用mountain协议在6666端口发现服务 -->
+	<mountain:protocol name="mountain" port="6666" />
   	
  	<mountain:reference id="calcService" interface="com.mountain.demo.service.CalcService" />
    

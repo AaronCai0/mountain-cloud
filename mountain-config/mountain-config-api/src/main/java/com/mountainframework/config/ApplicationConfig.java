@@ -4,6 +4,12 @@ import java.io.Serializable;
 
 import org.apache.commons.lang3.builder.ReflectionToStringBuilder;
 
+/**
+ * 应用程序信息
+ * 
+ * @author yafeng.cai {@link}https://github.com/AaronCai0
+ * @since 1.0
+ */
 public class ApplicationConfig implements Serializable {
 
 	private static final long serialVersionUID = -6415421022879552869L;

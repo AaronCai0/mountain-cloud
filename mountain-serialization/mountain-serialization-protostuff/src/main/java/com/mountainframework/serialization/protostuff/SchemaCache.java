@@ -4,12 +4,17 @@ import java.util.concurrent.Callable;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.TimeUnit;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import com.dyuproject.protostuff.Schema;
 import com.dyuproject.protostuff.runtime.RuntimeSchema;
 import com.google.common.cache.Cache;
 import com.google.common.cache.CacheBuilder;
 
 public class SchemaCache {
+
+	private static final Logger logger = LoggerFactory.getLogger(SchemaCache.class);
 
 	public static SchemaCache getInstance() {
 		return SchemaCacheHolder.INSTANCE;
@@ -27,6 +32,7 @@ public class SchemaCache {
 				}
 			});
 		} catch (ExecutionException e) {
+			logger.error("Get schema cache fail", e);
 			return null;
 		}
 	}

@@ -8,6 +8,8 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.mountainframework.common.CollectionUtils;
+import com.mountainframework.common.Constants;
+import com.mountainframework.common.exception.ZookeeperNotFindNodeException;
 import com.mountainframework.registry.ServiceDiscovery;
 import com.mountainframework.registry.model.RegistryUrl;
 import com.mountainframework.registry.zookeeper.bean.ZookeeperConstant;
@@ -20,7 +22,7 @@ import com.mountainframework.registry.zookeeper.bean.ZookeeperConstant;
  */
 public class ZooKeeperServiceDiscovery implements ServiceDiscovery {
 
-	private static final Logger LOGGER = LoggerFactory.getLogger(ZooKeeperServiceDiscovery.class);
+	private static final Logger logger = LoggerFactory.getLogger(ZooKeeperServiceDiscovery.class);
 
 	private String zkAddress;
 
@@ -33,16 +35,19 @@ public class ZooKeeperServiceDiscovery implements ServiceDiscovery {
 		// 创建 ZooKeeper 客户端
 		ZkClient zkClient = new ZkClient(zkAddress, ZookeeperConstant.ZK_SESSION_TIMEOUT,
 				ZookeeperConstant.ZK_CONNECTION_TIMEOUT);
-		LOGGER.debug("connect zookeeper");
+		logger.debug("connect zookeeper");
 		try {
 			// 获取 service 节点
-			String servicePath = ZookeeperConstant.ZK_REGISTRY_PATH + "/" + url.getServiceName();
+			String servicePath = String.format("%s%s%s", ZookeeperConstant.ZK_REGISTRY_PATH, Constants.LINE_SEPARATOR,
+					url.getServiceName());
 			if (!zkClient.exists(servicePath)) {
-				throw new RuntimeException(String.format("can not find any service node on path: %s", servicePath));
+				throw new ZookeeperNotFindNodeException(
+						String.format("can not find any service node on path: %s", servicePath));
 			}
 			List<String> addressList = zkClient.getChildren(servicePath);
 			if (CollectionUtils.isEmpty(addressList)) {
-				throw new RuntimeException(String.format("can not find any address node on path: %s", servicePath));
+				throw new ZookeeperNotFindNodeException(
+						String.format("can not find any address node on path: %s", servicePath));
 			}
 			// 获取 address 节点
 			String address;
@@ -50,22 +55,18 @@ public class ZooKeeperServiceDiscovery implements ServiceDiscovery {
 			if (size == 1) {
 				// 若只有一个地址，则获取该地址
 				address = addressList.get(0);
-				LOGGER.debug("get only address node: {}", address);
+				logger.debug("get only address node: {}", address);
 			} else {
 				// 若存在多个地址，则随机获取一个地址
 				address = addressList.get(ThreadLocalRandom.current().nextInt(size));
-				LOGGER.debug("get random address node: {}", address);
+				logger.debug("get random address node: {}", address);
 			}
 			// 获取 address 节点的值
-			String addressPath = servicePath + "/" + address;
+			String addressPath = String.format("%s%s%s", servicePath, Constants.LINE_SEPARATOR, address);
 			return zkClient.readData(addressPath);
 		} finally {
 			zkClient.close();
 		}
 	}
 
-	@Override
-	public void unsubstribe(RegistryUrl url) {
-
-	}
 }

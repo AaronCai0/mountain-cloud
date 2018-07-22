@@ -49,7 +49,7 @@ public class CglibProxyGenerator implements ProxyGenerator {
 			enhancer.setCallback(interceptor);
 			return (T) enhancer.create();
 		} catch (IllegalArgumentException e) {
-			logger.error("RpcServiceProxyGenerator generate error.", e);
+			logger.error("CglibProxyGenerator generate error", e);
 			return null;
 		}
 	}
@@ -63,6 +63,7 @@ public class CglibProxyGenerator implements ProxyGenerator {
 				}
 			});
 		} catch (ExecutionException e) {
+			logger.error("Get proxy cache class fail", e);
 			return null;
 		}
 	}
