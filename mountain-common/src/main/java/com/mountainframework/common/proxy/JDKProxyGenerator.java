@@ -10,7 +10,7 @@ import com.google.common.reflect.AbstractInvocationHandler;
 import com.google.common.reflect.Reflection;
 
 /**
- * Rpc服务代理生成器
+ * jdk服务代理生成器
  * 
  * @author yafeng.cai {@link}https://github.com/AaronCai0
  * @date 2018年6月30日

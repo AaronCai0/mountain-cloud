@@ -11,9 +11,6 @@ import com.mountainframework.config.init.context.MountainApplicationContext;
  */
 public interface InitializingService {
 
-	/**
-	 * 初始化动作
-	 */
 	void init(MountainApplicationContext context);
 
 }

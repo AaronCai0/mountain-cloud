@@ -3,8 +3,18 @@ package com.mountainframework.common;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-public interface Loggers {
+/**
+ * 日志工具类
+ * 
+ * @author yafeng.cai {@link}https://github.com/AaronCai0
+ * @since 1.0
+ */
+public class Loggers {
 
-	public static final Logger logger = LoggerFactory.getLogger(Loggers.class);
+	private static final Logger logger = LoggerFactory.getLogger(Loggers.class);
+
+	public static Logger getLogger() {
+		return logger;
+	}
 
 }

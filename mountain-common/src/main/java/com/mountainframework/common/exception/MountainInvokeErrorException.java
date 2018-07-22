@@ -1,25 +1,24 @@
 package com.mountainframework.common.exception;
 
 /**
- * Rpc服务调用超时类
+ * Rpc服务调用错误类
  * 
  * @author yafeng.cai {@link}https://github.com/AaronCai0
- * @date 2018年6月30日
  * @since 1.0
  */
-public class RpcInvokeErrorException extends RuntimeException {
+public class MountainInvokeErrorException extends RuntimeException {
 
 	private static final long serialVersionUID = 856010443225958171L;
 
-	public RpcInvokeErrorException() {
+	public MountainInvokeErrorException() {
 		super();
 	}
 
-	public RpcInvokeErrorException(Throwable cause) {
+	public MountainInvokeErrorException(Throwable cause) {
 		super(cause);
 	}
 
-	public RpcInvokeErrorException(String message) {
+	public MountainInvokeErrorException(String message) {
 		super(message);
 	}
 

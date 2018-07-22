@@ -14,6 +14,12 @@ import com.google.common.cache.CacheBuilder;
 import net.sf.cglib.proxy.Enhancer;
 import net.sf.cglib.proxy.MethodInterceptor;
 
+/**
+ * cglib代理生成器
+ * 
+ * @author yafeng.cai {@link}https://github.com/AaronCai0
+ * @since 1.0
+ */
 public class CglibProxyGenerator implements ProxyGenerator {
 
 	private static final Logger logger = LoggerFactory.getLogger(CglibProxyGenerator.class);
@@ -36,13 +42,11 @@ public class CglibProxyGenerator implements ProxyGenerator {
 	@SuppressWarnings("unchecked")
 	public <T> T generate(String className) {
 		try {
-			Class<?> clazz = getClass(className);
+			Class<?> clazz = getCacheClass(className);
 			Preconditions.checkNotNull(clazz, "Class not found:{}", className);
-			Enhancer enhancer = new Enhancer(); // 创建加强器，用来创建动态代理类
-			enhancer.setSuperclass(clazz); // 为加强器指定要代理的业务类（即：为下面生成的代理类指定父类）
-			// 设置回调：对于代理类上所有方法的调用，都会调用CallBack，而Callback则需要实现intercept()方法进行拦
+			Enhancer enhancer = new Enhancer();
+			enhancer.setSuperclass(clazz);
 			enhancer.setCallback(interceptor);
-			// 创建动态代理类对象并返回
 			return (T) enhancer.create();
 		} catch (IllegalArgumentException e) {
 			logger.error("RpcServiceProxyGenerator generate error.", e);
@@ -50,7 +54,7 @@ public class CglibProxyGenerator implements ProxyGenerator {
 		}
 	}
 
-	private Class<?> getClass(String className) {
+	private Class<?> getCacheClass(String className) {
 		try {
 			return cache.get(className, new Callable<Class<?>>() {
 				@Override
