@@ -8,7 +8,7 @@
     <version>1.0.0</version>
   </parent>
   <artifactId>mountain-demo-provider</artifactId>
-  <packaging>jar</packaging>
+  <packaging>jar</packaging >
   <name>{project.artifactId}</name>
   
   <properties>

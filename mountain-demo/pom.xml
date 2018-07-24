@@ -9,9 +9,8 @@
   </parent>
   
   <artifactId>mountain-demo</artifactId>
-  <version>${project.parent.version}</version>
-  <packaging>pom</packaging>
   <name>{project.artifactId}</name>
+  <packaging>pom</packaging>
   
   
   <properties>

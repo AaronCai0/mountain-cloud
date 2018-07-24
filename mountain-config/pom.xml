@@ -8,9 +8,8 @@
   </parent>
   
   <artifactId>mountain-config</artifactId>
-  <version>${project.parent.version}</version>
-  <packaging>pom</packaging>
   <name>{project.artifactId}</name>
+  <packaging>pom</packaging>
   
   <properties>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>

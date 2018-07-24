@@ -7,8 +7,8 @@
     <version>1.0.0</version>
   </parent>
   <artifactId>mountain-registry</artifactId>
-  <packaging>pom</packaging>
   <name>{project.artifactId}</name>
+  <packaging>pom</packaging>
   
   <properties>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>

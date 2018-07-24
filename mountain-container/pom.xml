@@ -7,11 +7,11 @@
     <artifactId>mountain</artifactId>
     <version>1.0.0</version>
   </parent>
-  <groupId>com.mountainframework</groupId>
+  
   <artifactId>mountain-container</artifactId>
-  <version>1.0.0</version>
-  <name>mountain-container</name>
-  <url>http://maven.apache.org</url>
+  <name>{project.artifactId}</name>
+  <packaging>jar</packaging>
+  
   <properties>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
   </properties>

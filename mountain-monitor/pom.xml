@@ -7,14 +7,14 @@
     <artifactId>mountain</artifactId>
     <version>1.0.0</version>
   </parent>
-  <groupId>com.mountainframework</groupId>
   <artifactId>mountain-monitor</artifactId>
-  <version>1.0.0</version>
-  <name>mountain-monitor</name>
-  <url>http://maven.apache.org</url>
+  <name>{project.artifactId}</name>
+  <packaging>jar</packaging>
+  
   <properties>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
   </properties>
+  
   <dependencies>
     <dependency>
       <groupId>junit</groupId>
