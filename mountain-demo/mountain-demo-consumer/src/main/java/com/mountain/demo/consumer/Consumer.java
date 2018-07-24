@@ -9,6 +9,7 @@ import javax.annotation.Resource;
 import org.apache.commons.lang3.time.StopWatch;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.springframework.context.support.ClassPathXmlApplicationContext;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
@@ -23,7 +24,7 @@ public class Consumer {
 
 	@Test
 	public void testService() throws Exception {
-		int parallel = 1000000;
+		int parallel = 10000;
 		StopWatch sw = new StopWatch();
 		sw.start();
 
@@ -38,9 +39,12 @@ public class Consumer {
 		signal.countDown();
 		finish.await();
 		sw.stop();
-		String tip = String.format("Mountain RPC调用总共耗时: [%s] 毫秒", sw.getTime());
-		System.out.println(tip);
-
+		long time = sw.getTime();
+		// String tip = String.format("Mountain RPC调用总共耗时: [%s] 毫秒", sw.getTime());
+		// System.out.println(tip);
+		System.out.println("Mountain RPC调用总共耗时 ：" + (double) time / 1000 + " s");
+		System.out.println("Mountain RPC调用平均耗时:" + ((double) time) / parallel + " ms");
+		System.out.println("Mountain RPC调用TPS:" + Math.ceil((double) parallel / ((double) time / 1000)));
 	}
 
 	public static Runnable getTask(CountDownLatch signal, CountDownLatch finish, int idex, CalcService calcService) {
@@ -54,6 +58,35 @@ public class Consumer {
 				e.printStackTrace();
 			}
 		};
+	}
+
+	public static void main(String[] args) throws Exception {
+		final ClassPathXmlApplicationContext context = new ClassPathXmlApplicationContext(
+				"classpath:mountain-demo-consumer.xml");
+		CalcService calcService = context.getBean("calcService", CalcService.class);
+
+		int parallel = 100000;
+		StopWatch sw = new StopWatch();
+		sw.start();
+
+		CountDownLatch signal = new CountDownLatch(1);
+		CountDownLatch finish = new CountDownLatch(parallel);
+
+		ExecutorService service = Executors.newFixedThreadPool(200);
+		for (int i = 1; i <= parallel; i++) {
+			// new Thread(getTask(signal, finish, i, calcService)).start();
+			service.submit(getTask(signal, finish, i, calcService));
+		}
+		signal.countDown();
+		finish.await();
+		sw.stop();
+		context.close();
+		long time = sw.getTime();
+		// String tip = String.format("Mountain RPC调用总共耗时: [%s] 毫秒", sw.getTime());
+		// System.out.println(tip);
+		System.out.println("Mountain RPC调用总共耗时 ：" + (double) time / 1000 + " s");
+		System.out.println("Mountain RPC调用平均耗时:" + ((double) time) / parallel + " ms");
+		System.out.println("Mountain RPC调用TPS:" + Math.ceil((double) parallel / ((double) time / 1000)));
 	}
 
 }

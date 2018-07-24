@@ -7,7 +7,7 @@ public class ProtostuffSerializePool {
 
 	private GenericObjectPool<ProtostuffSerialize> protostuffPool;
 
-	private ProtostuffSerializePool() {
+	public ProtostuffSerializePool() {
 		protostuffPool = new GenericObjectPool<ProtostuffSerialize>(new ProtostuffSerializeFactory());
 	}
 
@@ -15,24 +15,11 @@ public class ProtostuffSerializePool {
 		return ProtostuffSerializePoolHolder.INSTANCE;
 	}
 
-	// private static volatile ProtostuffSerializePool poolFactory;
-	// public static ProtostuffSerializePool getProtostuffPoolInstance() {
-	// if (poolFactory == null) {
-	// synchronized (ProtostuffSerializePool.class) {
-	// if (poolFactory == null) {
-	// poolFactory = new ProtostuffSerializePool();
-	// }
-	// }
-	// }
-	// return poolFactory;
-	// }
-
 	public ProtostuffSerializePool(final int maxTotal, final int minIdle, final long maxWaitMillis,
 			final long minEvictableIdleTimeMillis) {
 		protostuffPool = new GenericObjectPool<ProtostuffSerialize>(new ProtostuffSerializeFactory());
 
 		GenericObjectPoolConfig config = new GenericObjectPoolConfig();
-
 		config.setMaxTotal(maxTotal);
 		config.setMinIdle(minIdle);
 		config.setMaxWaitMillis(maxWaitMillis);
@@ -59,8 +46,13 @@ public class ProtostuffSerializePool {
 	}
 
 	private static class ProtostuffSerializePoolHolder {
+		// private static final ProtostuffSerializePool INSTANCE = new
+		// ProtostuffSerializePool(
+		// ProtostuffPoolConstants.SERIALIZE_POOL_MAX_TOTAL,
+		// ProtostuffPoolConstants.SERIALIZE_POOL_MIN_IDLE,
+		// ProtostuffPoolConstants.SERIALIZE_POOL_MAX_WAIT_MILLIS,
+		// ProtostuffPoolConstants.SERIALIZE_POOL_MIN_EVICTABLE_IDLE_TIME_MILLIS);
 		private static final ProtostuffSerializePool INSTANCE = new ProtostuffSerializePool();
-
 	}
 
 }

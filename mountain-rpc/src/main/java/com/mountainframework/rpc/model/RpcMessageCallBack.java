@@ -58,6 +58,5 @@ public class RpcMessageCallBack implements Serializable {
 		} finally {
 			lock.unlock();
 		}
-
 	}
 }
