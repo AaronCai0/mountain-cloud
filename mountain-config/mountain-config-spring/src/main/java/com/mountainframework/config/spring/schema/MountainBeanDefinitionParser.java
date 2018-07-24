@@ -78,6 +78,8 @@ public class MountainBeanDefinitionParser implements BeanDefinitionParser {
 			String name = element.getAttribute("name");
 			name = StringUtils.isBlank(name) ? "mountain" : name;
 			beanProperties.addPropertyValue("name", name);
+			beanProperties.addPropertyValue("threads",
+					ObjectUtils.toStringForDefault(element.getAttribute("threads"), Constants.DEFAULT_THREADS));
 			try {
 				beanProperties.addPropertyValue("host", ObjectUtils.toStringForDefault(element.getAttribute("host"),
 						InetAddress.getLocalHost().getHostAddress()));

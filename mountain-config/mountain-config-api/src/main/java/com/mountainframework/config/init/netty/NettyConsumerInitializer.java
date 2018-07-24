@@ -1,5 +1,6 @@
 package com.mountainframework.config.init.netty;
 
+import java.net.InetSocketAddress;
 import java.util.Set;
 
 import com.google.common.base.Preconditions;
@@ -15,6 +16,8 @@ import com.mountainframework.config.init.context.MountainConfigContainer;
 import com.mountainframework.registry.ServiceDiscovery;
 import com.mountainframework.registry.model.RegistryUrl;
 import com.mountainframework.remoting.netty.NettyExecutors;
+import com.mountainframework.remoting.netty.model.NettyRemotingBean;
+import com.mountainframework.serialization.RpcSerializeProtocol;
 
 public class NettyConsumerInitializer implements InitializingService {
 
@@ -27,6 +30,7 @@ public class NettyConsumerInitializer implements InitializingService {
 		String protocolName = protocolConfig.getName();
 		String protocolHost = protocolConfig.getHost();
 		Integer protocolPort = protocolConfig.getPort();
+		Integer threads = protocolConfig.getThreads();
 		String serializeProtocolName = protocolConfig.getSerialize();
 
 		Set<String> serviceDiscoveryAddress = Sets.newHashSet();
@@ -50,7 +54,11 @@ public class NettyConsumerInitializer implements InitializingService {
 			Preconditions.checkNotNull(host, "Registry get port is null");
 			Integer portInt = Integer.parseInt(port);
 			if (host.equals(protocolHost) && portInt.equals(protocolPort) && serviceProtocol.equals(protocolName)) {
-				NettyExecutors.clientExecutor().start(host, Integer.valueOf(port), serializeProtocolName);
+				NettyRemotingBean nettyRemotingBean = NettyRemotingBean.builder()
+						.setSocketAddress(new InetSocketAddress(host, Integer.parseInt(port)))
+						.setProtocol(RpcSerializeProtocol.findProtocol(serializeProtocolName)).setThreads(threads)
+						.build();
+				NettyExecutors.clientExecutor().start(nettyRemotingBean);
 			}
 		}
 	}

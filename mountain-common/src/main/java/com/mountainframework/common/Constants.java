@@ -24,4 +24,6 @@ public interface Constants {
 
 	String FRAMEWORK_CURRENT_VERSION = "1.0";
 
+	String DEFAULT_THREADS = "200";
+
 }

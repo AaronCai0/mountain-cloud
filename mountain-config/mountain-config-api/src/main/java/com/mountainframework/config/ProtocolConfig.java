@@ -31,6 +31,8 @@ public class ProtocolConfig implements InitializingBean, ApplicationContextAware
 
 	private String serialize;
 
+	private Integer threads;
+
 	private ApplicationContext applicationContext;
 
 	public String getName() {
@@ -72,6 +74,18 @@ public class ProtocolConfig implements InitializingBean, ApplicationContextAware
 		} else if (applicationContext.containsBean("consumer")) {
 			MountainConfigContainer.getContainer().getConsumerProtocolConfigs().add(this);
 		}
+	}
+
+	public Integer getThreads() {
+		return threads;
+	}
+
+	public void setThreads(Integer threads) {
+		this.threads = threads;
+	}
+
+	public ApplicationContext getApplicationContext() {
+		return applicationContext;
 	}
 
 	@Override

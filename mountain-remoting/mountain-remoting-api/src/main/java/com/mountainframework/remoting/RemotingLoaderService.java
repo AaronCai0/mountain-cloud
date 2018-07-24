@@ -1,12 +1,10 @@
 package com.mountainframework.remoting;
 
-import java.net.InetSocketAddress;
-
-import com.mountainframework.serialization.RpcSerializeProtocol;
+import com.mountainframework.remoting.model.RemotingBean;
 
 public interface RemotingLoaderService {
 
-	void load(InetSocketAddress socketAddress, RpcSerializeProtocol protocol);
+	void load(RemotingBean remotingBean);
 
 	void unLoad();
 

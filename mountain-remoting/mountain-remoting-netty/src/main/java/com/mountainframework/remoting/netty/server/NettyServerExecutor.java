@@ -1,10 +1,7 @@
 package com.mountainframework.remoting.netty.server;
 
-import java.net.InetSocketAddress;
-import java.util.Map;
-
 import com.mountainframework.remoting.RemotingExecutor;
-import com.mountainframework.serialization.RpcSerializeProtocol;
+import com.mountainframework.remoting.model.RemotingBean;
 
 /**
  * Netty服务端调度器
@@ -26,22 +23,9 @@ public class NettyServerExecutor implements RemotingExecutor {
 		return executor;
 	}
 
-	public static NettyServerExecutor create(Map<String, Object> handlerBeanMap) {
-		NettyServerExecutor executor = new NettyServerExecutor();
-		executor.loader = NettyServerLoader.create(handlerBeanMap);
-		return executor;
-	}
-
-	public NettyServerExecutor initBeanHandler(Map<String, Object> handlerBeanMap) {
-		this.loader = NettyServerLoader.create(handlerBeanMap);
-		return this;
-	}
-
 	@Override
-	public void start(String host, Integer port, String protocolName) {
-		InetSocketAddress socketAddress = new InetSocketAddress(host, port);
-		RpcSerializeProtocol protocol = RpcSerializeProtocol.findProtocol(protocolName);
-		loader.load(socketAddress, protocol);
+	public void start(RemotingBean remotingBean) {
+		loader.load(remotingBean);
 	}
 
 	@Override

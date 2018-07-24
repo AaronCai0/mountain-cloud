@@ -1,8 +1,10 @@
 package com.mountainframework.remoting;
 
+import com.mountainframework.remoting.model.RemotingBean;
+
 public interface RemotingExecutor {
 
-	void start(String host, Integer port, String protocolName);
+	void start(RemotingBean remotingBean);
 
 	void stop();
 

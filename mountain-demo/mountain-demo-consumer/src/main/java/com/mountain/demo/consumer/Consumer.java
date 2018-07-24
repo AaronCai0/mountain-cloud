@@ -1,6 +1,8 @@
 package com.mountain.demo.consumer;
 
 import java.util.concurrent.CountDownLatch;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 
 import javax.annotation.Resource;
 
@@ -21,15 +23,17 @@ public class Consumer {
 
 	@Test
 	public void testService() throws Exception {
-		int parallel = 10000;
+		int parallel = 1000000;
 		StopWatch sw = new StopWatch();
 		sw.start();
 
 		CountDownLatch signal = new CountDownLatch(1);
 		CountDownLatch finish = new CountDownLatch(parallel);
 
+		ExecutorService service = Executors.newFixedThreadPool(200);
 		for (int i = 1; i <= parallel; i++) {
-			new Thread(getTask(signal, finish, i, calcService)).start();
+			// new Thread(getTask(signal, finish, i, calcService)).start();
+			service.submit(getTask(signal, finish, i, calcService));
 		}
 		signal.countDown();
 		finish.await();

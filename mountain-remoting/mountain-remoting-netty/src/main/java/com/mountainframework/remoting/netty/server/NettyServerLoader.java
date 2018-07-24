@@ -17,6 +17,8 @@ import com.google.common.util.concurrent.ListeningExecutorService;
 import com.google.common.util.concurrent.MoreExecutors;
 import com.mountainframework.common.Constants;
 import com.mountainframework.remoting.RemotingLoaderService;
+import com.mountainframework.remoting.model.RemotingBean;
+import com.mountainframework.remoting.netty.model.NettyRemotingBean;
 import com.mountainframework.rpc.model.RpcMessageRequest;
 import com.mountainframework.rpc.model.RpcMessageResponse;
 import com.mountainframework.rpc.support.RpcThreadFactory;
@@ -43,23 +45,42 @@ public class NettyServerLoader implements RemotingLoaderService {
 
 	private static final Logger logger = LoggerFactory.getLogger(NettyServerExecutor.class);
 
-	private static final int parallel = Runtime.getRuntime().availableProcessors() * 2;
-	private static final ListeningExecutorService threadPoolExecutor = MoreExecutors
-			.listeningDecorator(RpcThreadPoolExecutors.newFixedThreadPool(parallel, -1));
-	private final EventLoopGroup bossEvent = new NioEventLoopGroup();
-	private final EventLoopGroup workEvent = new NioEventLoopGroup(parallel, new RpcThreadFactory(),
-			SelectorProvider.provider());
-	private static AtomicLong atomicRequestCount = new AtomicLong(1L);
+	private static ListeningExecutorService threadPoolExecutor;
+
+	private static AtomicLong atomicRequestCount;
+
+	private int parallel;
+
+	private EventLoopGroup bossEvent;
+
+	private EventLoopGroup workEvent;
+
+	public static NettyServerLoader create() {
+		return new NettyServerLoader();
+	}
 
 	@Override
-	public void load(InetSocketAddress socketAddress, RpcSerializeProtocol protocol) {
+	public void load(RemotingBean remotingBean) {
 		try {
-			Preconditions.checkNotNull(handlerBeanMap, "init handlerBeanMap is null.");
+			if (!(remotingBean instanceof NettyRemotingBean)) {
+				Preconditions.checkArgument(false, "RemotingBean must be NettyRemotingBean ");
+			}
+			NettyRemotingBean nettyRemotingBean = (NettyRemotingBean) remotingBean;
+			Map<String, Object> handlerBeanMap = nettyRemotingBean.getHandlerMap();
+			InetSocketAddress socketAddress = nettyRemotingBean.getSocketAddress();
+			RpcSerializeProtocol serailizeProtocol = nettyRemotingBean.getProtocol();
+			parallel = nettyRemotingBean.getThreads().intValue();
+			threadPoolExecutor = MoreExecutors
+					.listeningDecorator(RpcThreadPoolExecutors.newFixedThreadPool(parallel, -1));
+			bossEvent = new NioEventLoopGroup();
+			workEvent = new NioEventLoopGroup(parallel, new RpcThreadFactory(), SelectorProvider.provider());
+			atomicRequestCount = new AtomicLong(1L);
+
 			ServerBootstrap bootstrap = new ServerBootstrap();
 			ChannelFuture channelFuture = bootstrap.group(bossEvent, workEvent).channel(NioServerSocketChannel.class)
 					.option(ChannelOption.SO_BACKLOG, 1024).option(ChannelOption.SO_KEEPALIVE, true)
-					.childHandler(NettyServerChannelInitializer.create(handlerBeanMap, protocol)).bind(socketAddress)
-					.sync();
+					.childHandler(NettyServerChannelInitializer.create(handlerBeanMap, serailizeProtocol))
+					.bind(socketAddress).sync();
 
 			logger.info("Mountain RPC Server success started! ip:{} , port:{} , version:{} ",
 					socketAddress.getHostString(), socketAddress.getPort(), Constants.FRAMEWORK_CURRENT_VERSION);
@@ -67,23 +88,6 @@ public class NettyServerLoader implements RemotingLoaderService {
 		} catch (InterruptedException e) {
 			logger.error("Mountain RPC Server interrupted error.", e);
 		}
-	}
-
-	private Map<String, Object> handlerBeanMap;
-
-	private NettyServerLoader() {
-	}
-
-	private NettyServerLoader(Map<String, Object> handlerBeanMap) {
-		this.handlerBeanMap = handlerBeanMap;
-	}
-
-	public static NettyServerLoader create() {
-		return new NettyServerLoader();
-	}
-
-	public static NettyServerLoader create(Map<String, Object> handlerBeanMap) {
-		return new NettyServerLoader(handlerBeanMap);
 	}
 
 	@Override

@@ -8,12 +8,15 @@ import java.util.concurrent.locks.ReentrantLock;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import com.google.common.base.Preconditions;
 import com.google.common.util.concurrent.FutureCallback;
 import com.google.common.util.concurrent.Futures;
 import com.google.common.util.concurrent.ListenableFuture;
 import com.google.common.util.concurrent.ListeningExecutorService;
 import com.google.common.util.concurrent.MoreExecutors;
 import com.mountainframework.remoting.RemotingLoaderService;
+import com.mountainframework.remoting.model.RemotingBean;
+import com.mountainframework.remoting.netty.model.NettyRemotingBean;
 import com.mountainframework.rpc.support.RpcThreadPoolExecutors;
 import com.mountainframework.serialization.RpcSerializeProtocol;
 
@@ -31,12 +34,11 @@ public class NettyClientLoader implements RemotingLoaderService {
 
 	private static final Logger logger = LoggerFactory.getLogger(NettyClientLoader.class);
 
-	private static final int parallel = Runtime.getRuntime().availableProcessors() * 2;
+	private int parallel;
 
-	private static final ListeningExecutorService threadPoolExecutor = MoreExecutors
-			.listeningDecorator(RpcThreadPoolExecutors.newFixedThreadPool(parallel, -1));
+	private ListeningExecutorService threadPoolExecutor;
 
-	private final EventLoopGroup eventLoopGroup = new NioEventLoopGroup(parallel);
+	private EventLoopGroup eventLoopGroup;
 
 	private NettyClientChannelHandler rpcClientHandler;
 
@@ -51,7 +53,17 @@ public class NettyClientLoader implements RemotingLoaderService {
 	}
 
 	@Override
-	public void load(InetSocketAddress socketAddress, RpcSerializeProtocol serailizeProtocol) {
+	public void load(RemotingBean remotingBean) {
+		if (!(remotingBean instanceof NettyRemotingBean)) {
+			Preconditions.checkArgument(false, "RemotingBean must be NettyRemotingBean ");
+		}
+		NettyRemotingBean nettyRemotingBean = (NettyRemotingBean) remotingBean;
+		InetSocketAddress socketAddress = nettyRemotingBean.getSocketAddress();
+		RpcSerializeProtocol serailizeProtocol = nettyRemotingBean.getProtocol();
+		parallel = nettyRemotingBean.getThreads().intValue();
+		threadPoolExecutor = MoreExecutors.listeningDecorator(RpcThreadPoolExecutors.newFixedThreadPool(parallel, -1));
+		eventLoopGroup = new NioEventLoopGroup(parallel);
+
 		ListenableFuture<Boolean> listenableFuture = threadPoolExecutor
 				.submit(new NettyClientInitializerTask(socketAddress, serailizeProtocol, eventLoopGroup));
 
