@@ -24,7 +24,7 @@ public class NettyJDKProxyHandler extends AbstractInvocationHandler {
 		RpcMessageRequest request = new RpcMessageRequest();
 		String className = method.getDeclaringClass().getName();
 		request.setMessageId(UUID.randomUUID().toString());
-		request.setClassName(className);
+		request.setClassType(request.getClass());
 		request.setMethodName(method.getName());
 		request.setParameterTypes(method.getParameterTypes());
 		request.setParamterVals(args);

@@ -19,7 +19,7 @@ public class RpcMessageRequest implements Serializable {
 
 	private String methodName;
 
-	private String className;
+	private Class<?> classType;
 
 	private Class<?>[] parameterTypes;
 
@@ -41,12 +41,12 @@ public class RpcMessageRequest implements Serializable {
 		this.methodName = methodName;
 	}
 
-	public String getClassName() {
-		return className;
+	public Class<?> getClassType() {
+		return classType;
 	}
 
-	public void setClassName(String className) {
-		this.className = className;
+	public void setClassType(Class<?> classType) {
+		this.classType = classType;
 	}
 
 	public Class<?>[] getParameterTypes() {

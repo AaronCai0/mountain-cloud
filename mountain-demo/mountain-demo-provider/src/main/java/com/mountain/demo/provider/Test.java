@@ -11,7 +11,7 @@ public class Test {
 		// calc.add(1,2);
 
 		// MethodAccess md = MethodAccess.get(CalcServiceImpl.class);
-		ReflectionAsms.loadClassCache(CalcServiceImpl.class);
+		ReflectionAsms.get(CalcServiceImpl.class);
 
 		Class<?> cls = CalcServiceImpl.class;
 		long ti = System.currentTimeMillis();

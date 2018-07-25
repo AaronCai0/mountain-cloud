@@ -4,6 +4,8 @@ package com.mountainframework.config;
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
 import java.io.Serializable;
+import java.util.Map;
+import java.util.Map.Entry;
 import java.util.Set;
 
 import org.apache.commons.lang3.builder.ReflectionToStringBuilder;
@@ -18,6 +20,9 @@ import org.springframework.core.io.Resource;
 import com.google.common.collect.Sets;
 import com.mountainframework.common.Constants;
 import com.mountainframework.common.ObjectUtils;
+import com.mountainframework.common.ReflectionAsmCache;
+import com.mountainframework.common.ReflectionAsmCache.ReflectionAsmCacheBuilder;
+import com.mountainframework.common.ReflectionAsms;
 import com.mountainframework.common.StringPatternUtils;
 import com.mountainframework.common.bean.AddressSplitResult;
 import com.mountainframework.config.init.MountainRpcBuilderFacotry;
@@ -34,6 +39,8 @@ import com.mountainframework.registry.zookeeper.service.ZooKeeperServiceRegistry
  * @since 1.0
  */
 public class ProviderConfig implements InitializingBean, ApplicationListener<ContextRefreshedEvent>, Serializable {
+
+	private static final Logger logger = LoggerFactory.getLogger(ProviderConfig.class);
 
 	private static final long serialVersionUID = 6994526915703694262L;
 
@@ -54,6 +61,18 @@ public class ProviderConfig implements InitializingBean, ApplicationListener<Con
 
 	@Override
 	public void onApplicationEvent(ContextRefreshedEvent event) {
+		Map<String, Object> serviceMap = MountainConfigContainer.getContainer().getServiceBeanMap();
+		try {
+			ReflectionAsmCacheBuilder asmBuilder = ReflectionAsmCache.builder();
+			Set<Entry<String, Object>> serviceEntrySet = serviceMap.entrySet();
+			for (Entry<String, Object> serviceEntry : serviceEntrySet) {
+				asmBuilder.loadCache(Class.forName(serviceEntry.getKey()), serviceEntry.getValue().getClass());
+			}
+			ReflectionAsms.initCache(asmBuilder.build());
+		} catch (ClassNotFoundException e) {
+			logger.error("Class not found : " + e.getMessage(), e);
+		}
+
 		Set<ServiceRegistry> serviceRegistries = Sets.newConcurrentHashSet();
 		Set<RegistryConfig> registryConfigs = MountainConfigContainer.getContainer().getProviderRegistryConfigs();
 		for (RegistryConfig registryConfig : registryConfigs) {

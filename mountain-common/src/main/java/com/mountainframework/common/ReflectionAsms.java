@@ -1,10 +1,12 @@
 package com.mountainframework.common;
 
-import java.util.Map;
+import java.util.concurrent.TimeUnit;
 
 import com.esotericsoftware.reflectasm.MethodAccess;
 import com.google.common.base.Preconditions;
-import com.google.common.collect.Maps;
+import com.google.common.cache.CacheBuilder;
+import com.google.common.cache.CacheLoader;
+import com.google.common.cache.LoadingCache;
 
 /**
  * 反射工具类
@@ -14,54 +16,34 @@ import com.google.common.collect.Maps;
  */
 public class ReflectionAsms {
 
-	// private static final Logger logger =
-	// LoggerFactory.getLogger(ReflectionAsmUtils.class);
+	private static final LoadingCache<Class<?>, MethodAccess> cachedMap = CacheBuilder.newBuilder().maximumSize(1024)
+			.expireAfterWrite(24, TimeUnit.HOURS).build(new CacheLoader<Class<?>, MethodAccess>() {
+				@Override
+				public MethodAccess load(Class<?> key) throws Exception {
+					return MethodAccess.get(key);
+				}
+			});
 
-	// private static final Cache<Class<?>, MethodAccess> cahce =
-	// CacheBuilder.newBuilder().maximumSize(1024)
-	// .expireAfterWrite(24, TimeUnit.HOURS).build(new CacheLoader<K, V1>() {
-	// @Override
-	// public V1 load(K key) throws Exception {
-	// return null;
-	// }
-	// });
+	private static ReflectionAsmCache cacheAsm;
 
-	// public static MethodAccess get(final Class<?> type) {
-	// try {
-	// return cahce.get(type, new Callable<MethodAccess>() {
-	// @Override
-	// public MethodAccess call() throws Exception {
-	// return MethodAccess.get(type);
-	// }
-	// });
-	// } catch (ExecutionException e) {
-	// logger.error("Get cache error", e);
-	// return null;
-	// }
-	// }
-
-	private static final Map<Class<?>, MethodAccess> cacheMap = Maps.newConcurrentMap();
-
-	public static MethodAccess get(final Class<?> type) {
-		return Preconditions.checkNotNull(cacheMap.get(type), "Get cache methodAccess is null");
+	public static void initCache(ReflectionAsmCache cacheAsmVar) {
+		cacheAsm = cacheAsmVar;
 	}
 
-	public static MethodAccess getUnchecked(final Class<?> type) {
-		return cacheMap.get(type);
+	public static MethodAccess getCache(Class<?> type) {
+		return cacheAsm.get(type);
 	}
 
-	// public static Map<Class<?>, MethodAccess> getCacheMap() {
-	// return cacheMap;
-	// }
-
-	public static void loadClassCache(Class<?> cls) {
-		cacheMap.put(cls, MethodAccess.get(cls));
+	public static MethodAccess getUncheckedCache(Class<?> type) {
+		return cacheAsm.getUnchecked(type);
 	}
 
-	public static void loadClassCache(Class<?>[] clses) {
-		for (Class<?> cls : clses) {
-			cacheMap.put(cls, MethodAccess.get(cls));
-		}
+	public static MethodAccess get(Class<?> type) {
+		return Preconditions.checkNotNull(cachedMap.getUnchecked(type), "Get cache methodAccess is null");
+	}
+
+	public static MethodAccess getUnchecked(Class<?> type) {
+		return cachedMap.getUnchecked(type);
 	}
 
 }

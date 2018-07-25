@@ -1,5 +1,6 @@
 package com.mountainframework.common;
 
+import java.util.Collection;
 import java.util.Map;
 
 import com.esotericsoftware.reflectasm.MethodAccess;
@@ -33,14 +34,23 @@ public class ReflectionAsmCache {
 
 		private Map<Class<?>, MethodAccess> cachedMap = Maps.newConcurrentMap();
 
-		public void loadCache(Class<?> cls) {
-			cachedMap.put(cls, MethodAccess.get(cls));
+		public ReflectionAsmCacheBuilder loadCache(Class<?> key, Class<?> value) {
+			cachedMap.put(key, MethodAccess.get(value));
+			return this;
 		}
 
-		public void loadCache(Class<?>[] clses) {
+		// public ReflectionAsmCacheBuilder loadCache(Class<?>[] clses) {
+		// for (Class<?> cls : clses) {
+		// cachedMap.put(cls, MethodAccess.get(cls));
+		// }
+		// return this;
+		// }
+
+		public ReflectionAsmCacheBuilder loadCache(Collection<Class<?>> clses) {
 			for (Class<?> cls : clses) {
 				cachedMap.put(cls, MethodAccess.get(cls));
 			}
+			return this;
 		}
 
 		public ReflectionAsmCache build() {

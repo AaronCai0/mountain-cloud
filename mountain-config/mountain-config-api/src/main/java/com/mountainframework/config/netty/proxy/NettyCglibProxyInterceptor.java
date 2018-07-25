@@ -17,9 +17,9 @@ public class NettyCglibProxyInterceptor implements MethodInterceptor {
 	@Override
 	public Object intercept(Object obj, Method method, Object[] args, MethodProxy proxy) throws Throwable {
 		RpcMessageRequest request = new RpcMessageRequest();
-		String className = method.getDeclaringClass().getName();
+		Class<?> classType = method.getDeclaringClass();
 		request.setMessageId(UUID.randomUUID().toString());
-		request.setClassName(className);
+		request.setClassType(classType);
 		request.setMethodName(method.getName());
 		request.setParameterTypes(method.getParameterTypes());
 		request.setParamterVals(args);
@@ -28,8 +28,8 @@ public class NettyCglibProxyInterceptor implements MethodInterceptor {
 		RpcMessageCallBack callBack = clientHandler.sendRequest(request);
 		Long consumerTimeout = MountainConfigContainer.getContainer().getConsumer().getTimeout();
 		if (consumerTimeout == null || consumerTimeout.longValue() == 0) {
-			consumerTimeout = MountainConfigContainer.getContainer().getServiceReferenceConfigMap().get(className)
-					.getTimeout();
+			consumerTimeout = MountainConfigContainer.getContainer().getServiceReferenceConfigMap()
+					.get(classType.getName()).getTimeout();
 		}
 		return callBack.start(consumerTimeout);
 	}

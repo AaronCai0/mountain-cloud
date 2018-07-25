@@ -64,10 +64,31 @@ public class NettyClientLoader implements RemotingLoaderService {
 		threadPoolExecutor = MoreExecutors.listeningDecorator(RpcThreadPoolExecutors.newFixedThreadPool(parallel, -1));
 		eventLoopGroup = new NioEventLoopGroup(parallel);
 
+		// Bootstrap bootstrap = new Bootstrap();
+		// ChannelFuture channelFuture =
+		// bootstrap.group(eventLoopGroup).channel(NioSocketChannel.class)
+		// .option(ChannelOption.SO_KEEPALIVE,
+		// true).handler(NettyClientChannelInitializer.create(protocol))
+		// .connect(inetSocketAddress);
+		//
+		// channelFuture.addListener(new ChannelFutureListener() {
+		// @Override
+		// public void operationComplete(ChannelFuture future) throws Exception {
+		// if (future.isSuccess()) {
+		// NettyClientChannelHandler rpcClientHanlder = future.channel().pipeline()
+		// .get(NettyClientChannelHandler.class);
+		// NettyClientLoader.getInstance().setRpcClientHandler(rpcClientHanlder);
+		// }
+		// }
+		// });
+
 		ListenableFuture<Boolean> listenableFuture = threadPoolExecutor
 				.submit(new NettyClientInitializerTask(socketAddress, serailizeProtocol, eventLoopGroup));
 
 		// 监听线程池异步的执行结果成功与否再决定是否唤醒全部的客户端RPC线程
+		// Futures.getChecked(future, exceptionClass, timeout, unit)(future, timeout,
+		// unit, exceptionClass);
+
 		Futures.addCallback(listenableFuture, new FutureCallback<Boolean>() {
 			@Override
 			public void onSuccess(Boolean result) {

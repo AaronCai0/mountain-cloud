@@ -35,9 +35,9 @@ public class NettyServerInitializerTask implements Callable<Boolean> {
 	@Override
 	public Boolean call() throws Exception {
 		response.setMessageId(request.getMessageId());
-		String className = request.getClassName();
-		Object requestBean = handlerBeanMap.get(className);
-		Object result = ReflectionAsms.get(requestBean.getClass()).invoke(requestBean, request.getMethodName(),
+		Class<?> classType = request.getClassType();
+		Object requestBean = handlerBeanMap.get(classType.getName());
+		Object result = ReflectionAsms.getCache(classType).invoke(requestBean, request.getMethodName(),
 				request.getParamterVals());
 		// Object result = MethodAccess.get(requestBean.getClass()).invoke(requestBean,
 		// request.getMethodName(),

@@ -44,7 +44,7 @@ public class Consumer {
 		// System.out.println(tip);
 		System.out.println("Mountain RPC调用总共耗时 ：" + (double) time / 1000 + " s");
 		System.out.println("Mountain RPC调用平均耗时:" + ((double) time) / parallel + " ms");
-		System.out.println("Mountain RPC调用TPS:" + Math.ceil((double) parallel / ((double) time / 1000)));
+		System.out.println("Mountain RPC调用TPS:" + Math.ceil(parallel / ((double) time / 1000)));
 	}
 
 	public static Runnable getTask(CountDownLatch signal, CountDownLatch finish, int idex, CalcService calcService) {
@@ -86,7 +86,7 @@ public class Consumer {
 		// System.out.println(tip);
 		System.out.println("Mountain RPC调用总共耗时 ：" + (double) time / 1000 + " s");
 		System.out.println("Mountain RPC调用平均耗时:" + ((double) time) / parallel + " ms");
-		System.out.println("Mountain RPC调用TPS:" + Math.ceil((double) parallel / ((double) time / 1000)));
+		System.out.println("Mountain RPC调用TPS:" + Math.ceil(parallel / ((double) time / 1000)));
 	}
 
 }
