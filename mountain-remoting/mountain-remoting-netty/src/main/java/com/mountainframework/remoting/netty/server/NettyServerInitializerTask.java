@@ -3,7 +3,7 @@ package com.mountainframework.remoting.netty.server;
 import java.util.Map;
 import java.util.concurrent.Callable;
 
-import com.mountainframework.common.ReflectionAsmUtils;
+import com.mountainframework.common.ReflectionAsms;
 import com.mountainframework.rpc.model.RpcMessageRequest;
 import com.mountainframework.rpc.model.RpcMessageResponse;
 
@@ -37,7 +37,7 @@ public class NettyServerInitializerTask implements Callable<Boolean> {
 		response.setMessageId(request.getMessageId());
 		String className = request.getClassName();
 		Object requestBean = handlerBeanMap.get(className);
-		Object result = ReflectionAsmUtils.get(requestBean.getClass()).invoke(requestBean, request.getMethodName(),
+		Object result = ReflectionAsms.get(requestBean.getClass()).invoke(requestBean, request.getMethodName(),
 				request.getParamterVals());
 		// Object result = MethodAccess.get(requestBean.getClass()).invoke(requestBean,
 		// request.getMethodName(),
