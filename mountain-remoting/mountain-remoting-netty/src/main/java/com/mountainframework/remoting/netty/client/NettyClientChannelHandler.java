@@ -2,6 +2,9 @@ package com.mountainframework.remoting.netty.client;
 
 import java.net.SocketAddress;
 import java.util.Map;
+import java.util.concurrent.atomic.AtomicInteger;
+
+import org.slf4j.LoggerFactory;
 
 import com.google.common.collect.Maps;
 import com.mountainframework.rpc.model.RpcMessageCallBack;
@@ -29,6 +32,12 @@ public class NettyClientChannelHandler extends ChannelInboundHandlerAdapter {
 
 	private SocketAddress remoteAddress;
 
+	private AtomicInteger in = new AtomicInteger(1);
+
+	private long min;
+
+	private long max;
+
 	public Channel getChannel() {
 		return channel;
 	}
@@ -54,11 +63,24 @@ public class NettyClientChannelHandler extends ChannelInboundHandlerAdapter {
 		RpcMessageResponse response = (RpcMessageResponse) msg;
 		String messageId = response.getMessageId();
 		RpcMessageCallBack callBack = callBackMap.get(messageId);
-		if (callBack != null) {
-			callBackMap.remove(messageId);
-			callBack.over(response);
+		if (in.getAndIncrement() == 1) {
+			min = System.currentTimeMillis();
 		}
+		// System.out.println(callBack);
+		LoggerFactory.getLogger("a").info(in.get() + "" + callBack.toString());
+		// if (callBack != null) {
+		// callBackMap.remove(messageId);
+		// callBack.over(response);
+		// }
+		max = System.currentTimeMillis();
+		LoggerFactory.getLogger("a").info("" + min);
+		LoggerFactory.getLogger("a").info("" + max);
 	}
+
+	// public static void main(String[] args) {
+	//
+	// System.out.println(11532598846048L);
+	// }
 
 	@Override
 	public void exceptionCaught(ChannelHandlerContext ctx, Throwable cause) throws Exception {

@@ -41,6 +41,7 @@ public class RpcMessageCallBack implements Serializable {
 			if (response == null) {
 				throw new MountainInvokeTimeoutException("Invoke timeout.");
 			}
+
 			return response.getResult();
 		} catch (InterruptedException | MountainInvokeTimeoutException e) {
 			logger.error(e.getMessage(), e);
