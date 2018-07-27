@@ -24,7 +24,7 @@ public class Consumer {
 
 	@Test
 	public void testService() throws Exception {
-		int parallel = 10000;
+		int parallel = 100000;
 		StopWatch sw = new StopWatch();
 		sw.start();
 

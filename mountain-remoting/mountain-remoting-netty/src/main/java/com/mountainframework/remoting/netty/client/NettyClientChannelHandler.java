@@ -2,14 +2,13 @@ package com.mountainframework.remoting.netty.client;
 
 import java.net.SocketAddress;
 import java.util.Map;
-import java.util.concurrent.atomic.AtomicInteger;
-
-import org.slf4j.LoggerFactory;
+import java.util.concurrent.FutureTask;
 
 import com.google.common.collect.Maps;
 import com.mountainframework.rpc.model.RpcMessageCallBack;
 import com.mountainframework.rpc.model.RpcMessageRequest;
 import com.mountainframework.rpc.model.RpcMessageResponse;
+import com.mountainframework.rpc.support.RpcThreadPoolExecutors;
 
 import io.netty.buffer.Unpooled;
 import io.netty.channel.Channel;
@@ -28,15 +27,11 @@ public class NettyClientChannelHandler extends ChannelInboundHandlerAdapter {
 
 	private Map<String, RpcMessageCallBack> callBackMap = Maps.newConcurrentMap();
 
+	private Map<String, RpcMessageAyncCallBack> ayncCallBackMap = Maps.newConcurrentMap();
+
 	private volatile Channel channel;
 
 	private SocketAddress remoteAddress;
-
-	private AtomicInteger in = new AtomicInteger(1);
-
-	private long min;
-
-	private long max;
 
 	public Channel getChannel() {
 		return channel;
@@ -58,29 +53,27 @@ public class NettyClientChannelHandler extends ChannelInboundHandlerAdapter {
 		this.remoteAddress = this.channel.remoteAddress();
 	}
 
+	// @Override
+	// public void channelRead(ChannelHandlerContext ctx, Object msg) throws
+	// Exception {
+	// RpcMessageResponse response = (RpcMessageResponse) msg;
+	// String messageId = response.getMessageId();
+	// RpcMessageCallBack callBack = callBackMap.get(messageId);
+	//
+	// if (callBack != null) {
+	// callBack.over(response);
+	// }
+	// }
+
 	@Override
 	public void channelRead(ChannelHandlerContext ctx, Object msg) throws Exception {
 		RpcMessageResponse response = (RpcMessageResponse) msg;
 		String messageId = response.getMessageId();
-		RpcMessageCallBack callBack = callBackMap.get(messageId);
-		if (in.getAndIncrement() == 1) {
-			min = System.currentTimeMillis();
-		}
-		// System.out.println(callBack);
-		LoggerFactory.getLogger("a").info(in.get() + "" + callBack.toString());
-		// if (callBack != null) {
-		// callBackMap.remove(messageId);
-		// callBack.over(response);
-		// }
-		max = System.currentTimeMillis();
-		LoggerFactory.getLogger("a").info("" + min);
-		LoggerFactory.getLogger("a").info("" + max);
+		RpcMessageAyncCallBack callBack = ayncCallBackMap.get(messageId);
+		callBack.getCallBack().setResponse(response);
+		FutureTask<Object> futureTask = callBack.getFutureTask();
+		RpcThreadPoolExecutors.newFixedThreadPool(200, -1).submit(futureTask);
 	}
-
-	// public static void main(String[] args) {
-	//
-	// System.out.println(11532598846048L);
-	// }
 
 	@Override
 	public void exceptionCaught(ChannelHandlerContext ctx, Throwable cause) throws Exception {
@@ -96,6 +89,47 @@ public class NettyClientChannelHandler extends ChannelInboundHandlerAdapter {
 		callBackMap.put(request.getMessageId(), callBack);
 		channel.writeAndFlush(request);
 		return callBack;
+	}
+
+	public FutureTask<Object> sendRequest3(RpcMessageRequest request) {
+		RpcMessageAyncCallBack ayncCallBack = new RpcMessageAyncCallBack();
+		RpcMessageCallBack callBack = new RpcMessageCallBack();
+		FutureTask<Object> futureTask = new FutureTask<>(callBack);
+		ayncCallBack.setCallBack(callBack);
+		ayncCallBack.setFutureTask(futureTask);
+		ayncCallBackMap.put(request.getMessageId(), ayncCallBack);
+		channel.writeAndFlush(request);
+		return futureTask;
+	}
+
+	public void sendRequest2(RpcMessageRequest request) {
+		RpcMessageCallBack callBack = new RpcMessageCallBack();
+		callBackMap.put(request.getMessageId(), callBack);
+		channel.writeAndFlush(request);
+	}
+
+	static class RpcMessageAyncCallBack {
+
+		private RpcMessageCallBack callBack;
+
+		private FutureTask<Object> futureTask;
+
+		public RpcMessageCallBack getCallBack() {
+			return callBack;
+		}
+
+		public void setCallBack(RpcMessageCallBack callBack) {
+			this.callBack = callBack;
+		}
+
+		public FutureTask<Object> getFutureTask() {
+			return futureTask;
+		}
+
+		public void setFutureTask(FutureTask<Object> futureTask) {
+			this.futureTask = futureTask;
+		}
+
 	}
 
 }

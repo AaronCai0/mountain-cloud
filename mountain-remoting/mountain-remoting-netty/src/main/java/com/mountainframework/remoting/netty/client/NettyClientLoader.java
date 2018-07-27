@@ -100,7 +100,6 @@ public class NettyClientLoader implements RemotingLoaderService {
 		} finally {
 			lock.unlock();
 		}
-
 		// ListenableFuture<Boolean> listenableFuture = threadPoolExecutor
 		// .submit(new NettyClientInitializerTask(socketAddress, serailizeProtocol,
 		// eventLoopGroup));
