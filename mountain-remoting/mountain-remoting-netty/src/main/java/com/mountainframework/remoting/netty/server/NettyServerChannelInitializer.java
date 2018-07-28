@@ -2,7 +2,8 @@ package com.mountainframework.remoting.netty.server;
 
 import java.util.Map;
 
-import com.mountainframework.remoting.netty.protocol.SerializeProtocolSelector;
+import com.mountainframework.remoting.netty.SerializeProtocolSelectors;
+import com.mountainframework.remoting.netty.protocol.SerializeProtocolServerSelector;
 import com.mountainframework.serialization.RpcSerializeProtocol;
 
 import io.netty.channel.ChannelInitializer;
@@ -22,6 +23,8 @@ public class NettyServerChannelInitializer extends ChannelInitializer<SocketChan
 
 	private RpcSerializeProtocol protocol;
 
+	private final SerializeProtocolServerSelector selector = SerializeProtocolSelectors.serverSelector();
+
 	private NettyServerChannelInitializer() {
 	}
 
@@ -38,7 +41,7 @@ public class NettyServerChannelInitializer extends ChannelInitializer<SocketChan
 	@Override
 	protected void initChannel(SocketChannel ch) throws Exception {
 		ChannelPipeline pipeline = ch.pipeline();
-		SerializeProtocolSelector.selector().initRpcDirect(true).select(protocol, pipeline);
+		selector.select(protocol, pipeline);
 		pipeline.addLast(new NettyServerChannelHandler(handlerBeanMap));
 	}
 

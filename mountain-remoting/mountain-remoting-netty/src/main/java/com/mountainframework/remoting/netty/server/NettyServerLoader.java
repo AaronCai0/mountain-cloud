@@ -15,7 +15,9 @@ import com.google.common.util.concurrent.Futures;
 import com.google.common.util.concurrent.ListenableFuture;
 import com.google.common.util.concurrent.ListeningExecutorService;
 import com.google.common.util.concurrent.MoreExecutors;
+import com.lmax.disruptor.RingBuffer;
 import com.mountainframework.common.Constants;
+import com.mountainframework.common.queue.DefaultDisruptorQueue;
 import com.mountainframework.remoting.RemotingLoaderService;
 import com.mountainframework.remoting.model.RemotingBean;
 import com.mountainframework.remoting.netty.model.NettyRemotingBean;
@@ -26,6 +28,7 @@ import com.mountainframework.rpc.support.RpcThreadPoolExecutors;
 import com.mountainframework.serialization.RpcSerializeProtocol;
 
 import io.netty.bootstrap.ServerBootstrap;
+import io.netty.buffer.PooledByteBufAllocator;
 import io.netty.channel.ChannelFuture;
 import io.netty.channel.ChannelFutureListener;
 import io.netty.channel.ChannelHandlerContext;
@@ -55,6 +58,10 @@ public class NettyServerLoader implements RemotingLoaderService {
 
 	private EventLoopGroup workEvent;
 
+	private static DefaultDisruptorQueue<NettyServerChannelReadEvent> disruptorQueue;
+
+	private static RingBuffer<NettyServerChannelReadEvent> disruptorProvider;
+
 	public static NettyServerLoader create() {
 		return new NettyServerLoader();
 	}
@@ -75,10 +82,14 @@ public class NettyServerLoader implements RemotingLoaderService {
 			bossEvent = new NioEventLoopGroup();
 			workEvent = new NioEventLoopGroup(parallel, new RpcThreadFactory(), SelectorProvider.provider());
 			atomicRequestCount = new AtomicLong(1L);
+			disruptorQueue = DefaultDisruptorQueue.create(NettyServerChannelReadEvent::new,
+					new NettyChannelReadEventHandler());
+			disruptorProvider = disruptorQueue.start();
 
 			ServerBootstrap bootstrap = new ServerBootstrap();
 			ChannelFuture channelFuture = bootstrap.group(bossEvent, workEvent).channel(NioServerSocketChannel.class)
-					.option(ChannelOption.SO_BACKLOG, 10240).option(ChannelOption.SO_KEEPALIVE, true)
+					.option(ChannelOption.SO_BACKLOG, 1024).option(ChannelOption.SO_KEEPALIVE, true)
+					.option(ChannelOption.ALLOCATOR, PooledByteBufAllocator.DEFAULT)
 					.childHandler(NettyServerChannelInitializer.create(handlerBeanMap, serailizeProtocol))
 					.bind(socketAddress).sync();
 
@@ -117,6 +128,18 @@ public class NettyServerLoader implements RemotingLoaderService {
 				logger.error("Invoke fail.", t);
 			}
 		}, threadPoolExecutor);
+	}
+
+	public static AtomicLong getAtomicRequestCount() {
+		return atomicRequestCount;
+	}
+
+	public static DefaultDisruptorQueue<NettyServerChannelReadEvent> getDisruptorQueue() {
+		return disruptorQueue;
+	}
+
+	public static RingBuffer<NettyServerChannelReadEvent> getDisruptorProvider() {
+		return disruptorProvider;
 	}
 
 }

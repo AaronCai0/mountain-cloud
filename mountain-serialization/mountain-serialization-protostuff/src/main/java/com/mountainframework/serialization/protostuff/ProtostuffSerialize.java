@@ -13,21 +13,13 @@ import com.mountainframework.serialization.RpcSerialize;
 
 public class ProtostuffSerialize implements RpcSerialize {
 
-	private static final SchemaCache cachedSchema = SchemaCache.getInstance();
 	private static final Objenesis objenesis = new ObjenesisStd(true);
-
-	@SuppressWarnings("unchecked")
-	private static <T> Schema<T> getSchema(Class<?> cls) {
-		return (Schema<T>) cachedSchema.get(cls);
-	}
 
 	@Override
 	public Object deserialize(InputStream input, Class<?> cls) {
 		try {
-			// Class<?> cls = isRpcDirect() ? RpcMessageRequest.class :
-			// RpcMessageResponse.class;
 			Object message = objenesis.newInstance(cls);
-			Schema<Object> schema = getSchema(cls);
+			Schema<Object> schema = SchemaCache.get(cls);
 			ProtostuffIOUtil.mergeFrom(input, message, schema);
 			return message;
 		} catch (Exception e) {
@@ -40,7 +32,7 @@ public class ProtostuffSerialize implements RpcSerialize {
 		Class<?> cls = object.getClass();
 		LinkedBuffer buffer = LinkedBuffer.allocate(LinkedBuffer.DEFAULT_BUFFER_SIZE);
 		try {
-			Schema<Object> schema = getSchema(cls);
+			Schema<Object> schema = SchemaCache.get(cls);
 			ProtostuffIOUtil.writeTo(output, object, schema, buffer);
 		} catch (Exception e) {
 			throw new IllegalStateException(e.getMessage(), e);

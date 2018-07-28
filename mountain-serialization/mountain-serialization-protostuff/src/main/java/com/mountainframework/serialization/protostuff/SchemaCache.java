@@ -16,16 +16,13 @@ public class SchemaCache {
 
 	private static final Logger logger = LoggerFactory.getLogger(SchemaCache.class);
 
-	public static SchemaCache getInstance() {
-		return SchemaCacheHolder.INSTANCE;
-	}
+	private static Cache<Class<?>, Schema<?>> cache = CacheBuilder.newBuilder().maximumSize(1024)
+			.expireAfterWrite(24, TimeUnit.HOURS).build();
 
-	private Cache<Class<?>, Schema<?>> cache = CacheBuilder.newBuilder().maximumSize(1024)
-			.expireAfterWrite(1, TimeUnit.HOURS).build();
-
-	public Schema<?> get(final Class<?> cls) {
+	@SuppressWarnings("unchecked")
+	public static <T> Schema<T> get(final Class<?> cls) {
 		try {
-			return cache.get(cls, new Callable<RuntimeSchema<?>>() {
+			return (Schema<T>) cache.get(cls, new Callable<RuntimeSchema<?>>() {
 				@Override
 				public RuntimeSchema<?> call() throws Exception {
 					return RuntimeSchema.createFrom(cls);
@@ -37,7 +34,8 @@ public class SchemaCache {
 		}
 	}
 
-	private static class SchemaCacheHolder {
-		private static final SchemaCache INSTANCE = new SchemaCache();
+	public static void putCache(Class<?> key) {
+		cache.put(key, RuntimeSchema.createFrom(key));
 	}
+
 }

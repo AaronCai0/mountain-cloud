@@ -5,6 +5,7 @@ import java.util.Map;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import com.google.common.base.Preconditions;
 import com.mountainframework.rpc.model.RpcMessageRequest;
 import com.mountainframework.rpc.model.RpcMessageResponse;
 
@@ -29,15 +30,20 @@ public class NettyServerChannelHandler extends ChannelInboundHandlerAdapter {
 	}
 
 	@Override
-	public void channelRead(ChannelHandlerContext ctx, Object msg) throws Exception {
+	public void channelRead(ChannelHandlerContext channelHandlerContext, Object msg) throws Exception {
 		if (!(msg instanceof RpcMessageRequest)) {
-			logger.warn("Mountain server channelRead is not RpcMessageRequest");
+			Preconditions.checkArgument(false, "Mountain server channelRead is not RpcMessageRequest.");
 			return;
 		}
 		RpcMessageRequest request = (RpcMessageRequest) msg;
 		RpcMessageResponse response = new RpcMessageResponse();
-		NettyServerInitializerTask task = new NettyServerInitializerTask(handlerBeanMap, request, response);
-		NettyServerLoader.submit(task, ctx, request, response);
+		// NettyServerInitializerTask task = new
+		// NettyServerInitializerTask(handlerBeanMap, request, response);
+		// NettyServerLoader.submit(task, ctx, request, response);
+
+		NettyServerChannelReadEvent task = new NettyServerChannelReadEvent(channelHandlerContext, handlerBeanMap,
+				request, response);
+		NettyServerChannelReadEvent.publishReadEvent(NettyServerLoader.getDisruptorProvider(), task);
 	}
 
 	@Override

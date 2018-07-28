@@ -8,6 +8,7 @@ import java.util.concurrent.FutureTask;
 import com.mountainframework.config.init.context.MountainConfigContainer;
 import com.mountainframework.remoting.netty.client.NettyClientChannelHandler;
 import com.mountainframework.remoting.netty.client.NettyClientLoader;
+import com.mountainframework.rpc.model.RpcMessageCallBack;
 import com.mountainframework.rpc.model.RpcMessageRequest;
 
 import net.sf.cglib.proxy.MethodInterceptor;
@@ -29,29 +30,19 @@ public class NettyCglibProxyInterceptor implements MethodInterceptor {
 				request.setParamterVals(args);
 
 				NettyClientChannelHandler clientHandler = NettyClientLoader.getInstance().getRpcClientHandler();
-				// RpcMessageCallBack callBack = clientHandler.sendRequest(request);
-
-				FutureTask<Object> futureTask = clientHandler.sendRequest3(request);
+				RpcMessageCallBack callBack = clientHandler.sendRequest(request);
+				// FutureTask<RpcMessageCallBack> future = clientHandler.sendRequest(request);
 				Long consumerTimeout = MountainConfigContainer.getContainer().getConsumer().getTimeout();
 				if (consumerTimeout == null || consumerTimeout.longValue() == 0) {
 					consumerTimeout = MountainConfigContainer.getContainer().getServiceReferenceConfigMap()
 							.get(classType.getName()).getTimeout();
 				}
-				return futureTask.get();
+				return callBack.start(consumerTimeout);
+				// return future.get().start(consumerTimeout);
 			}
 		});
 		NettyClientLoader.getInstance().getThreadPoolExecutor().submit(futureTask);
 		return futureTask.get();
-	}
-
-	public static void main(String[] args) throws Exception {
-		FutureTask<Object> f = new FutureTask<>(new Callable<Object>() {
-			@Override
-			public Object call() throws Exception {
-				return 1;
-			}
-		});
-		System.out.println(f.get());
 	}
 
 }

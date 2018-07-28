@@ -4,22 +4,15 @@ import com.mountainframework.remoting.netty.ChannelPipeLineHandler;
 import com.mountainframework.remoting.netty.codec.prostuff.ProtostuffCodec;
 import com.mountainframework.remoting.netty.codec.prostuff.ProtostuffDecoder;
 import com.mountainframework.remoting.netty.codec.prostuff.ProtostuffEncoder;
+import com.mountainframework.rpc.model.RpcMessageResponse;
 
 import io.netty.channel.ChannelPipeline;
 
-public class ProtostuffProtocolHandler implements ChannelPipeLineHandler {
-
-	private boolean rpcDirect;
-
-	public ProtostuffProtocolHandler buildRpcDirect(boolean rpcDirect) {
-		this.rpcDirect = rpcDirect;
-		return this;
-	}
+public class ProtostuffProtocolClientHandler implements ChannelPipeLineHandler {
 
 	@Override
 	public void handle(ChannelPipeline pipeline) {
-		ProtostuffCodec codec = new ProtostuffCodec();
-		codec.setRpcDirect(rpcDirect);
+		ProtostuffCodec codec = ProtostuffCodec.create(RpcMessageResponse.class);
 		pipeline.addLast(new ProtostuffEncoder(codec));
 		pipeline.addLast(new ProtostuffDecoder(codec));
 	}

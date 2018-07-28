@@ -16,6 +16,7 @@ public class KryoCodec implements NettyMessageCodec {
 
 	private final KryoSerialize serializetor = KryoSerialize
 			.getInstance(new Class<?>[] { RpcMessageRequest.class, RpcMessageResponse.class });
+
 	private final Closer closer;
 
 	public static KryoCodec create() {

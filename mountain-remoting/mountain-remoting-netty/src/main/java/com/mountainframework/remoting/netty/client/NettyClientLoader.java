@@ -17,6 +17,7 @@ import com.mountainframework.rpc.support.RpcThreadPoolExecutors;
 import com.mountainframework.serialization.RpcSerializeProtocol;
 
 import io.netty.bootstrap.Bootstrap;
+import io.netty.buffer.PooledByteBufAllocator;
 import io.netty.channel.ChannelFuture;
 import io.netty.channel.ChannelFutureListener;
 import io.netty.channel.ChannelOption;
@@ -74,6 +75,7 @@ public class NettyClientLoader implements RemotingLoaderService {
 		Bootstrap bootstrap = new Bootstrap();
 		ChannelFuture channelFuture = bootstrap.group(eventLoopGroup).channel(NioSocketChannel.class)
 				.option(ChannelOption.SO_KEEPALIVE, true)
+				.option(ChannelOption.ALLOCATOR, PooledByteBufAllocator.DEFAULT)
 				.handler(NettyClientChannelInitializer.create(serailizeProtocol)).connect(socketAddress);
 
 		try {

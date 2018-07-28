@@ -60,4 +60,20 @@ public class LongEventMain {
 		// shutdown 时不会自动关闭；
 
 	}
+
+	public static LongEventProducer start() {
+		LongEventFactory factory = new LongEventFactory();
+		int ringBufferSize = 1024 * 1024;
+		Disruptor<LongEvent> disruptor = new Disruptor<LongEvent>(factory, ringBufferSize, DaemonThreadFactory.INSTANCE,
+				ProducerType.SINGLE, new YieldingWaitStrategy());
+		disruptor.handleEventsWith(new LongEventHandler());
+		disruptor.start();
+		RingBuffer<LongEvent> ringBuffer = disruptor.getRingBuffer();
+		LongEventProducer producer = new LongEventProducer(ringBuffer);
+		return producer;
+	}
+
+	public static void stop(Disruptor<LongEvent> disruptor) {
+		disruptor.shutdown();
+	}
 }

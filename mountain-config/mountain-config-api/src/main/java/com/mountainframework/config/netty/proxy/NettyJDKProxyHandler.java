@@ -31,12 +31,14 @@ public class NettyJDKProxyHandler extends AbstractInvocationHandler {
 
 		NettyClientChannelHandler clientHandler = NettyClientLoader.getInstance().getRpcClientHandler();
 		RpcMessageCallBack callBack = clientHandler.sendRequest(request);
+		// FutureTask<RpcMessageCallBack> future = clientHandler.sendRequest(request);
 		Long consumerTimeout = MountainConfigContainer.getContainer().getConsumer().getTimeout();
 		if (consumerTimeout == null || consumerTimeout.longValue() == 0) {
 			consumerTimeout = MountainConfigContainer.getContainer().getServiceReferenceConfigMap().get(className)
 					.getTimeout();
 		}
 		return callBack.start(consumerTimeout);
+		// return future.get().start(consumerTimeout);
 	}
 
 }
