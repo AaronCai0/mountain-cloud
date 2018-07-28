@@ -64,6 +64,7 @@ public class NettyClientChannelHandler extends ChannelInboundHandlerAdapter {
 			callBackMap.remove(messageId);
 			if (callBackMap.isEmpty()) {
 				callBack.overAll();
+				// callBack.over(response);
 			}
 		});
 	}

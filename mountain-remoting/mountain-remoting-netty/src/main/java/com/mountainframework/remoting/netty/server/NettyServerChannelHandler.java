@@ -35,15 +35,23 @@ public class NettyServerChannelHandler extends ChannelInboundHandlerAdapter {
 			Preconditions.checkArgument(false, "Mountain server channelRead is not RpcMessageRequest.");
 			return;
 		}
-		RpcMessageRequest request = (RpcMessageRequest) msg;
-		RpcMessageResponse response = new RpcMessageResponse();
-		// NettyServerInitializerTask task = new
-		// NettyServerInitializerTask(handlerBeanMap, request, response);
-		// NettyServerLoader.submit(task, ctx, request, response);
+		channelHandlerContext.channel().eventLoop().execute(() -> {
+			RpcMessageRequest request = (RpcMessageRequest) msg;
+			RpcMessageResponse response = new RpcMessageResponse();
 
-		NettyServerChannelReadEvent task = new NettyServerChannelReadEvent(channelHandlerContext, handlerBeanMap,
-				request, response);
-		NettyServerChannelReadEvent.publishReadEvent(NettyServerLoader.getDisruptorProvider(), task);
+			// Map<String, Object> handlerBeanMap = event.getHandlerBeanMap();
+			// RpcMessageResponse response = event.getResponse();
+			// RpcMessageRequest request = event.getRequest();
+
+			// ChannelHandlerContext chx = event.getChannelHandlerContext();
+			// NettyServerInitializerTask task = new
+			// NettyServerInitializerTask(handlerBeanMap, request, response);
+			// NettyServerLoader.submit(task, ctx, request, response);
+
+			NettyServerChannelReadEvent task = new NettyServerChannelReadEvent(channelHandlerContext, handlerBeanMap,
+					request, response);
+			NettyServerChannelReadEvent.publishReadEvent(NettyServerLoader.getDisruptorProvider(), task);
+		});
 	}
 
 	@Override

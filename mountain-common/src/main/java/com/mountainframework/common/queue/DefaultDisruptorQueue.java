@@ -17,7 +17,7 @@ public class DefaultDisruptorQueue<T> implements DisruptorService<T> {
 	}
 
 	public static <T> DefaultDisruptorQueue<T> create(EventFactory<T> eventFactory, EventHandler<T> handler) {
-		int ringBufferSize = 1024;
+		int ringBufferSize = 1024 * 1024;
 		Disruptor<T> disruptor = new Disruptor<T>(eventFactory, ringBufferSize, DaemonThreadFactory.INSTANCE,
 				ProducerType.SINGLE, new YieldingWaitStrategy());
 		disruptor.handleEventsWith(handler);

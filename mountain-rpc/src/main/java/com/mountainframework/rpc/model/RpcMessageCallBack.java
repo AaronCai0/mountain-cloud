@@ -24,7 +24,7 @@ public class RpcMessageCallBack implements Serializable {
 
 	private static final Logger logger = LoggerFactory.getLogger(RpcMessageCallBack.class);
 
-	private RpcMessageResponse response;
+	private volatile RpcMessageResponse response;
 
 	private static Lock lock = new ReentrantLock();
 
@@ -39,7 +39,8 @@ public class RpcMessageCallBack implements Serializable {
 				condition.await(timeout, TimeUnit.MILLISECONDS);
 			}
 			if (response == null) {
-				throw new MountainInvokeTimeoutException("Invoke timeout.");
+				// throw new MountainInvokeTimeoutException("Invoke timeout.");
+				start(timeout);
 			}
 
 			return response.getResult();
