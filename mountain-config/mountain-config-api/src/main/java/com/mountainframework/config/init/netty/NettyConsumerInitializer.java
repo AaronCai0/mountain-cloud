@@ -38,6 +38,7 @@ public class NettyConsumerInitializer implements InitializingService {
 		Integer protocolPort = protocolConfig.getPort();
 		Integer threads = protocolConfig.getThreads();
 		String serializeProtocolName = protocolConfig.getSerialize();
+		Boolean keepAlive = protocolConfig.getKeepAlive();
 
 		Set<String> serviceDiscoveryAddress = Sets.newHashSet();
 		Set<ServiceDiscovery> registries = context.getConsumerRegistry();
@@ -56,14 +57,14 @@ public class NettyConsumerInitializer implements InitializingService {
 			String serviceProtocol = splitResult.getLeft();
 			String host = addressResult.getLeft();
 			String port = addressResult.getRight();
-			Preconditions.checkNotNull(host, "Registry get host is null");
-			Preconditions.checkNotNull(port, "Registry get port is null");
+			Preconditions.checkNotNull(host, "Registry get host is null.");
+			Preconditions.checkNotNull(port, "Registry get port is null.");
 			Integer portInt = Integer.parseInt(port);
 			if (host.equals(protocolHost) && portInt.equals(protocolPort) && serviceProtocol.equals(protocolName)) {
 				NettyRemotingClientBean nettyRemotingBean = NettyRemotingClientBean.builder()
 						.setSocketAddress(new InetSocketAddress(host, Integer.parseInt(port)))
 						.setProtocol(RpcSerializeProtocol.findProtocol(serializeProtocolName)).setThreads(threads)
-						.build();
+						.setKeepAlive(keepAlive).build();
 				NettyExecutors.clientExecutor().start(nettyRemotingBean);
 			}
 		}

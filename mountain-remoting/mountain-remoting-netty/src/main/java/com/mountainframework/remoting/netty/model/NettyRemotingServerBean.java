@@ -22,17 +22,31 @@ public class NettyRemotingServerBean extends RemotingBean implements Serializabl
 
 	private InetSocketAddress socketAddress;
 
+	private Integer backLog;
+
+	private Boolean keepAlive;
+
 	private NettyRemotingServerBean() {
 	}
 
 	private NettyRemotingServerBean(RpcSerializeProtocol protocol, Map<String, Object> handlerMap, Integer threads,
-			InetSocketAddress socketAddress) {
+			InetSocketAddress socketAddress, Integer backLog, Boolean keepAlive) {
 		super(protocol, handlerMap, threads);
 		this.socketAddress = socketAddress;
+		this.backLog = backLog;
+		this.keepAlive = keepAlive;
 	}
 
 	public InetSocketAddress getSocketAddress() {
 		return socketAddress;
+	}
+
+	public Integer getBackLog() {
+		return backLog;
+	}
+
+	public Boolean getKeepAlive() {
+		return keepAlive;
 	}
 
 	public static NettyRemotingBeanBuilder builder() {
@@ -48,6 +62,10 @@ public class NettyRemotingServerBean extends RemotingBean implements Serializabl
 		private Integer threads;
 
 		private InetSocketAddress socketAddress;
+
+		private Integer backLog;
+
+		private Boolean keepAlive;
 
 		public NettyRemotingBeanBuilder setProtocol(RpcSerializeProtocol protocol) {
 			this.protocol = protocol;
@@ -69,12 +87,22 @@ public class NettyRemotingServerBean extends RemotingBean implements Serializabl
 			return this;
 		}
 
+		public NettyRemotingBeanBuilder setBackLog(Integer backLog) {
+			this.backLog = backLog;
+			return this;
+		}
+
+		public NettyRemotingBeanBuilder setKeepAlive(Boolean keepAlive) {
+			this.keepAlive = keepAlive;
+			return this;
+		}
+
 		public NettyRemotingServerBean build() {
 			Preconditions.checkNotNull(protocol, "RemotingBean protocol can not be null.");
 			Preconditions.checkNotNull(handlerMap, "RemotingBean handlerMap can not be null.");
 			Preconditions.checkNotNull(threads, "RemotingBean threads can not be null.");
 			Preconditions.checkNotNull(socketAddress, "RemotingBean socketAddress can not be null.");
-			return new NettyRemotingServerBean(protocol, handlerMap, threads, socketAddress);
+			return new NettyRemotingServerBean(protocol, handlerMap, threads, socketAddress, backLog, keepAlive);
 		}
 
 	}

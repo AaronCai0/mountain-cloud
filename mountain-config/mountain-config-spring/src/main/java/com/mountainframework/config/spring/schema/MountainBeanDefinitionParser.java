@@ -78,16 +78,20 @@ public class MountainBeanDefinitionParser implements BeanDefinitionParser {
 			name = StringUtils.isBlank(name) ? "mountain" : name;
 			beanProperties.addPropertyValue("name", name);
 			beanProperties.addPropertyValue("threads",
-					ObjectUtils.toStringForDefault(element.getAttribute("threads"), Constants.DEFAULT_THREADS));
+					ObjectUtils.toStringIfAbsent(element.getAttribute("threads"), Constants.DEFAULT_THREADS));
 			try {
-				beanProperties.addPropertyValue("host", ObjectUtils.toStringForDefault(element.getAttribute("host"),
+				beanProperties.addPropertyValue("host", ObjectUtils.toStringIfAbsent(element.getAttribute("host"),
 						InetAddress.getLocalHost().getHostAddress()));
 			} catch (UnknownHostException e) {
 				logger.error("Not get protocol host.", e);
 			}
 			beanProperties.addPropertyValue("port", element.getAttribute("port"));
 			beanProperties.addPropertyValue("serialize",
-					ObjectUtils.toStringForDefault(element.getAttribute("serialize"), Constants.DEFAULT_SERIALIZE));
+					ObjectUtils.toStringIfAbsent(element.getAttribute("serialize"), Constants.DEFAULT_SERIALIZE));
+			beanProperties.addPropertyValue("backLog",
+					ObjectUtils.toIntegerIfAbsent(element.getAttribute("backLog"), Constants.DEFAULT_PROTOCOL_BACKLOG));
+			beanProperties.addPropertyValue("keepAlive", ObjectUtils
+					.toBooleanIfAbsent(element.getAttribute("keepAlive"), Constants.DEFAULT_PROTOCOL_KEEPALIVE));
 
 			parserContext.getRegistry().registerBeanDefinition(name, beanDefinition);
 		} else if (beanClass.equals(RegistryConfig.class)) {

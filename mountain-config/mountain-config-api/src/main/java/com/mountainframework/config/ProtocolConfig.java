@@ -33,6 +33,10 @@ public class ProtocolConfig implements InitializingBean, ApplicationContextAware
 
 	private Integer threads;
 
+	private Integer backLog;
+
+	private Boolean keepAlive;
+
 	private ApplicationContext applicationContext;
 
 	public String getName() {
@@ -65,6 +69,22 @@ public class ProtocolConfig implements InitializingBean, ApplicationContextAware
 
 	public void setSerialize(String serialize) {
 		this.serialize = serialize;
+	}
+
+	public Integer getBackLog() {
+		return backLog;
+	}
+
+	public void setBackLog(Integer backLog) {
+		this.backLog = backLog;
+	}
+
+	public Boolean getKeepAlive() {
+		return keepAlive;
+	}
+
+	public void setKeepAlive(Boolean keepAlive) {
+		this.keepAlive = keepAlive;
 	}
 
 	@Override

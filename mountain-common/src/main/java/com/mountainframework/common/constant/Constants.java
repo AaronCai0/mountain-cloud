@@ -26,4 +26,8 @@ public interface Constants {
 
 	String DEFAULT_THREADS = "200";
 
+	Integer DEFAULT_PROTOCOL_BACKLOG = 1024;
+
+	Boolean DEFAULT_PROTOCOL_KEEPALIVE = Boolean.TRUE;
+
 }

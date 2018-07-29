@@ -77,7 +77,7 @@ public class ProviderConfig implements InitializingBean, ApplicationListener<Con
 		for (RegistryConfig registryConfig : registryConfigs) {
 			AddressSplitResult splitResult = StringPatternUtils.splitAddress(registryConfig.getAddress(),
 					Constants.PROTOCOL_DELIMITER);
-			String registryType = ObjectUtils.toStringForDefault(splitResult.getLeft(), Constants.DEFAULT_REGISTRY);
+			String registryType = ObjectUtils.toStringIfAbsent(splitResult.getLeft(), Constants.DEFAULT_REGISTRY);
 			String registryUrl = splitResult.getRight();
 			ServiceRegistry serviceRegistry = null;
 			if (registryType.equalsIgnoreCase(Constants.REGISTRY_ZOOKEEPER)) {

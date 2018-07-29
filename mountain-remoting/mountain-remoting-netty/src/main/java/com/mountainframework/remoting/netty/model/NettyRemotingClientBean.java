@@ -21,16 +21,24 @@ public class NettyRemotingClientBean extends RemotingBean implements Serializabl
 
 	private InetSocketAddress socketAddress;
 
+	private Boolean keepAlive;
+
 	private NettyRemotingClientBean() {
 	}
 
-	private NettyRemotingClientBean(RpcSerializeProtocol protocol, Integer threads, InetSocketAddress socketAddress) {
+	private NettyRemotingClientBean(RpcSerializeProtocol protocol, Integer threads, InetSocketAddress socketAddress,
+			Boolean keepAlive) {
 		super(protocol, threads);
 		this.socketAddress = socketAddress;
+		this.keepAlive = keepAlive;
 	}
 
 	public InetSocketAddress getSocketAddress() {
 		return socketAddress;
+	}
+
+	public Boolean getKeepAlive() {
+		return keepAlive;
 	}
 
 	public static NettyRemotingBeanBuilder builder() {
@@ -44,6 +52,8 @@ public class NettyRemotingClientBean extends RemotingBean implements Serializabl
 		private Integer threads;
 
 		private InetSocketAddress socketAddress;
+
+		private Boolean keepAlive;
 
 		public NettyRemotingBeanBuilder setProtocol(RpcSerializeProtocol protocol) {
 			this.protocol = protocol;
@@ -60,11 +70,16 @@ public class NettyRemotingClientBean extends RemotingBean implements Serializabl
 			return this;
 		}
 
+		public NettyRemotingBeanBuilder setKeepAlive(Boolean keepAlive) {
+			this.keepAlive = keepAlive;
+			return this;
+		}
+
 		public NettyRemotingClientBean build() {
 			Preconditions.checkNotNull(protocol, "RemotingBean protocol can not be null.");
 			Preconditions.checkNotNull(threads, "RemotingBean threads can not be null.");
 			Preconditions.checkNotNull(socketAddress, "RemotingBean socketAddress can not be null.");
-			return new NettyRemotingClientBean(protocol, threads, socketAddress);
+			return new NettyRemotingClientBean(protocol, threads, socketAddress, keepAlive);
 		}
 
 	}

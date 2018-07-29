@@ -32,6 +32,8 @@ public class NettyProviderInitializer implements InitializingService {
 		Integer port = protocolConfig.getPort();
 		Integer threads = protocolConfig.getThreads();
 		String serializeProtocolName = protocolConfig.getSerialize();
+		Integer backLog = protocolConfig.getBackLog();
+		Boolean keepAlive = protocolConfig.getKeepAlive();
 		Set<ServiceRegistry> registries = context.getProviderRegistry();
 		for (ServiceRegistry serviceRegistry : registries) {
 			for (String serviceName : serviceNameSet) {
@@ -46,7 +48,8 @@ public class NettyProviderInitializer implements InitializingService {
 		NettyRemotingServerBean nettyRemotingBean = NettyRemotingServerBean.builder()
 				.setSocketAddress(new InetSocketAddress(host, port))
 				.setProtocol(RpcSerializeProtocol.findProtocol(serializeProtocolName)).setThreads(threads)
-				.setHandlerMap(MountainConfigContainer.getContainer().getServiceBeanMap()).build();
+				.setHandlerMap(MountainConfigContainer.getContainer().getServiceBeanMap()).setBackLog(backLog)
+				.setKeepAlive(keepAlive).build();
 		NettyExecutors.serverExecutor().start(nettyRemotingBean);
 	}
 

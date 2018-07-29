@@ -69,7 +69,7 @@ public class NettyClientLoader implements RemotingLoaderService {
 
 		Bootstrap bootstrap = new Bootstrap();
 		ChannelFuture channelFuture = bootstrap.group(eventLoopGroup).channel(NioSocketChannel.class)
-				.option(ChannelOption.SO_KEEPALIVE, true)
+				.option(ChannelOption.SO_KEEPALIVE, nettyRemotingBean.getKeepAlive())
 				.option(ChannelOption.ALLOCATOR, PooledByteBufAllocator.DEFAULT)
 				.handler(NettyClientChannelInitializer.create(serailizeProtocol)).connect(socketAddress);
 
