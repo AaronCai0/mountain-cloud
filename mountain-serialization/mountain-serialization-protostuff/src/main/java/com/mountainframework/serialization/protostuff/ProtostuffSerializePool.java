@@ -7,7 +7,7 @@ public class ProtostuffSerializePool {
 
 	private GenericObjectPool<ProtostuffSerialize> protostuffPool;
 
-	public ProtostuffSerializePool() {
+	private ProtostuffSerializePool() {
 		protostuffPool = new GenericObjectPool<ProtostuffSerialize>(new ProtostuffSerializeFactory());
 	}
 

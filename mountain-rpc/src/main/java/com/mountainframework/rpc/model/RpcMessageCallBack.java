@@ -14,8 +14,7 @@ import com.mountainframework.common.exception.MountainInvokeTimeoutException;
 /**
  * Rpc服务消息回调类
  * 
- * @author yafeng.cai {@link}https://github.com/AaronCai0
- * @date 2018年6月30日
+ * @author yafeng.cai<https://github.com/AaronCai0>
  * @since 1.0
  */
 public class RpcMessageCallBack implements Serializable {
@@ -39,8 +38,7 @@ public class RpcMessageCallBack implements Serializable {
 				condition.await(timeout, TimeUnit.MILLISECONDS);
 			}
 			if (response == null) {
-				// throw new MountainInvokeTimeoutException("Invoke timeout.");
-				start(timeout);
+				throw new MountainInvokeTimeoutException("Mountain service invoke timeout.");
 			}
 
 			return response.getResult();
@@ -62,14 +60,6 @@ public class RpcMessageCallBack implements Serializable {
 		}
 	}
 
-	public RpcMessageResponse getResponse() {
-		return response;
-	}
-
-	public void setResponse(RpcMessageResponse response) {
-		this.response = response;
-	}
-
 	public void overAll() {
 		try {
 			lock.lock();
@@ -77,6 +67,14 @@ public class RpcMessageCallBack implements Serializable {
 		} finally {
 			lock.unlock();
 		}
+	}
+
+	public RpcMessageResponse getResponse() {
+		return response;
+	}
+
+	public void setResponse(RpcMessageResponse response) {
+		this.response = response;
 	}
 
 }

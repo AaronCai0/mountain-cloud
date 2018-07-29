@@ -8,6 +8,12 @@ import com.mountainframework.rpc.model.RpcMessageRequest;
 
 import io.netty.channel.ChannelPipeline;
 
+/**
+ * ProtostuffProtocolServerHandler
+ * 
+ * @author yafeng.cai<https://github.com/AaronCai0>
+ * @since 1.0
+ */
 public class ProtostuffProtocolServerHandler implements ChannelPipeLineHandler {
 
 	@Override

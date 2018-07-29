@@ -1,5 +1,11 @@
-package com.mountainframework.serialization.protostuff.common;
+package com.mountainframework.serialization.protostuff.constant;
 
+/**
+ * ProtostuffPoolConstants
+ * 
+ * @author yafeng.cai<https://github.com/AaronCai0>
+ * @since 1.0
+ */
 public interface ProtostuffPoolConstants {
 
 	int SERIALIZE_POOL_MAX_TOTAL = 500;

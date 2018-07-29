@@ -5,7 +5,7 @@ import org.apache.commons.lang3.builder.ReflectionToStringBuilder;
 /**
  * 地址分割结果类
  * 
- * @author yafeng.cai {@link}https://github.com/AaronCai0
+ * @author yafeng.cai<https://github.com/AaronCai0>
  * @since 1.0
  */
 public class AddressSplitResult {

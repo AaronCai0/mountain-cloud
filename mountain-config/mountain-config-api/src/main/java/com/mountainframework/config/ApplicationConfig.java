@@ -7,7 +7,7 @@ import org.apache.commons.lang3.builder.ReflectionToStringBuilder;
 /**
  * 应用程序信息
  * 
- * @author yafeng.cai {@link}https://github.com/AaronCai0
+ * @author yafeng.cai<https://github.com/AaronCai0>
  * @since 1.0
  */
 public class ApplicationConfig implements Serializable {

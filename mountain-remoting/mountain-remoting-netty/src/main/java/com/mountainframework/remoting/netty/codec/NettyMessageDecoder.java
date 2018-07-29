@@ -6,6 +6,12 @@ import io.netty.buffer.ByteBuf;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.handler.codec.ByteToMessageDecoder;
 
+/**
+ * NettyMessageDecoder
+ * 
+ * @author yafeng.cai<https://github.com/AaronCai0>
+ * @since 1.0
+ */
 public class NettyMessageDecoder extends ByteToMessageDecoder {
 
 	private NettyMessageCodec codec;

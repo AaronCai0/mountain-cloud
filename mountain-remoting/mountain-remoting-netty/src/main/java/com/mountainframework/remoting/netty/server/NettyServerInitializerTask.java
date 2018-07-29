@@ -10,8 +10,7 @@ import com.mountainframework.rpc.model.RpcMessageResponse;
 /**
  * Netty服务端初始化任务类，多线程任务
  * 
- * @author yafeng.cai {@link}https://github.com/AaronCai0
- * @date 2018年6月30日
+ * @author yafeng.cai<https://github.com/AaronCai0>
  * @since 1.0
  */
 public class NettyServerInitializerTask implements Callable<Boolean> {

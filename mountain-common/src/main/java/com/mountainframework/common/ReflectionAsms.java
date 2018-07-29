@@ -11,7 +11,7 @@ import com.google.common.cache.LoadingCache;
 /**
  * 反射工具类
  * 
- * @author yafeng.cai {@link}https://github.com/AaronCai0
+ * @author yafeng.cai<https://github.com/AaronCai0>
  * @since 1.0
  */
 public class ReflectionAsms {
@@ -39,7 +39,7 @@ public class ReflectionAsms {
 	}
 
 	public static MethodAccess get(Class<?> type) {
-		return Preconditions.checkNotNull(cachedMap.getUnchecked(type), "Get cache methodAccess is null");
+		return Preconditions.checkNotNull(cachedMap.getUnchecked(type), "Get cache methodAccess is null.");
 	}
 
 	public static MethodAccess getUnchecked(Class<?> type) {

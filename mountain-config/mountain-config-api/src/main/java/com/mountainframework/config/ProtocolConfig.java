@@ -11,9 +11,9 @@ import org.springframework.context.ApplicationContextAware;
 import com.mountainframework.config.init.context.MountainConfigContainer;
 
 /**
+ * 协议配置信息
  * 
- * 
- * @author yafeng.cai {@link}https://github.com/AaronCai0
+ * @author yafeng.cai<https://github.com/AaronCai0>
  * @since 1.0
  */
 public class ProtocolConfig implements InitializingBean, ApplicationContextAware, Serializable {

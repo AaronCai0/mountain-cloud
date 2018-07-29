@@ -11,8 +11,7 @@ import io.netty.channel.socket.SocketChannel;
 /**
  * Netty客户端通道初始化类
  * 
- * @author yafeng.cai {@link}https://github.com/AaronCai0
- * @date 2018年6月30日
+ * @author yafeng.cai<https://github.com/AaronCai0>
  * @since 1.0
  */
 public class NettyClientChannelInitializer extends ChannelInitializer<SocketChannel> {

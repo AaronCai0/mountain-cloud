@@ -5,9 +5,9 @@ import java.util.Set;
 
 import com.google.common.base.Preconditions;
 import com.google.common.collect.Sets;
-import com.mountainframework.common.Constants;
 import com.mountainframework.common.StringPatternUtils;
 import com.mountainframework.common.bean.AddressSplitResult;
+import com.mountainframework.common.constant.Constants;
 import com.mountainframework.config.ProtocolConfig;
 import com.mountainframework.config.ServiceReferenceConfig;
 import com.mountainframework.config.init.InitializingService;
@@ -16,9 +16,15 @@ import com.mountainframework.config.init.context.MountainConfigContainer;
 import com.mountainframework.registry.ServiceDiscovery;
 import com.mountainframework.registry.model.RegistryUrl;
 import com.mountainframework.remoting.netty.NettyExecutors;
-import com.mountainframework.remoting.netty.model.NettyRemotingBean;
+import com.mountainframework.remoting.netty.model.NettyRemotingClientBean;
 import com.mountainframework.serialization.RpcSerializeProtocol;
 
+/**
+ * NettyConsumerInitializer
+ * 
+ * @author yafeng.cai<https://github.com/AaronCai0>
+ * @since 1.0
+ */
 public class NettyConsumerInitializer implements InitializingService {
 
 	private final Set<ServiceReferenceConfig> referenceConfigs = MountainConfigContainer.getContainer()
@@ -51,10 +57,10 @@ public class NettyConsumerInitializer implements InitializingService {
 			String host = addressResult.getLeft();
 			String port = addressResult.getRight();
 			Preconditions.checkNotNull(host, "Registry get host is null");
-			Preconditions.checkNotNull(host, "Registry get port is null");
+			Preconditions.checkNotNull(port, "Registry get port is null");
 			Integer portInt = Integer.parseInt(port);
 			if (host.equals(protocolHost) && portInt.equals(protocolPort) && serviceProtocol.equals(protocolName)) {
-				NettyRemotingBean nettyRemotingBean = NettyRemotingBean.builder()
+				NettyRemotingClientBean nettyRemotingBean = NettyRemotingClientBean.builder()
 						.setSocketAddress(new InetSocketAddress(host, Integer.parseInt(port)))
 						.setProtocol(RpcSerializeProtocol.findProtocol(serializeProtocolName)).setThreads(threads)
 						.build();

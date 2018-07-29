@@ -18,8 +18,7 @@ import io.netty.channel.ChannelInboundHandlerAdapter;
 /**
  * Netty客户端通道操作处理类
  * 
- * @author yafeng.cai {@link}https://github.com/AaronCai0
- * @date 2018年6月30日
+ * @author yafeng.cai<https://github.com/AaronCai0>
  * @since 1.0
  */
 public class NettyClientChannelHandler extends ChannelInboundHandlerAdapter {

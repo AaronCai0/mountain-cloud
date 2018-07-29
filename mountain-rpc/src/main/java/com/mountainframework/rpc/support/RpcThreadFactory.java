@@ -3,13 +3,12 @@ package com.mountainframework.rpc.support;
 import java.util.concurrent.ThreadFactory;
 import java.util.concurrent.atomic.AtomicInteger;
 
-import com.mountainframework.common.Constants;
+import com.mountainframework.common.constant.Constants;
 
 /**
- * Rpc线程工厂
+ * Rpc线程工厂类
  * 
- * @author yafeng.cai {@link}https://github.com/AaronCai0
- * @date 2018年6月30日
+ * @author yafeng.cai<https://github.com/AaronCai0>
  * @since 1.0
  */
 public class RpcThreadFactory implements ThreadFactory {

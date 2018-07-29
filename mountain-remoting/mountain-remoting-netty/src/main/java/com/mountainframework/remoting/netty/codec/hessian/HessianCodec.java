@@ -11,6 +11,12 @@ import com.mountainframework.serialization.hessian.HessianSerializePool;
 
 import io.netty.buffer.ByteBuf;
 
+/**
+ * HessianCodec
+ * 
+ * @author yafeng.cai<https://github.com/AaronCai0>
+ * @since 1.0
+ */
 public class HessianCodec implements NettyMessageCodec {
 
 	private HessianSerializePool pool = HessianSerializePool.getHessianPoolInstance();

@@ -18,13 +18,13 @@ import org.springframework.core.io.ClassPathResource;
 import org.springframework.core.io.Resource;
 
 import com.google.common.collect.Sets;
-import com.mountainframework.common.Constants;
 import com.mountainframework.common.ObjectUtils;
 import com.mountainframework.common.ReflectionAsmCache;
 import com.mountainframework.common.ReflectionAsmCache.ReflectionAsmCacheBuilder;
 import com.mountainframework.common.ReflectionAsms;
 import com.mountainframework.common.StringPatternUtils;
 import com.mountainframework.common.bean.AddressSplitResult;
+import com.mountainframework.common.constant.Constants;
 import com.mountainframework.config.init.MountainRpcBuilderFacotry;
 import com.mountainframework.config.init.context.MountainApplicationContext;
 import com.mountainframework.config.init.context.MountainConfigContainer;
@@ -34,8 +34,7 @@ import com.mountainframework.registry.zookeeper.service.ZooKeeperServiceRegistry
 /**
  * 提供者配置信息
  * 
- * @author yafeng.cai {@link}https://github.com/AaronCai0
- * @date 2018年6月30日
+ * @author yafeng.cai<https://github.com/AaronCai0>
  * @since 1.0
  */
 public class ProviderConfig implements InitializingBean, ApplicationListener<ContextRefreshedEvent>, Serializable {

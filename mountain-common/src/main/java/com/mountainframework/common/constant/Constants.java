@@ -1,4 +1,4 @@
-package com.mountainframework.common;
+package com.mountainframework.common.constant;
 
 /**
  * 常量类

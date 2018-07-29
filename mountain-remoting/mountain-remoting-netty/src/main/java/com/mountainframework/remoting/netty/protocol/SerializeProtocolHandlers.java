@@ -4,6 +4,12 @@ import com.google.common.collect.ClassToInstanceMap;
 import com.google.common.collect.MutableClassToInstanceMap;
 import com.mountainframework.remoting.netty.ChannelPipeLineHandler;
 
+/**
+ * SerializeProtocolHandlers
+ * 
+ * @author yafeng.cai<https://github.com/AaronCai0>
+ * @since 1.0
+ */
 public class SerializeProtocolHandlers {
 
 	private static ClassToInstanceMap<ChannelPipeLineHandler> handlers = MutableClassToInstanceMap.create();

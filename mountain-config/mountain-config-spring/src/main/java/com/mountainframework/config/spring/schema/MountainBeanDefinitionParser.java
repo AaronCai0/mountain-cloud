@@ -15,8 +15,8 @@ import org.springframework.beans.factory.xml.ParserContext;
 import org.w3c.dom.Element;
 
 import com.google.common.base.Preconditions;
-import com.mountainframework.common.Constants;
 import com.mountainframework.common.ObjectUtils;
+import com.mountainframework.common.constant.Constants;
 import com.mountainframework.config.ApplicationConfig;
 import com.mountainframework.config.ConsumerConfig;
 import com.mountainframework.config.ProtocolConfig;
@@ -28,8 +28,7 @@ import com.mountainframework.config.ServiceReferenceConfig;
 /**
  * 解析Spring配置的xml节点
  * 
- * @author yafeng.cai {@link}https://github.com/AaronCai0
- * @date 2018年6月30日
+ * @author yafeng.cai<https://github.com/AaronCai0>
  * @since 1.0
  */
 public class MountainBeanDefinitionParser implements BeanDefinitionParser {

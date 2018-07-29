@@ -2,7 +2,6 @@ package com.mountainframework.remoting.netty.model;
 
 import java.io.Serializable;
 import java.net.InetSocketAddress;
-import java.util.Map;
 
 import org.apache.commons.lang3.builder.ReflectionToStringBuilder;
 
@@ -10,18 +9,23 @@ import com.google.common.base.Preconditions;
 import com.mountainframework.remoting.model.RemotingBean;
 import com.mountainframework.serialization.RpcSerializeProtocol;
 
-public class NettyRemotingBean extends RemotingBean implements Serializable {
+/**
+ * NettyRemotingClientBean
+ * 
+ * @author yafeng.cai<https://github.com/AaronCai0>
+ * @since 1.0
+ */
+public class NettyRemotingClientBean extends RemotingBean implements Serializable {
 
 	private static final long serialVersionUID = 2980461534885064406L;
 
 	private InetSocketAddress socketAddress;
 
-	private NettyRemotingBean() {
+	private NettyRemotingClientBean() {
 	}
 
-	private NettyRemotingBean(RpcSerializeProtocol protocol, Map<String, Object> handlerMap, Integer threads,
-			InetSocketAddress socketAddress) {
-		super(protocol, handlerMap, threads);
+	private NettyRemotingClientBean(RpcSerializeProtocol protocol, Integer threads, InetSocketAddress socketAddress) {
+		super(protocol, threads);
 		this.socketAddress = socketAddress;
 	}
 
@@ -37,19 +41,12 @@ public class NettyRemotingBean extends RemotingBean implements Serializable {
 
 		private RpcSerializeProtocol protocol;
 
-		private Map<String, Object> handlerMap;
-
 		private Integer threads;
 
 		private InetSocketAddress socketAddress;
 
 		public NettyRemotingBeanBuilder setProtocol(RpcSerializeProtocol protocol) {
 			this.protocol = protocol;
-			return this;
-		}
-
-		public NettyRemotingBeanBuilder setHandlerMap(Map<String, Object> handlerMap) {
-			this.handlerMap = handlerMap;
 			return this;
 		}
 
@@ -63,13 +60,11 @@ public class NettyRemotingBean extends RemotingBean implements Serializable {
 			return this;
 		}
 
-		public NettyRemotingBean build() {
+		public NettyRemotingClientBean build() {
 			Preconditions.checkNotNull(protocol, "RemotingBean protocol can not be null.");
-			// Preconditions.checkNotNull(handlerMap, "RemotingBean handlerMap can not be
-			// null.");
 			Preconditions.checkNotNull(threads, "RemotingBean threads can not be null.");
 			Preconditions.checkNotNull(socketAddress, "RemotingBean socketAddress can not be null.");
-			return new NettyRemotingBean(protocol, handlerMap, threads, socketAddress);
+			return new NettyRemotingClientBean(protocol, threads, socketAddress);
 		}
 
 	}

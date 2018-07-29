@@ -7,6 +7,12 @@ import com.mountainframework.remoting.netty.codec.hessian.HessianEncoder;
 
 import io.netty.channel.ChannelPipeline;
 
+/**
+ * HessianProtocolHandler
+ * 
+ * @author yafeng.cai<https://github.com/AaronCai0>
+ * @since 1.0
+ */
 public class HessianProtocolHandler implements ChannelPipeLineHandler {
 
 	@Override

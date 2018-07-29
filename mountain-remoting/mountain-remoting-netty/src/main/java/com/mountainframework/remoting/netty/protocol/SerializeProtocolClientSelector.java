@@ -10,6 +10,12 @@ import com.mountainframework.serialization.RpcSerializeProtocol;
 
 import io.netty.channel.ChannelPipeline;
 
+/**
+ * SerializeProtocolClientSelector
+ * 
+ * @author yafeng.cai<https://github.com/AaronCai0>
+ * @since 1.0
+ */
 public class SerializeProtocolClientSelector implements ProtocolSelectorFrame {
 
 	private static Logger logger = LoggerFactory.getLogger(SerializeProtocolClientSelector.class);

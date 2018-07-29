@@ -11,6 +11,12 @@ import com.esotericsoftware.kryo.pool.KryoPool;
 import com.google.common.io.Closer;
 import com.mountainframework.serialization.RpcSerialize;
 
+/**
+ * KryoSerialize
+ * 
+ * @author yafeng.cai<https://github.com/AaronCai0>
+ * @since 1.0
+ */
 public class KryoSerialize implements RpcSerialize {
 
 	private static KryoPool pool;

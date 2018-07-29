@@ -7,6 +7,12 @@ import com.mountainframework.remoting.netty.codec.kryo.KryoEncoder;
 
 import io.netty.channel.ChannelPipeline;
 
+/**
+ * KryoProtocolHandler
+ * 
+ * @author yafeng.cai<https://github.com/AaronCai0>
+ * @since 1.0
+ */
 public class KryoProtocolHandler implements ChannelPipeLineHandler {
 
 	@Override

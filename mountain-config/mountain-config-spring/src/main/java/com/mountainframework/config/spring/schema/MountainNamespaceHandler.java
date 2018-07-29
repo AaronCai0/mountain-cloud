@@ -13,7 +13,7 @@ import com.mountainframework.config.ServiceReferenceConfig;
 /**
  * Spring容器xml解析支持类
  * 
- * @author yafeng.cai {@link}https://github.com/AaronCai0
+ * @author yafeng.cai<https://github.com/AaronCai0>
  * @since 1.0
  */
 public class MountainNamespaceHandler extends NamespaceHandlerSupport {

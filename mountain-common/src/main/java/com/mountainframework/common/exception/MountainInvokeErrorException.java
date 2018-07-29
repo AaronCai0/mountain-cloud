@@ -1,9 +1,9 @@
 package com.mountainframework.common.exception;
 
 /**
- * Rpc服务调用错误类
+ * MountainInvokeErrorException
  * 
- * @author yafeng.cai {@link}https://github.com/AaronCai0
+ * @author yafeng.cai<https://github.com/AaronCai0>
  * @since 1.0
  */
 public class MountainInvokeErrorException extends RuntimeException {

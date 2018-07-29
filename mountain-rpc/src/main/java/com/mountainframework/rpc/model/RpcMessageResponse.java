@@ -7,8 +7,7 @@ import org.apache.commons.lang3.builder.ReflectionToStringBuilder;
 /**
  * Rpc消息响应类
  * 
- * @author yafeng.cai {@link}https://github.com/AaronCai0
- * @date 2018年6月30日
+ * @author yafeng.cai<https://github.com/AaronCai0>
  * @since 1.0
  */
 public class RpcMessageResponse implements Serializable {

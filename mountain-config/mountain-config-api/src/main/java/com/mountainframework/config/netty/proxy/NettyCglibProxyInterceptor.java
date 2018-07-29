@@ -12,6 +12,12 @@ import com.mountainframework.rpc.model.RpcMessageRequest;
 import net.sf.cglib.proxy.MethodInterceptor;
 import net.sf.cglib.proxy.MethodProxy;
 
+/**
+ * NettyCglibProxyInterceptor
+ * 
+ * @author yafeng.cai<https://github.com/AaronCai0>
+ * @since 1.0
+ */
 public class NettyCglibProxyInterceptor implements MethodInterceptor {
 
 	@Override

@@ -11,8 +11,7 @@ import com.mountainframework.registry.ServiceRegistry;
 /**
  * Mountain运行时配置中心
  * 
- * @author yafeng.cai {@link}https://github.com/AaronCai0
- * @date 2018年6月30日
+ * @author yafeng.cai<https://github.com/AaronCai0>
  * @since 1.0
  */
 public final class MountainApplicationContext {

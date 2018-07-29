@@ -3,6 +3,12 @@ package com.mountainframework.serialization;
 import org.apache.commons.lang3.builder.ReflectionToStringBuilder;
 import org.apache.commons.lang3.builder.ToStringStyle;
 
+/**
+ * RpcSerializeProtocol
+ * 
+ * @author yafeng.cai<https://github.com/AaronCai0>
+ * @since 1.0
+ */
 public enum RpcSerializeProtocol {
 
 	JDKNATIVE("jdk"), KRYO("kryo"), HESSIAN("hessian"), PROTOSTUFF("protostuff");

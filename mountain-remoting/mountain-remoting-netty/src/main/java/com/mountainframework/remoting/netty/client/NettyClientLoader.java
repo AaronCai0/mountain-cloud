@@ -12,7 +12,7 @@ import org.slf4j.LoggerFactory;
 import com.google.common.base.Preconditions;
 import com.mountainframework.remoting.RemotingLoaderService;
 import com.mountainframework.remoting.model.RemotingBean;
-import com.mountainframework.remoting.netty.model.NettyRemotingBean;
+import com.mountainframework.remoting.netty.model.NettyRemotingClientBean;
 import com.mountainframework.rpc.support.RpcThreadPoolExecutors;
 import com.mountainframework.serialization.RpcSerializeProtocol;
 
@@ -28,17 +28,14 @@ import io.netty.channel.socket.nio.NioSocketChannel;
 /**
  * Netty客户端初始化类
  * 
- * @author yafeng.cai {@link}https://github.com/AaronCai0
- * @date 2018年6月30日
- * @since 1.0.3
+ * @author yafeng.cai<https://github.com/AaronCai0>
+ * @since 1.0
  */
 public class NettyClientLoader implements RemotingLoaderService {
 
 	private static final Logger logger = LoggerFactory.getLogger(NettyClientLoader.class);
 
 	private int parallel;
-
-	// private ListeningExecutorService threadPoolExecutor;
 
 	private ExecutorService threadPoolExecutor;
 
@@ -50,8 +47,6 @@ public class NettyClientLoader implements RemotingLoaderService {
 
 	private final Condition connectStatus = lock.newCondition();
 
-	// private Condition handlerStatus = lock.newCondition();
-
 	public static NettyClientLoader getInstance() {
 		return RpcClientLoaderHolder.INSTANCE;
 	}
@@ -62,10 +57,10 @@ public class NettyClientLoader implements RemotingLoaderService {
 
 	@Override
 	public void load(RemotingBean remotingBean) {
-		if (!(remotingBean instanceof NettyRemotingBean)) {
-			Preconditions.checkArgument(false, "RemotingBean must be NettyRemotingBean.");
+		if (!(remotingBean instanceof NettyRemotingClientBean)) {
+			Preconditions.checkArgument(false, "RemotingBean must be NettyRemotingClientBean instance.");
 		}
-		NettyRemotingBean nettyRemotingBean = (NettyRemotingBean) remotingBean;
+		NettyRemotingClientBean nettyRemotingBean = (NettyRemotingClientBean) remotingBean;
 		InetSocketAddress socketAddress = nettyRemotingBean.getSocketAddress();
 		RpcSerializeProtocol serailizeProtocol = nettyRemotingBean.getProtocol();
 		parallel = nettyRemotingBean.getThreads().intValue();
@@ -106,7 +101,6 @@ public class NettyClientLoader implements RemotingLoaderService {
 		// .submit(new NettyClientInitializerTask(socketAddress, serailizeProtocol,
 		// eventLoopGroup));
 
-		// 监听线程池异步的执行结果成功与否再决定是否唤醒全部的客户端RPC线程
 		// Futures.getChecked(future, exceptionClass, timeout, unit)(future, timeout,
 		// unit, exceptionClass);
 

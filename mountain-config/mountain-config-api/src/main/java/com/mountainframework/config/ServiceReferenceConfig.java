@@ -14,8 +14,7 @@ import com.mountainframework.config.netty.proxy.NettyCglibProxyInterceptor;
 /**
  * 服务消费配置信息
  * 
- * @author yafeng.cai {@link}https://github.com/AaronCai0
- * @date 2018年6月30日
+ * @author yafeng.cai<https://github.com/AaronCai0>
  * @since 1.0
  */
 public class ServiceReferenceConfig implements InitializingBean, FactoryBean<Object>, Serializable {

@@ -7,6 +7,12 @@ import com.esotericsoftware.kryo.pool.KryoFactory;
 import com.esotericsoftware.kryo.pool.KryoPool;
 import com.mountainframework.serialization.RpcSerializePool;
 
+/**
+ * KryoSerializePool
+ * 
+ * @author yafeng.cai<https://github.com/AaronCai0>
+ * @since 1.0
+ */
 public class KryoSerializePool implements RpcSerializePool {
 
 	private KryoPool pool;
@@ -43,14 +49,6 @@ public class KryoSerializePool implements RpcSerializePool {
 	public static KryoSerializePool builder() {
 		return new KryoSerializePool();
 	}
-
-	// public static KryoSerializePool builder() {
-	// return KryoSerializePoolHolder.INSTANCE;
-	// }
-
-	// private static class KryoSerializePoolHolder {
-	// private static final KryoSerializePool INSTANCE = new KryoSerializePool();
-	// }
 
 	@SuppressWarnings("unchecked")
 	@Override

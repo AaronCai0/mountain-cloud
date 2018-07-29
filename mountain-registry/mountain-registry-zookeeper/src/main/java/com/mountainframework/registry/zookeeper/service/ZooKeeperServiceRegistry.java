@@ -4,7 +4,7 @@ import org.I0Itec.zkclient.ZkClient;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import com.mountainframework.common.Constants;
+import com.mountainframework.common.constant.Constants;
 import com.mountainframework.registry.ServiceRegistry;
 import com.mountainframework.registry.model.RegistryUrl;
 import com.mountainframework.registry.zookeeper.bean.ZookeeperConstant;
@@ -12,7 +12,7 @@ import com.mountainframework.registry.zookeeper.bean.ZookeeperConstant;
 /**
  * 基于 ZooKeeper 的服务注册接口实现
  * 
- * @author yafeng.cai {@link}https://github.com/AaronCai0
+ * @author yafeng.cai<https://github.com/AaronCai0>
  * @since 1.0
  */
 public class ZooKeeperServiceRegistry implements ServiceRegistry {

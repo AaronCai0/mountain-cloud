@@ -12,11 +12,10 @@ import com.google.common.reflect.Reflection;
 /**
  * jdk服务代理生成器
  * 
- * @author yafeng.cai {@link}https://github.com/AaronCai0
- * @date 2018年6月30日
+ * @author yafeng.cai<https://github.com/AaronCai0>
  * @since 1.0
  */
-public class JDKProxyGenerator implements ProxyGenerator {
+public class JDKProxyGenerator extends DynamicProxySupport implements ProxyGenerator {
 
 	private static final Logger logger = LoggerFactory.getLogger(JDKProxyGenerator.class);
 
@@ -38,11 +37,11 @@ public class JDKProxyGenerator implements ProxyGenerator {
 	public <T> T generate(String className) {
 		try {
 			lock.lock();
-			Class<?> clazz = Class.forName(className);
+			Class<?> clazz = getCacheClass(className);
 			return (T) Reflection.newProxy(clazz, handler);
-		} catch (IllegalArgumentException | ClassNotFoundException e) {
+		} catch (IllegalArgumentException e) {
 			logger.error("RpcServiceProxyGenerator generate error.", e);
-			return null;
+			throw new IllegalArgumentException(e.getMessage(), e);
 		} finally {
 			lock.unlock();
 		}

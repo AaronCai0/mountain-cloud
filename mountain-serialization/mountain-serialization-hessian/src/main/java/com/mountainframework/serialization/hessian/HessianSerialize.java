@@ -8,6 +8,12 @@ import com.caucho.hessian.io.Hessian2Input;
 import com.caucho.hessian.io.Hessian2Output;
 import com.mountainframework.serialization.RpcSerialize;
 
+/**
+ * HessianSerialize
+ * 
+ * @author yafeng.cai<https://github.com/AaronCai0>
+ * @since 1.0
+ */
 public class HessianSerialize implements RpcSerialize {
 
 	@Override

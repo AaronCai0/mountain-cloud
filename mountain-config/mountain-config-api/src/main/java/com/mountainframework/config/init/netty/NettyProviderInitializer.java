@@ -3,7 +3,7 @@ package com.mountainframework.config.init.netty;
 import java.net.InetSocketAddress;
 import java.util.Set;
 
-import com.mountainframework.common.Constants;
+import com.mountainframework.common.constant.Constants;
 import com.mountainframework.config.ProtocolConfig;
 import com.mountainframework.config.init.InitializingService;
 import com.mountainframework.config.init.context.MountainApplicationContext;
@@ -11,9 +11,15 @@ import com.mountainframework.config.init.context.MountainConfigContainer;
 import com.mountainframework.registry.ServiceRegistry;
 import com.mountainframework.registry.model.RegistryUrl;
 import com.mountainframework.remoting.netty.NettyExecutors;
-import com.mountainframework.remoting.netty.model.NettyRemotingBean;
+import com.mountainframework.remoting.netty.model.NettyRemotingServerBean;
 import com.mountainframework.serialization.RpcSerializeProtocol;
 
+/**
+ * NettyProviderInitializer
+ * 
+ * @author yafeng.cai<https://github.com/AaronCai0>
+ * @since 1.0
+ */
 public class NettyProviderInitializer implements InitializingService {
 
 	private final Set<String> serviceNameSet = MountainConfigContainer.getContainer().getServiceBeanMap().keySet();
@@ -37,7 +43,7 @@ public class NettyProviderInitializer implements InitializingService {
 				serviceRegistry.register(url);
 			}
 		}
-		NettyRemotingBean nettyRemotingBean = NettyRemotingBean.builder()
+		NettyRemotingServerBean nettyRemotingBean = NettyRemotingServerBean.builder()
 				.setSocketAddress(new InetSocketAddress(host, port))
 				.setProtocol(RpcSerializeProtocol.findProtocol(serializeProtocolName)).setThreads(threads)
 				.setHandlerMap(MountainConfigContainer.getContainer().getServiceBeanMap()).build();

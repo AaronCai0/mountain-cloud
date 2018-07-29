@@ -15,6 +15,12 @@ import io.netty.channel.ChannelFuture;
 import io.netty.channel.ChannelFutureListener;
 import io.netty.channel.ChannelHandlerContext;
 
+/**
+ * NettyChannelReadEventHandler
+ * 
+ * @author yafeng.cai<https://github.com/AaronCai0>
+ * @since 1.0
+ */
 public class NettyChannelReadEventHandler implements EventHandler<NettyServerChannelReadEvent> {
 
 	private static final Logger logger = LoggerFactory.getLogger(NettyChannelReadEventHandler.class);

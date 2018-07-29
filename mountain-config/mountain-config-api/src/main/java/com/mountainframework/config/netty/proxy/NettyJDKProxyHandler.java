@@ -11,10 +11,9 @@ import com.mountainframework.rpc.model.RpcMessageCallBack;
 import com.mountainframework.rpc.model.RpcMessageRequest;
 
 /**
- * Rpc服务代理操作处理类
+ * NettyJDKProxyHandler
  * 
- * @author yafeng.cai {@link}https://github.com/AaronCai0
- * @date 2018年6月30日
+ * @author yafeng.cai<https://github.com/AaronCai0>
  * @since 1.0
  */
 public class NettyJDKProxyHandler extends AbstractInvocationHandler {

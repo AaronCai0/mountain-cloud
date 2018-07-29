@@ -14,9 +14,14 @@ import com.mountainframework.serialization.protostuff.SchemaCache;
 
 import io.netty.buffer.ByteBuf;
 
+/**
+ * ProtostuffCodec
+ * 
+ * @author yafeng.cai<https://github.com/AaronCai0>
+ * @since 1.0
+ */
 public class ProtostuffCodec implements NettyMessageCodec {
 
-	// private final Closer closer = Closer.create();
 	private static final ProtostuffSerializePool pool = ProtostuffSerializePool.getProtostuffPoolInstance();
 
 	static {
@@ -41,7 +46,6 @@ public class ProtostuffCodec implements NettyMessageCodec {
 	@Override
 	public void encode(Object message, ByteBuf buf) throws IOException {
 		ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
-		// closer.register(byteArrayOutputStream);
 		ProtostuffSerialize protostuffSerialization = pool.borrow();
 		protostuffSerialization.serialize(byteArrayOutputStream, message);
 		byte[] body = byteArrayOutputStream.toByteArray();
@@ -54,7 +58,6 @@ public class ProtostuffCodec implements NettyMessageCodec {
 	@Override
 	public Object decode(byte[] body) throws IOException {
 		ByteArrayInputStream byteArrayInputStream = new ByteArrayInputStream(body);
-		// closer.register(byteArrayInputStream);
 		ProtostuffSerialize protostuffSerialization = pool.borrow();
 		Object obj = protostuffSerialization.deserialize(byteArrayInputStream, deserializeClass);
 		pool.restore(protostuffSerialization);

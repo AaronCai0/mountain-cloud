@@ -11,6 +11,12 @@ import com.dyuproject.protostuff.ProtostuffIOUtil;
 import com.dyuproject.protostuff.Schema;
 import com.mountainframework.serialization.RpcSerialize;
 
+/**
+ * ProtostuffSerialize
+ * 
+ * @author yafeng.cai<https://github.com/AaronCai0>
+ * @since 1.0
+ */
 public class ProtostuffSerialize implements RpcSerialize {
 
 	private static final Objenesis objenesis = new ObjenesisStd(true);

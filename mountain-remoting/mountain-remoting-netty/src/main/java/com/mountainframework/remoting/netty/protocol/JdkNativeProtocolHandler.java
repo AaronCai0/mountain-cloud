@@ -9,6 +9,12 @@ import io.netty.handler.codec.serialization.ClassResolvers;
 import io.netty.handler.codec.serialization.ObjectDecoder;
 import io.netty.handler.codec.serialization.ObjectEncoder;
 
+/**
+ * JdkNativeProtocolHandler
+ * 
+ * @author yafeng.cai<https://github.com/AaronCai0>
+ * @since 1.0
+ */
 public class JdkNativeProtocolHandler implements ChannelPipeLineHandler {
 
 	@Override

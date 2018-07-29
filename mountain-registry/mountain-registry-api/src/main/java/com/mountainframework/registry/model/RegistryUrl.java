@@ -1,5 +1,11 @@
 package com.mountainframework.registry.model;
 
+/**
+ * RegistryUrl
+ * 
+ * @author yafeng.cai<https://github.com/AaronCai0>
+ * @since 1.0
+ */
 public class RegistryUrl {
 
 	private String serviceName;

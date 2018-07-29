@@ -7,6 +7,12 @@ import com.esotericsoftware.reflectasm.MethodAccess;
 import com.google.common.base.Preconditions;
 import com.google.common.collect.Maps;
 
+/**
+ * 反射缓存类
+ * 
+ * @author yafeng.cai<https://github.com/AaronCai0>
+ * @since 1.0
+ */
 public class ReflectionAsmCache {
 
 	private Map<Class<?>, MethodAccess> cachedAsm;
@@ -38,13 +44,6 @@ public class ReflectionAsmCache {
 			cachedMap.put(key, MethodAccess.get(value));
 			return this;
 		}
-
-		// public ReflectionAsmCacheBuilder loadCache(Class<?>[] clses) {
-		// for (Class<?> cls : clses) {
-		// cachedMap.put(cls, MethodAccess.get(cls));
-		// }
-		// return this;
-		// }
 
 		public ReflectionAsmCacheBuilder loadCache(Collection<Class<?>> clses) {
 			for (Class<?> cls : clses) {

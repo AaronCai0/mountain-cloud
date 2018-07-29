@@ -14,15 +14,17 @@ import com.google.common.util.concurrent.FutureCallback;
 import com.google.common.util.concurrent.Futures;
 import com.google.common.util.concurrent.ListenableFuture;
 import com.google.common.util.concurrent.ListeningExecutorService;
+import com.google.common.util.concurrent.MoreExecutors;
 import com.lmax.disruptor.RingBuffer;
-import com.mountainframework.common.Constants;
+import com.mountainframework.common.constant.Constants;
 import com.mountainframework.common.queue.DefaultDisruptorQueue;
 import com.mountainframework.remoting.RemotingLoaderService;
 import com.mountainframework.remoting.model.RemotingBean;
-import com.mountainframework.remoting.netty.model.NettyRemotingBean;
+import com.mountainframework.remoting.netty.model.NettyRemotingServerBean;
 import com.mountainframework.rpc.model.RpcMessageRequest;
 import com.mountainframework.rpc.model.RpcMessageResponse;
 import com.mountainframework.rpc.support.RpcThreadFactory;
+import com.mountainframework.rpc.support.RpcThreadPoolExecutors;
 import com.mountainframework.serialization.RpcSerializeProtocol;
 
 import io.netty.bootstrap.ServerBootstrap;
@@ -38,9 +40,8 @@ import io.netty.channel.socket.nio.NioServerSocketChannel;
 /**
  * Netty服务端初始化类
  * 
- * @author yafeng.cai {@link}https://github.com/AaronCai0
- * @date 2018年6月30日
- * @since 1.0.5
+ * @author yafeng.cai<https://github.com/AaronCai0>
+ * @since 1.0
  */
 public class NettyServerLoader implements RemotingLoaderService {
 
@@ -67,16 +68,16 @@ public class NettyServerLoader implements RemotingLoaderService {
 	@Override
 	public void load(RemotingBean remotingBean) {
 		try {
-			if (!(remotingBean instanceof NettyRemotingBean)) {
-				Preconditions.checkArgument(false, "RemotingBean must be NettyRemotingBean ");
+			if (!(remotingBean instanceof NettyRemotingServerBean)) {
+				Preconditions.checkArgument(false, "RemotingBean must be NettyRemotingServerBean instance.");
 			}
-			NettyRemotingBean nettyRemotingBean = (NettyRemotingBean) remotingBean;
+			NettyRemotingServerBean nettyRemotingBean = (NettyRemotingServerBean) remotingBean;
 			Map<String, Object> handlerBeanMap = nettyRemotingBean.getHandlerMap();
 			InetSocketAddress socketAddress = nettyRemotingBean.getSocketAddress();
 			RpcSerializeProtocol serailizeProtocol = nettyRemotingBean.getProtocol();
 			parallel = nettyRemotingBean.getThreads().intValue();
-			// threadPoolExecutor = MoreExecutors
-			// .listeningDecorator(RpcThreadPoolExecutors.newFixedThreadPool(parallel, -1));
+			threadPoolExecutor = MoreExecutors
+					.listeningDecorator(RpcThreadPoolExecutors.newFixedThreadPool(parallel, -1));
 			bossEvent = new NioEventLoopGroup();
 			workEvent = new NioEventLoopGroup(parallel, new RpcThreadFactory(), SelectorProvider.provider());
 			atomicRequestCount = new AtomicLong(1L);

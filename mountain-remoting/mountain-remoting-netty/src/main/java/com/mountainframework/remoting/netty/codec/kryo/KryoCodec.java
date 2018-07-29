@@ -12,9 +12,15 @@ import com.mountainframework.serialization.kryo.KryoSerialize;
 
 import io.netty.buffer.ByteBuf;
 
+/**
+ * KryoCodec
+ * 
+ * @author yafeng.cai<https://github.com/AaronCai0>
+ * @since 1.0
+ */
 public class KryoCodec implements NettyMessageCodec {
 
-	private final KryoSerialize serializetor = KryoSerialize
+	private static final KryoSerialize serializetor = KryoSerialize
 			.getInstance(new Class<?>[] { RpcMessageRequest.class, RpcMessageResponse.class });
 
 	private final Closer closer;

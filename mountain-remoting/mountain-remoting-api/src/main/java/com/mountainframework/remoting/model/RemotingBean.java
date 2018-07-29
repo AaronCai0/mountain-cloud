@@ -39,6 +39,11 @@ public abstract class RemotingBean implements Serializable {
 		this.threads = threads;
 	}
 
+	public RemotingBean(RpcSerializeProtocol protocol, Integer threads) {
+		this.protocol = protocol;
+		this.threads = threads;
+	}
+
 	protected void checkObjValues() {
 		Preconditions.checkNotNull(protocol, "RemotingBean protocol can not be null.");
 		Preconditions.checkNotNull(handlerMap, "RemotingBean handlerMap can not be null.");

@@ -12,6 +12,12 @@ import com.dyuproject.protostuff.runtime.RuntimeSchema;
 import com.google.common.cache.Cache;
 import com.google.common.cache.CacheBuilder;
 
+/**
+ * SchemaCache
+ * 
+ * @author yafeng.cai<https://github.com/AaronCai0>
+ * @since 1.0
+ */
 public class SchemaCache {
 
 	private static final Logger logger = LoggerFactory.getLogger(SchemaCache.class);
