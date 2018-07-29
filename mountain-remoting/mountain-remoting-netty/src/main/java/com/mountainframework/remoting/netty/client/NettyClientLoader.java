@@ -43,7 +43,7 @@ public class NettyClientLoader implements RemotingLoaderService {
 
 	private NettyClientChannelHandler rpcClientHandler;
 
-	private Lock lock = new ReentrantLock();
+	private final Lock lock = new ReentrantLock();
 
 	private final Condition connectStatus = lock.newCondition();
 

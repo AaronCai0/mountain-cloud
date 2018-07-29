@@ -51,15 +51,15 @@ public class NettyServerLoader implements RemotingLoaderService {
 
 	private static AtomicLong atomicRequestCount;
 
+	private static DefaultDisruptorQueue<NettyServerChannelReadEvent> disruptorQueue;
+
+	private static RingBuffer<NettyServerChannelReadEvent> disruptorProvider;
+
 	private int parallel;
 
 	private EventLoopGroup bossEvent;
 
 	private EventLoopGroup workEvent;
-
-	private static DefaultDisruptorQueue<NettyServerChannelReadEvent> disruptorQueue;
-
-	private static RingBuffer<NettyServerChannelReadEvent> disruptorProvider;
 
 	public static NettyServerLoader create() {
 		return new NettyServerLoader();
