@@ -1,5 +1,12 @@
+##############################
+## Folders                  ##
+##############################
 target
+*.iml
+*.log
+.idea
+.git
+.logs
 .settings
 .project
 .classpath
-.iml
