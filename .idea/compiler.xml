@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="CompilerConfiguration">
+    <annotationProcessing>
+      <profile name="Maven default annotation processors profile" enabled="true">
+        <sourceOutputDir name="target/generated-sources/annotations" />
+        <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
+        <outputRelativeToContentRoot value="true" />
+        <module name="mountain-common" />
+        <module name="mountain-config-api" />
+        <module name="mountain-config-spring" />
+        <module name="mountain-container" />
+        <module name="mountain-demo-api" />
+        <module name="mountain-demo-consumer" />
+        <module name="mountain-demo-provider" />
+        <module name="mountain-monitor" />
+        <module name="mountain-registry-api" />
+        <module name="mountain-registry-zookeeper" />
+        <module name="mountain-remoting-api" />
+        <module name="mountain-remoting-netty" />
+        <module name="mountain-rpc" />
+        <module name="mountain-serialization-api" />
+        <module name="mountain-serialization-hessian" />
+        <module name="mountain-serialization-jdk" />
+        <module name="mountain-serialization-kryo" />
+        <module name="mountain-serialization-protostuff" />
+      </profile>
+    </annotationProcessing>
+  </component>
+</project>
